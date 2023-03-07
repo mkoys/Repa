@@ -5,6 +5,16 @@
     background-color: var(--back-color-1);
 }
 
+.picker {
+    user-select: none;
+    cursor: pointer;
+    fill: var(--text-color-2);
+}
+
+.picker:hover {
+    fill: var(--text-color-1);
+}
+
 .header {
     margin-left: 8px;
     margin-right: 8px;
