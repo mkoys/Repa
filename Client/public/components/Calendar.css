@@ -109,6 +109,6 @@
 }
 
 .rangeBegin {
-    background-color: var(--main-color-2);
-    opacity: 0.8;
+    color: var(--back-color-1);
+    background-color: var(--main-color-3);
 }

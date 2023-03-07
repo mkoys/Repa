@@ -111,13 +111,8 @@ export default class LabelInput extends BaseComponent {
         const selected = this.selected.length ? true : false;
         const findFunction = (value) => value.date.getTime() == date.getTime();
 
-        const daySelectedIndex = this.selected.findIndex(value => {
-            if (Array.isArray(value)) {
-                if (value.findIndex(findFunction) > -1) { return 1 }
-            } else {
-                if (value.date.getTime() == date.getTime()) { return 1 }
-            }
-        });
+        const daySelectedIndex = this.selected.findIndex(value => Array.isArray(value) ?
+            value.findIndex(findFunction) > -1 : value.date.getTime() == date.getTime());
 
         const dayIndex = this.days.findIndex(value => value.date.getTime() == date.getTime());
         if (!event.shiftKey && this.range) {
@@ -129,40 +124,44 @@ export default class LabelInput extends BaseComponent {
             this.selectedUpdateCallback("closed", this.selected[daySelectedIndex]);
             this.removeSelection(daySelectedIndex);
         } else if (this.range !== false && event.shiftKey) {
-            if (this.range != dayIndex) {
-                this.days[this.range].element.classList.remove("rangeBegin");
-
-                const start = this.range > dayIndex ? dayIndex : this.range;
-                const end = this.range > dayIndex ? this.range : dayIndex;
-                const rangeSelection = this.days.slice(start, end + 1);
-
-                rangeSelection[0].element.classList.add("rangeStart");
-                rangeSelection[rangeSelection.length - 1].element.classList.add("rangeEnd");
-                rangeSelection[0].element.children[0].classList.add("selected");
-                rangeSelection[rangeSelection.length - 1].element.children[0].classList.add("selected");
-
-                for (let index = 1; index < rangeSelection.length - 1; index++) {
-                    const item = rangeSelection[index];
-                    const isSelected = this.selected.findIndex(value => {
-                        if (Array.isArray(value)) {
-                            if (value.findIndex((value) => value.date.getTime() == item.date.getTime()) > -1) { return 1 }
-                        } else {
-                            if (value.date.getTime() == item.date.getTime()) { return 1 }
-                        }
-                    });
-
-                    if (isSelected > -1) {
-                        this.selectedUpdateCallback("closed", this.selected[isSelected]);
-                        this.removeSelection(isSelected);
-                    }
-
-                    item.element.children[0].classList.add("range");
-                }
-
-                this.selected.push(rangeSelection);
-                this.selectedUpdateCallback("opened", rangeSelection);
+            if (this.range == dayIndex) {
+                return this.range = false;
             }
-            
+
+            this.days[this.range].element.classList.remove("rangeBegin");
+
+            const start = this.range > dayIndex ? dayIndex : this.range;
+            const end = this.range > dayIndex ? this.range : dayIndex;
+            const rangeSelection = this.days.slice(start, end + 1);
+
+            rangeSelection[0].element.classList.add("rangeStart");
+            rangeSelection[rangeSelection.length - 1].element.classList.add("rangeEnd");
+            rangeSelection[0].element.children[0].classList.add("selected");
+            rangeSelection[rangeSelection.length - 1].element.children[0].classList.add("selected");
+
+            for (let index = 0; index < rangeSelection.length; index++) {
+                const item = rangeSelection[index];
+
+                const isSelected = this.selected.findIndex(value => Array.isArray(value) ?
+                    value.findIndex((value) => value.date.getTime() == item.date.getTime()) > -1 :
+                    value.date.getTime() == item.date.getTime()
+                );
+
+
+                if (isSelected > -1) {
+                    this.selectedUpdateCallback("closed", this.selected[isSelected]);
+                    this.removeSelection(isSelected);
+                }
+            }
+
+            for (let index = 1; index < rangeSelection.length - 1; index++) {
+                const item = rangeSelection[index];
+                item.element.children[0].classList.add("range");
+            }
+
+            this.selected.push(rangeSelection);
+            this.selectedUpdateCallback("opened", rangeSelection);
+
             this.range = false;
         } else if (event.shiftKey) {
             this.days[dayIndex].element.classList.add("rangeBegin");
