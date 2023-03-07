@@ -49,7 +49,11 @@ export default class LabelInput extends BaseComponent {
     setMonth(adder) {
         this.date.setMonth(this.date.getMonth() + adder);
         this.updateDate();
-        this.selected = [];
+        
+        while (this.selected.length) {
+            this.selectedUpdateCallback("closed", this.selected[0]);
+            this.removeSelection(0);
+        }
     }
 
     async attributeChangedCallback(name, oldValue, newValue) {
