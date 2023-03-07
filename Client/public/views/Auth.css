@@ -1,0 +1,103 @@
+.box {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.shape {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: fit-content;
+    background-color: var(--back-color-1);
+    padding: 30px 40px 30px 40px;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.loading {
+    transform: translateX(-200%);
+    border-radius: 10px;
+    top: 0px;
+    left: 0px;
+    position: absolute;
+    width: 50%;
+    background-color: transparent;
+    height: 6px;
+    animation-duration: 0.8s;
+    animation-name: loading;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+    animation-play-state: paused;
+    animation-fill-mode: forwards;
+    transition: 0.5s ease background-color;
+}
+
+.load {
+    background-color: var(--main-color-1);
+    animation-play-state: running;
+}
+
+.header {
+    color: var(--text-color-1);
+    font-weight: bold;
+    font-size: 30px;
+    margin-bottom: 30px;
+}
+
+.inputSpacing {
+    margin-bottom: 15px;
+}
+
+.link {
+    width: fit-content;
+    margin-top: 5px;
+    color: var(--main-color-1);
+    font-size: 13px;
+}
+
+.redirect {
+    margin-top: 5px;
+    display: flex;
+}
+
+.redirect>p, a {
+    margin-right: 3px;
+    color: var(--text-color-1);
+    font-size: 13px;
+}
+
+.redirect>a {
+    color: var(--main-color-1);
+}
+
+.terms {
+    display: flex;
+}
+
+.termsText {
+    margin-left: 10px;
+    display: flex;
+}
+
+.termsText > p, a {
+    margin-right: 3px;
+    color: var(--text-color-1);
+    font-size: 13px;
+}
+
+.termsText > a {
+    color: var(--main-color-1);
+}
+
+@keyframes loading {
+    from {
+        transform: translateX(-200%);
+    }
+
+    to {
+        transform: translateX(280%);
+    }
+}

@@ -1,0 +1,22 @@
+{
+  "name": "wave",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Wave"
+  ],
+  "author": "Mkoys",
+  "license": "MIT",
+  "dependencies": {
+    "@mkoys/flash": "github:mkoys/flash",
+    "@mkoys/post": "github:mkoys/post",
+    "bcrypt": "^5.1.0",
+    "mongodb": "^5.0.0",
+    "nanoid": "^4.0.0"
+  }
+}

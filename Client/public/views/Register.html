@@ -1,0 +1,25 @@
+<template>
+    <div class="box">
+        <div class="shape">
+            <div class="loading"></div>
+            <h2 class="header">
+                Register
+            </h2>
+            <marble-label-input class="username inputSpacing" label="Username"></marble-label-input>
+            <marble-label-input class="email inputSpacing" label="Email"></marble-label-input>
+            <marble-label-input class="password inputSpacing" type="password" label="Password"></marble-label-input>
+            <marble-label-input class="repassword inputSpacing" type="password" label="Re-Password"></marble-label-input>
+            <div class="terms">
+                <marble-checkbox></marble-checkbox>
+                <div class="termsText">
+                    <p class="termsTextParagraph">I agree with </p>
+                    <a href="#">Terms & Conditions</a>
+                </div>
+            </div>
+            <marble-button text="Register"></marble-button>
+            <div class="redirect">
+                <p>Already have an account? </p><a href="#" class="login">Login</a>
+            </div>
+        </div>
+    </div>
+</template>

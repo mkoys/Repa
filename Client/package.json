@@ -1,0 +1,30 @@
+{
+  "name": "@mkoys/marble",
+  "version": "1.0.0",
+  "description": "# Usage",
+  "main": "app.js",
+  "type": "module",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "keywords": [
+    "Marble"
+  ],
+  "author": "Mkoys",
+  "license": "MIT",
+  "dependencies": {
+    "@mkoys/post": "^1.3.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mkoys/Marble.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mkoys/Marble/issues"
+  },
+  "homepage": "https://github.com/mkoys/Marble#readme"
+}

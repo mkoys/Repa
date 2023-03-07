@@ -1,0 +1,41 @@
+.shape {
+    width: 256px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 22px;
+    border-radius: 6px;
+    background-color: var(--back-color-1);
+}
+
+.userDetails {
+    display: flex;
+}
+
+.avatar {
+    height: 36px;
+    width: 36px;
+    border-radius: 50%;
+    background-color: var(--text-color-2);
+    background-position: center;
+    background-size: contain;
+}
+
+.userText {
+    margin-left: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.username {
+    color: var(--text-color-1);
+    font-weight: 500;
+    font-size: 15px;
+    text-transform: capitalize;
+}
+
+.role {
+    color: var(--text-color-2);
+    font-size: 13px;
+    text-transform: capitalize;
+}

@@ -1,0 +1,15 @@
+.cards {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    margin: 20px;
+}
+
+.main {
+    display: flex;
+    height: 100%;
+}
+
+marble-usercard {
+    margin-bottom: 20px;
+}
