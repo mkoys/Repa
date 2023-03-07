@@ -96,7 +96,7 @@ export default class LabelInput extends BaseComponent {
             dateTextElement.textContent = date.getDate();
 
             if(this.checkIfCurrentDate(date)) {
-                dateElement.classList.add("current");
+                dateTextElement.classList.add("current");
             }
 
             if (disabled) {
