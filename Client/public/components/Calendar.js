@@ -80,12 +80,12 @@ export default class LabelInput extends BaseComponent {
 
         dateTextElement.textContent = `${this.monthList[this.date.getMonth()]} ${this.date.getFullYear()}`;
 
-        this.addDate(previousDays, true);
-        this.addDate(daysInMonth, false);
-        this.addDate(nextDays, true);
+        this.addDates(previousDays, true);
+        this.addDates(daysInMonth, false);
+        this.addDates(nextDays, true);
     }
 
-    addDate(dates, disabled) {
+    addDates(dates, disabled) {
         const datesElement = this.shadowRoot.querySelector(".dates");
 
         for (const date of dates) {
@@ -94,6 +94,10 @@ export default class LabelInput extends BaseComponent {
             dateElement.classList.add("date");
 
             dateTextElement.textContent = date.getDate();
+
+            if(this.checkIfCurrentDate(date)) {
+                dateElement.classList.add("current");
+            }
 
             if (disabled) {
                 dateElement.classList.add("disabledDate");

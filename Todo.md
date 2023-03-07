@@ -16,7 +16,7 @@
     - [ ] Current day hint
     - [x] Date selection
     - [x] Multy date selction
-    - [ ] Range date selction
+    - [x] Range date selction
 - [ ] Dropdown
 - [ ] Attendace Card
 - [ ] Admin panel

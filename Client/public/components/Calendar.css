@@ -79,6 +79,10 @@
     border-radius: 50%;
 }
 
+.current {
+    border: 1px solid var(--text-color-1);
+}
+
 .disabledDate {
     opacity: 0.8;
     cursor: default;
