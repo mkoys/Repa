@@ -43,6 +43,25 @@ export default class LabelInput extends BaseComponent {
         });
     }
 
+    setData(data) {
+        data.forEach(item => {
+            const foundIndex = this.days.findIndex(value => value.date.getTime() == item.date.getTime());
+            if(foundIndex > -1) {
+                const element = this.days[foundIndex].element;
+                const ballElement = element.querySelector(".ball");
+                if(item.submited) {
+                    ballElement.classList.add("submited");
+                }else if(item.accepted) {
+                    ballElement.classList.add("accepted");
+                }else if(item.declined) {
+                    ballElement.classList.add("declined");
+                }else {
+                    ballElement.classList.add("saved");
+                }
+            }
+        });
+    }
+
     selectedUpdate(callback) {
         this.selectedUpdateCallback = callback;
     }
@@ -108,7 +127,10 @@ export default class LabelInput extends BaseComponent {
         for (const date of dates) {
             const dateElement = document.createElement("div");
             const dateTextElement = document.createElement("p");
+            const ballElement = document.createElement("div");
+
             dateElement.classList.add("date");
+            ballElement.classList.add("ball");
 
             dateTextElement.textContent = date.getDate();
 
@@ -124,6 +146,7 @@ export default class LabelInput extends BaseComponent {
             }
 
             dateElement.appendChild(dateTextElement);
+            dateElement.appendChild(ballElement);
             datesElement.appendChild(dateElement);
         }
     }

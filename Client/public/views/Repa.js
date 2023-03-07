@@ -24,7 +24,6 @@ export default class Repa extends BaseComponent {
         userInfoElement.setAttribute("role", userInfo.role);
         
         calendar.selectedUpdate((type, item) => {
-            
             if(Array.isArray(item)) {
                 console.log(type, item);
             }else {
