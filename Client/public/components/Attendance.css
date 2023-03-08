@@ -27,7 +27,7 @@
 }
 
 .footer {
-    margin-top: 7px;
+    margin-top: 15px;
     justify-content: space-between;
     display: flex;
     align-items: center;
@@ -53,15 +53,19 @@
 }
 
 .inputRow {
+    align-items: center;
     display: flex;
     align-items: center;
+    margin-bottom: 8px;
 }
 
 .inputRow > input {
+    font-size: 17px;
+    color: white;
+    outline: none;
     border-radius: 5px;
     background-color: var(--back-color-2);
-    margin-bottom: 8px;
-    padding: 14px;
+    padding:12px;
     border: 1px solid transparent;
 }
 
@@ -79,11 +83,13 @@
 }
 
 .time {
-    width: 69px;
+    text-align: center;
+    width: 77px;
 }
 
 .type {
-    width: 69px;
+    text-align: center;
+    width: 77px;
 }
 
 .buttons {
@@ -95,6 +101,7 @@
 }
 
 .button {
+    border: none;
     width: 48px;
     height: 48px;
     border-radius: 5px;
@@ -102,4 +109,8 @@
     justify-content: center;
     align-items: center;
     background-color: var(--main-color-1);
+}
+
+.icon > circle, .icon > path {
+    fill: var(--main-color-lower-1);
 }
