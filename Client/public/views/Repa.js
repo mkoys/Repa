@@ -20,6 +20,7 @@ export default class Repa extends BaseComponent {
         const userInfoElement = this.shadowRoot.querySelector("marble-usercard");
         const userInfo = await this.getUserInfo();
 
+        this.updateData();
 
         userInfoElement.setAttribute("avatar", userInfo.avatar);
         userInfoElement.setAttribute("username", userInfo.username);
@@ -28,8 +29,15 @@ export default class Repa extends BaseComponent {
         calendar.selectedUpdate((type, item) => {
             if (type === "opened") {
                 if (!Array.isArray(item)) {
+                    const foundDataIndex = this.userAttendance.findIndex(value => value.date.getTime() == item.date.getTime());
                     const newAttendance = document.createElement("marble-attendance");
-                    newAttendance.setAttribute("date", item.date);
+
+                    if (foundDataIndex > -1) {
+                        newAttendance.setData(this.userAttendance[foundDataIndex]);
+                    } else {
+                        newAttendance.setAttribute("date", item.date);
+                    }
+
                     newAttendance.close(() => calendar.selectDate(newAttendance.date));
 
                     newAttendance.save(async () => {
@@ -41,7 +49,10 @@ export default class Repa extends BaseComponent {
                         newAttendance.removeAttribute("loading");
                         newAttendance.removeAttribute("disableinput");
 
-                        if (!result.error) { newAttendance.setAttribute("status", "Saved") }
+                        if (!result.error) {
+                            newAttendance.setAttribute("status", "Saved")
+                            this.updateData();
+                        }
                     });
 
                     mainElement.appendChild(newAttendance);
@@ -60,23 +71,44 @@ export default class Repa extends BaseComponent {
         });
     }
 
+    async updateData() {
+        const calendar = this.shadowRoot.querySelector("marble-calendar");
+        this.userAttendance = await this.getAttendance();
+        calendar.setData(this.userAttendance);
+    }
+
     async saveData(data) {
-        // const response = await fetch(config.baseURL + "/repa/save", {
-        //     method: "POST",
-        //     body: JSON.stringify(data),
-        //     headers: {
-        //         "Content-type": "application/json",
-        //         "Authorization": "Bearer " + localStorage.getItem("token")
-        //     }
-        // });
+        const response = await fetch(config.baseURL + "/repa/save", {
+            method: "POST",
+            body: JSON.stringify(data),
+            headers: {
+                "Content-type": "application/json",
+                "Authorization": "Bearer " + localStorage.getItem("token")
+            }
+        });
 
-        // return await response.json();
+        return await response.json();
 
-        return await new Promise((resolve) => {
-            setTimeout(() => {
-                resolve({ message: "ok" });
-            }, 2000);
-        })
+        // return await new Promise((resolve) => {
+        //     setTimeout(() => {
+        //         resolve({ message: "ok" });
+        //     }, 2000);
+        // })
+    }
+
+    async getAttendance() {
+        const token = localStorage.getItem("token");
+        const response = await fetch(config.baseURL + "/repa/attendance", {
+            headers: { Authorization: `Bearer ${token}` }
+        });
+
+        const data = await response.json();
+
+        for (const item of data) {
+            item.date = new Date(item.date);
+        }
+
+        return data;
     }
 
     async getUserInfo() {

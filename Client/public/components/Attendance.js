@@ -9,6 +9,26 @@ export default class LabelInput extends BaseComponent {
         this.date = new Date();
         this.saveCallback = () => { };
         this.closeCallback = () => { };
+        const htmlParser = new DOMParser();
+        const emptyRowHtml = `
+            <svg class="grab" xmlns="http://www.w3.org/2000/svg" width="11" height="16" viewBox="0 0 11 16">
+                <circle cx="2" cy="14" r="2" fill="#D9D9D9" />
+                <circle cx="9" cy="14" r="2" fill="#D9D9D9" />
+                <circle cx="2" cy="8" r="2" fill="#D9D9D9" />
+                <circle cx="9" cy="8" r="2" fill="#D9D9D9" />
+                <circle cx="2" cy="2" r="2" fill="#D9D9D9" />
+                <circle cx="9" cy="2" r="2" fill="#D9D9D9" />
+            </svg>
+            <input type="text" placeholder="Description" class="description inputSpacing">
+            <input type="text" placeholder="Time" class="time inputSpacing">
+            <input type="text" placeholder="Class" class="type">
+        `;
+
+        const emptyContent = htmlParser.parseFromString(emptyRowHtml, "text/html").body;
+        this.emptyRow = document.createElement("div");
+        this.emptyRow.classList.add("inputRow");
+        this.emptyRow.innerHTML = emptyContent.innerHTML;
+
         this.monthList = [
             "Jan",
             "Feb",
@@ -35,8 +55,6 @@ export default class LabelInput extends BaseComponent {
             const companyCheckbox = this.shadowRoot.querySelector(".company");
             const saveButton = this.shadowRoot.querySelector(".save");
             const closeButton = this.shadowRoot.querySelector(".close");
-
-            this.emptyRow = firstInputRow.cloneNode(true);
 
             const firstGrab = firstInputRow.querySelector(".grab");
             const firstDescription = firstInputRow.querySelector(".description");
@@ -105,7 +123,7 @@ export default class LabelInput extends BaseComponent {
 
     async setData(data) {
         await this.load;
-        this.setAttribute("date", data.date)
+        this.setAttribute("date", data.date);
         const contentElement = this.shadowRoot.querySelector(".content");
         const schoolCheckbox = this.shadowRoot.querySelector(".school");
         const companyCheckbox = this.shadowRoot.querySelector(".company");
@@ -196,7 +214,7 @@ export default class LabelInput extends BaseComponent {
         const buttons = this.shadowRoot.querySelectorAll(".button");
         const schoolCheckbox = this.shadowRoot.querySelector(".school");
         const companyCheckbox = this.shadowRoot.querySelector(".company");
-        
+
         switch (name) {
             case "statuscolor":
                 statusElement.style.color = newValue;
