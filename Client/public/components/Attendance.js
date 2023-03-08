@@ -6,8 +6,22 @@ export default class LabelInput extends BaseComponent {
 
     constructor() {
         super();
+        this.date = new Date();
+        this.monthList = [
+            "Jan",
+            "Feb",
+            "Mar",
+            "Apr",
+            "May",
+            "Jun",
+            "Jul",
+            "Aug",
+            "Sep",
+            "Oct",
+            "Nov",
+            "Decr"
+        ];
 
-        this.controller = new AbortController();
         this.addStyle("/style.css");
         this.addStyle("/components/Attendance.css");
         this.useTemplate("/components/Attendance.html");
@@ -22,6 +36,8 @@ export default class LabelInput extends BaseComponent {
             const firstType = firstInputRow.querySelector(".type");
             const schoolCheckbox = this.shadowRoot.querySelector(".school");
             const companyCheckbox = this.shadowRoot.querySelector(".company");
+
+            grab.addEventListener("click", () => this.getData())
 
             schoolCheckbox.addEventListener("click", () => {
                 if (schoolCheckbox.checked && companyCheckbox.checked) { companyCheckbox.action() }
@@ -80,6 +96,35 @@ export default class LabelInput extends BaseComponent {
         }
     }
 
+    getData() {
+        const data = {
+            date: this.date,
+            content: [],
+            where: null
+        };
+
+        const contentElement = this.shadowRoot.querySelector(".content");
+        const schoolCheckbox = this.shadowRoot.querySelector(".school");
+        const companyCheckbox = this.shadowRoot.querySelector(".company");
+
+        if (schoolCheckbox.checked) {
+            data.where = "school";
+        } else if (companyCheckbox.checked) {
+            data.where = "company";
+        }
+
+        let index = 0;
+        for (const inputRow of contentElement.children) {
+            const description = inputRow.querySelector(".description").value;
+            const time = inputRow.querySelector(".time").value;
+            const type = inputRow.querySelector(".type").value;
+            data.content[index] = { description, time, type }
+            index++;
+        }
+
+        console.log(data);
+    }
+
     async attributeChangedCallback(name, oldValue, newValue) {
         await this.load;
         const statusElement = this.shadowRoot.querySelector(".status");
@@ -93,7 +138,8 @@ export default class LabelInput extends BaseComponent {
                 statusElement.textContent = newValue;
                 break;
             case "date":
-                dateElement.textContent = newValue;
+                this.date = new Date(newValue);
+                dateElement.textContent = `${this.date.getDate()}. ${this.monthList[this.date.getMonth()]} ${this.date.getFullYear()}`;
                 break;
 
             default:
