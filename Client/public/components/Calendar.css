@@ -6,6 +6,7 @@
 }
 
 .picker {
+    transition: 0.2s ease fill;
     user-select: none;
     cursor: pointer;
     fill: var(--text-color-2);
