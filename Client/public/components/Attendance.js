@@ -47,25 +47,25 @@ export default class LabelInput extends BaseComponent {
                 if (schoolCheckbox.checked && companyCheckbox.checked) { schoolCheckbox.action() }
             });
 
-            firstDescription.addEventListener("keyup", newRow);
-            firstTime.addEventListener("keyup", newRow);
-            firstType.addEventListener("keyup", newRow);
+            firstDescription.addEventListener("keyup", this.newRow);
+            firstTime.addEventListener("keyup", this.newRow);
+            firstType.addEventListener("keyup", this.newRow);
         });
 
-        const newRow = (event) => {
+        this.newRow = (event) => {
             const row = event.target.parentNode;
             const description = row.querySelector(".description");
             const time = row.querySelector(".time");
             const type = row.querySelector(".type");
 
             if (description.value.length != 0 || time.value.length != 0 || type.value.length != 0) {
-                description.addEventListener("keyup", removeRow);
-                time.addEventListener("keyup", removeRow);
-                type.addEventListener("keyup", removeRow);
+                description.addEventListener("keyup", this.removeRow);
+                time.addEventListener("keyup", this.removeRow);
+                type.addEventListener("keyup", this.removeRow);
 
-                description.removeEventListener("keyup", newRow);
-                time.removeEventListener("keyup", newRow);
-                type.removeEventListener("keyup", newRow);
+                description.removeEventListener("keyup", this.newRow);
+                time.removeEventListener("keyup", this.newRow);
+                type.removeEventListener("keyup", this.newRow);
 
                 const content = this.shadowRoot.querySelector(".content");
                 const newRowElement = this.emptyRow.cloneNode(true);
@@ -75,15 +75,15 @@ export default class LabelInput extends BaseComponent {
                 const newTime = newRowElement.querySelector(".time");
                 const newType = newRowElement.querySelector(".type");
 
-                newDescription.addEventListener("keyup", newRow);
-                newTime.addEventListener("keyup", newRow);
-                newType.addEventListener("keyup", newRow);
+                newDescription.addEventListener("keyup", this.newRow);
+                newTime.addEventListener("keyup", this.newRow);
+                newType.addEventListener("keyup", this.newRow);
 
                 content.appendChild(newRowElement);
             }
         }
 
-        const removeRow = (event) => {
+        this.removeRow = (event) => {
             const row = event.target.parentNode;
             const content = row.parentNode;
             const description = row.querySelector(".description");
@@ -94,6 +94,55 @@ export default class LabelInput extends BaseComponent {
                 content.removeChild(row);
             }
         }
+    }
+
+    async setData(data) {
+        await this.load;
+        this.setAttribute("date", data.date)
+        const contentElement = this.shadowRoot.querySelector(".content");
+        const schoolCheckbox = this.shadowRoot.querySelector(".school");
+        const companyCheckbox = this.shadowRoot.querySelector(".company");
+
+        contentElement.innerHTML = "";
+
+        if (data.where) {
+            if (data.where === "company") {
+                if (!companyCheckbox.checked) { companyCheckbox.action() }
+            } else if (data.where === "school") {
+                if (!schoolCheckbox.checked) { schoolCheckbox.action() }
+            }
+        }
+
+        data.content.forEach((rowData, index) => {
+            const newRowElement = this.emptyRow.cloneNode(true);
+            const description = newRowElement.querySelector(".description");
+            const time = newRowElement.querySelector(".time");
+            const type = newRowElement.querySelector(".type");
+
+            description.value = rowData.description;
+            time.value = rowData.time;
+            type.value = rowData.type;
+            contentElement.appendChild(newRowElement);
+
+            description.addEventListener("keyup", this.removeRow);
+            time.addEventListener("keyup", this.removeRow);
+            type.addEventListener("keyup", this.removeRow);
+        });
+
+        const newRowElement = this.emptyRow.cloneNode(true);
+        const description = newRowElement.querySelector(".description");
+        const time = newRowElement.querySelector(".time");
+        const type = newRowElement.querySelector(".type");
+
+        contentElement.appendChild(newRowElement);
+
+        description.addEventListener("keyup", this.removeRow);
+        time.addEventListener("keyup", this.removeRow);
+        type.addEventListener("keyup", this.removeRow);
+
+        description.addEventListener("keyup", this.newRow);
+        time.addEventListener("keyup", this.newRow);
+        type.addEventListener("keyup", this.newRow);
     }
 
     getData() {

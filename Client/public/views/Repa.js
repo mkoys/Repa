@@ -15,6 +15,7 @@ export default class Repa extends BaseComponent {
 
     async connectedCallback() {
         await this.load;
+        const attendance = this.shadowRoot.querySelector("marble-attendance");
         const calendar = this.shadowRoot.querySelector("marble-calendar");
         const userInfoElement = this.shadowRoot.querySelector("marble-usercard");
         const userInfo = await this.getUserInfo();

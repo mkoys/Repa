@@ -16,16 +16,6 @@ export default class Checkbox extends BaseComponent {
             const boxElement = this.shadowRoot.querySelector(".box");
             const checkElement = this.shadowRoot.querySelector(".check");
 
-            this.action = (action) => {
-                this.checked = action ? action : !this.checked;
-
-                if (this.checked) {
-                    checkElement.classList.add("visible");
-                } else {
-                    checkElement.classList.remove("visible");
-                }
-            }
-
             boxElement.addEventListener("keydown", (event) => {
                 if (event.key === "Enter") { this.action() }
             })
@@ -34,6 +24,19 @@ export default class Checkbox extends BaseComponent {
                 this.action();
             });
         })
+    }
+
+    async action(action) {
+        await this.load;
+        const checkElement = this.shadowRoot.querySelector(".check");
+
+        this.checked = action ? action : !this.checked;
+
+        if (this.checked) {
+            checkElement.classList.add("visible");
+        } else {
+            checkElement.classList.remove("visible");
+        }
     }
 
     async attributeChangedCallback(name, oldValue, newValue) {
