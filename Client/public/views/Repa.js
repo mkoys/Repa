@@ -58,6 +58,7 @@ export default class Repa extends BaseComponent {
                         }
                     } else {
                         newAttendance.setAttribute("date", item.date);
+                        newAttendance.setAttribute("disablesubmit", "true");
                     }
 
                     newAttendance.close(() => calendar.selectDate(newAttendance.date));
