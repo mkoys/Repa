@@ -70,21 +70,18 @@ export default class LabelInput extends BaseComponent {
             const contentElement = this.shadowRoot.querySelector(".content");
 
             const newRow = this.createRow();
-
             const data = this.getData();
 
             if(data.content.length == 0) {
                 contentElement.appendChild(newRow.rowElement);
-        
                 newRow.description.addEventListener("keyup", this.newRow);
                 newRow.time.addEventListener("keyup", this.newRow);
                 newRow.type.addEventListener("keyup", this.newRow);
-    
-                closeButton.addEventListener("click", () => this.closeCallback());
-                saveButton.addEventListener("click", () => this.saveCallback());
-                submitButton.addEventListener("click", () => this.submitCallback());
             }
 
+            closeButton.addEventListener("click", () => this.closeCallback());
+            saveButton.addEventListener("click", () => this.saveCallback());
+            submitButton.addEventListener("click", () => this.submitCallback());
 
             schoolCheckbox.change(() => {
                 if (schoolCheckbox.checked && companyCheckbox.checked) { companyCheckbox.action() }
