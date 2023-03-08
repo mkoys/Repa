@@ -6,6 +6,7 @@ export default class Checkbox extends BaseComponent {
 
     constructor() {
         super();
+        this.changeCallback = () => {};
         this.addStyle("/style.css");
         this.addStyle("/components/Checkbox.css");
         this.useTemplate("/components/Checkbox.html");
@@ -26,6 +27,8 @@ export default class Checkbox extends BaseComponent {
         })
     }
 
+    change(callback) {this.changeCallback = callback}
+
     async action(action) {
         await this.load;
         const checkElement = this.shadowRoot.querySelector(".check");
@@ -37,6 +40,8 @@ export default class Checkbox extends BaseComponent {
         } else {
             checkElement.classList.remove("visible");
         }
+
+        this.changeCallback(this.checked);
     }
 
     async attributeChangedCallback(name, oldValue, newValue) {

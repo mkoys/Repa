@@ -43,11 +43,11 @@ export default class LabelInput extends BaseComponent {
 
             firstGrab.addEventListener("click", () => this.getData())
 
-            schoolCheckbox.addEventListener("click", () => {
+            schoolCheckbox.change(() => {
                 if (schoolCheckbox.checked && companyCheckbox.checked) { companyCheckbox.action() }
             });
 
-            companyCheckbox.addEventListener("click", () => {
+            companyCheckbox.change(() => {
                 if (schoolCheckbox.checked && companyCheckbox.checked) { schoolCheckbox.action() }
             });
 
