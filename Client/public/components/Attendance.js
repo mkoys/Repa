@@ -8,6 +8,7 @@ export default class LabelInput extends BaseComponent {
         super();
         this.date = new Date();
         this.saveCallback = () => { };
+        this.closeCallback = () => { };
         this.monthList = [
             "Jan",
             "Feb",
@@ -33,6 +34,7 @@ export default class LabelInput extends BaseComponent {
             const schoolCheckbox = this.shadowRoot.querySelector(".school");
             const companyCheckbox = this.shadowRoot.querySelector(".company");
             const saveButton = this.shadowRoot.querySelector(".save");
+            const closeButton = this.shadowRoot.querySelector(".close");
 
             this.emptyRow = firstInputRow.cloneNode(true);
 
@@ -41,7 +43,7 @@ export default class LabelInput extends BaseComponent {
             const firstTime = firstInputRow.querySelector(".time");
             const firstType = firstInputRow.querySelector(".type");
 
-            firstGrab.addEventListener("click", () => this.getData())
+            closeButton.addEventListener("click", () => this.closeCallback());
 
             schoolCheckbox.change(() => {
                 if (schoolCheckbox.checked && companyCheckbox.checked) { companyCheckbox.action() }
@@ -96,6 +98,8 @@ export default class LabelInput extends BaseComponent {
             }
         }
     }
+
+    close(callback) { this.closeCallback = callback }
 
     save(callback) { this.saveCallback = callback }
 
@@ -175,7 +179,7 @@ export default class LabelInput extends BaseComponent {
             const time = inputRow.querySelector(".time").value;
             const type = inputRow.querySelector(".type").value;
 
-            if(description !== "" || time !== "" || type !== "") {
+            if (description !== "" || time !== "" || type !== "") {
                 data.content[index] = { description, time, type }
                 index++;
             }

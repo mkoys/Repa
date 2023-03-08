@@ -11,9 +11,9 @@
 - [ ] Calendar
     - [x] Current date view
     - [ ] Year selector
-    - [ ] Month hands
+    - [x] Month hands
     - [x] Date generation
-    - [ ] Current day hint
+    - [x] Current day hint
     - [x] Date selection
     - [x] Multy date selction
     - [x] Range date selction
@@ -27,8 +27,8 @@
 
 ### Student
 
-- [ ] Save attendance
-- [ ] Update attendance
+- [x] Save attendance
+- [x] Update attendance
 - [ ] Delete attendance
 - [ ] Submit attendance
 - [ ] Remove submition
