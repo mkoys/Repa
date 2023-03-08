@@ -142,7 +142,7 @@ export default class LabelInput extends BaseComponent {
                 dateElement.classList.add("disabledDate");
             } else {
                 this.days.push({ date, element: dateElement });
-                dateElement.addEventListener("click", (event) => this.selectDate(date, dateElement, event));
+                dateElement.addEventListener("click", (event) => this.selectDate(date, event.shiftKey, event.ctrlKey));
             }
 
             dateElement.appendChild(dateTextElement);
@@ -151,7 +151,8 @@ export default class LabelInput extends BaseComponent {
         }
     }
 
-    selectDate(date, element, event) {
+    selectDate(date, shiftKey = false, ctrlKey = false) {
+        const element = this.days[this.days.findIndex(item => item.date.getTime() == date.getTime())].element;
         const selected = this.selected.length ? true : false;
         const findFunction = (value) => value.date.getTime() == date.getTime();
 
@@ -159,7 +160,7 @@ export default class LabelInput extends BaseComponent {
             value.findIndex(findFunction) > -1 : value.date.getTime() == date.getTime());
 
         const dayIndex = this.days.findIndex(value => value.date.getTime() == date.getTime());
-        if (!event.shiftKey && this.range) {
+        if (!shiftKey && this.range) {
             this.days[this.range].element.classList.remove("rangeBegin");
             this.range = false;
         }
@@ -167,7 +168,7 @@ export default class LabelInput extends BaseComponent {
         if (daySelectedIndex > -1) {
             this.selectedUpdateCallback("closed", this.selected[daySelectedIndex]);
             this.removeSelection(daySelectedIndex);
-        } else if (this.range !== false && event.shiftKey) {
+        } else if (this.range !== false && shiftKey) {
             if (this.range == dayIndex) {return this.range = false}
 
             const start = this.range > dayIndex ? dayIndex : this.range;
@@ -191,10 +192,10 @@ export default class LabelInput extends BaseComponent {
             this.selected.push(rangeSelection);
             this.selectedUpdateCallback("opened", rangeSelection);
             this.range = false;
-        } else if (event.shiftKey) {
+        } else if (shiftKey) {
             this.days[dayIndex].element.classList.add("rangeBegin");
             this.range = dayIndex;
-        } else if (event.ctrlKey) {
+        } else if (ctrlKey) {
             this.renderDate(element);
             this.selected.push(this.days[dayIndex]);
             this.selectedUpdateCallback("opened", this.days[dayIndex]);

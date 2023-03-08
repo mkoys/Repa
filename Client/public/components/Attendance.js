@@ -30,7 +30,7 @@ export default class LabelInput extends BaseComponent {
             const description = row.querySelector(".description");
             const time = row.querySelector(".time");
             const type = row.querySelector(".type");
-            
+
             if (description.value.length != 0 || time.value.length != 0 || type.value.length != 0) {
                 description.addEventListener("keyup", removeRow);
                 time.addEventListener("keyup", removeRow);
