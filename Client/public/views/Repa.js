@@ -31,6 +31,7 @@ export default class Repa extends BaseComponent {
                     const newAttendance = document.createElement("marble-attendance");
                     newAttendance.setAttribute("date", item.date);
                     newAttendance.close(() => calendar.selectDate(newAttendance.date));
+
                     newAttendance.save(async () => {
                         const data = newAttendance.getData();
                         newAttendance.setAttribute("loading", "true");
@@ -40,9 +41,7 @@ export default class Repa extends BaseComponent {
                         newAttendance.removeAttribute("loading");
                         newAttendance.removeAttribute("disableinput");
 
-                        if (!result.error) {
-                            newAttendance.setAttribute("status", "Saved");
-                        }
+                        if (!result.error) { newAttendance.setAttribute("status", "Saved") }
                     });
 
                     mainElement.appendChild(newAttendance);

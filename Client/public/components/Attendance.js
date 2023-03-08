@@ -192,7 +192,11 @@ export default class LabelInput extends BaseComponent {
         await this.load;
         const statusElement = this.shadowRoot.querySelector(".status");
         const dateElement = this.shadowRoot.querySelector(".date");
-
+        const content = this.shadowRoot.querySelector(".content");
+        const buttons = this.shadowRoot.querySelectorAll(".button");
+        const schoolCheckbox = this.shadowRoot.querySelector(".school");
+        const companyCheckbox = this.shadowRoot.querySelector(".company");
+        
         switch (name) {
             case "statuscolor":
                 statusElement.style.color = newValue;
@@ -214,9 +218,10 @@ export default class LabelInput extends BaseComponent {
                 }
                 break;
             case "disableinput":
-                const content = this.shadowRoot.querySelector(".content");
                 newValue = JSON.parse(newValue);
-                const buttons = this.shadowRoot.querySelectorAll(".button");
+                schoolCheckbox.setAttribute("disable", newValue);
+                companyCheckbox.setAttribute("disable", newValue);
+
                 for (const button of buttons) {
                     button.disabled = newValue;
                 }

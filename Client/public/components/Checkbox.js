@@ -2,11 +2,12 @@ import BaseComponent from "../source/BaseComponent.js";
 
 export default class Checkbox extends BaseComponent {
 
-    static get observedAttributes() { return ["checked", "error"] }
+    static get observedAttributes() { return ["checked", "error", "disable"] }
 
     constructor() {
         super();
-        this.changeCallback = () => {};
+        this.changeCallback = () => { };
+        this.disabled = false;
         this.addStyle("/style.css");
         this.addStyle("/components/Checkbox.css");
         this.useTemplate("/components/Checkbox.html");
@@ -27,25 +28,28 @@ export default class Checkbox extends BaseComponent {
         })
     }
 
-    change(callback) {this.changeCallback = callback}
+    change(callback) { this.changeCallback = callback }
 
     async action(action) {
-        await this.load;
-        const checkElement = this.shadowRoot.querySelector(".check");
+        if (!this.disabled) {
+            await this.load;
+            const checkElement = this.shadowRoot.querySelector(".check");
 
-        this.checked = action ? action : !this.checked;
+            this.checked = action ? action : !this.checked;
 
-        if (this.checked) {
-            checkElement.classList.add("visible");
-        } else {
-            checkElement.classList.remove("visible");
+            if (this.checked) {
+                checkElement.classList.add("visible");
+            } else {
+                checkElement.classList.remove("visible");
+            }
+
+            this.changeCallback(this.checked);
         }
-
-        this.changeCallback(this.checked);
     }
-
+    
     async attributeChangedCallback(name, oldValue, newValue) {
         await this.load;
+        const boxElement = this.shadowRoot.querySelector(".box");
         switch (name) {
             case "checked":
                 if (typeof newValue === "string") {
@@ -58,19 +62,28 @@ export default class Checkbox extends BaseComponent {
                 break;
 
             case "error":
-                const boxElement = this.shadowRoot.querySelector(".box");
-
                 if (typeof newValue === "string") {
                     newValue = JSON.parse(newValue);
                 }
 
-                if(newValue) {
+                if (newValue) {
                     boxElement.classList.add("error");
-                }else {
+                } else {
                     boxElement.classList.remove("error");
                 }
                 break;
+            case "disable":
+                newValue = JSON.parse(newValue);
 
+                if(newValue) {
+                    boxElement.classList.add("disabled");
+                }else {
+                    boxElement.classList.remove("disabled");
+                }
+
+                this.disabled = newValue;
+
+                break;
             default:
                 break;
         }

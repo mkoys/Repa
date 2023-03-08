@@ -10,7 +10,8 @@
 .header {
     align-items: center;
     margin-left: 21px;
-    display: flex;
+    display: grid;
+    grid-template-columns: 120px 196px auto;
     justify-content: space-between;
     width: 790px;
     margin-bottom: 15px;
@@ -145,6 +146,7 @@ button:disabled>svg>circle {
 }
 
 .close {
+    align-content: end;
     cursor: pointer;
     fill: var(--text-color-2);
     transition: 0.2s ease fill;
