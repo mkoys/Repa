@@ -9,9 +9,9 @@
 
 .header {
     align-items: center;
-    margin-left: 21px;
+    margin-left: 25px;
     display: grid;
-    grid-template-columns: 120px 196px auto;
+    grid-template-columns: 120px 186px auto;
     justify-content: space-between;
     width: 790px;
     margin-bottom: 15px;

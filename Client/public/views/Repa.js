@@ -49,8 +49,7 @@ export default class Repa extends BaseComponent {
                         }else if(this.userAttendance[foundDataIndex].declined) {
                             newAttendance.setAttribute("statuscolor", "var(--error-color-1)");
                             newAttendance.setAttribute("status", "Declined");
-                            newAttendance.setAttribute("disablesave", "true");
-                            newAttendance.setAttribute("disablesubmit", "true");
+                            newAttendance.removeAttribute("disablesubmit");
                         }else {
                             newAttendance.setAttribute("statuscolor", "var(--text-color-1)");
                             newAttendance.setAttribute("status", "Saved");
