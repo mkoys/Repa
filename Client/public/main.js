@@ -43,20 +43,28 @@ if(token) {
 }
 
 const lightTheme = {
+    "--main-color-lower-1": "rgba(116, 56, 184, 0.616)",
     '--main-color-1': '#c08efa',
-    '--back-color-1': 'rgb(220, 220, 220)',
+    "--main-color-3": "#8ebbfa",
+    '--back-color-1': 'rgb(180, 180, 180)',
     '--back-color-2': 'rgb(255, 255, 255)',
     '--back-color-3': 'rgb(240, 240, 240)',
+    "--success-color-1": "#34c434",
+    "--warning-color-1": "rgb(234, 183, 43)",
     '--text-color-1': '#000',
     '--text-color-2': '#212121',
     '--error-color-1': '#e35252'
 }
 
 const darkTheme = {
+    "--main-color-lower-1": "#1D132B",
     '--main-color-1': '#8632e6',
     '--back-color-1': '#151515',
     '--back-color-2': 'rgb(14, 14, 14)',
+    "--main-color-3": "#6537f1cc",
     '--back-color-3': '#212121',
+    "--success-color-1": "#34c434",
+    "--warning-color-1": "rgb(234, 183, 43)",
     '--text-color-1': 'white',
     '--text-color-2': 'rgb(200, 200, 200)',
     '--error-color-1': 'rgb(227, 82, 82)'

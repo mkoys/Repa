@@ -77,7 +77,10 @@ export default class Checkbox extends BaseComponent {
 
                 if(newValue) {
                     boxElement.classList.add("disabled");
+                    boxElement.classList.add("disabled");
+                    boxElement.removeAttribute("tabindex");
                 }else {
+                    boxElement.setAttribute("tabindex", 0);
                     boxElement.classList.remove("disabled");
                 }
 
