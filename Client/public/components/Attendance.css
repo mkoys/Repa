@@ -2,18 +2,19 @@
     position: relative;
     padding: 15px;
     max-width: 846px;
+    width: 846px;
     background-color: var(--back-color-1);
     border-radius: 6px;
     overflow: hidden;
 }
 
 .header {
+    margin-right: 4px;
     align-items: center;
     margin-left: 25px;
     display: grid;
     grid-template-columns: 120px 186px auto;
     justify-content: space-between;
-    width: 790px;
     margin-bottom: 15px;
 }
 
