@@ -172,10 +172,6 @@ export default class LabelInput extends BaseComponent {
 
         contentElement.appendChild(newRow.rowElement);
 
-        newRow.description.addEventListener("keyup", this.removeRow);
-        newRow.time.addEventListener("keyup", this.removeRow);
-        newRow.type.addEventListener("keyup", this.removeRow);
-
         newRow.description.addEventListener("keyup", this.newRow);
         newRow.time.addEventListener("keyup", this.newRow);
         newRow.type.addEventListener("keyup", this.newRow);
