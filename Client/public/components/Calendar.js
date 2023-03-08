@@ -44,6 +44,7 @@ export default class LabelInput extends BaseComponent {
     }
 
     setData(data) {
+        this.data = data;
         data.forEach(item => {
             const foundIndex = this.days.findIndex(value => value.date.getTime() == item.date.getTime());
             if(foundIndex > -1) {
@@ -74,6 +75,8 @@ export default class LabelInput extends BaseComponent {
             this.selectedUpdateCallback("closed", this.selected[0]);
             this.removeSelection(0);
         }
+
+        this.setData(this.data);
     }
 
     async attributeChangedCallback(name, oldValue, newValue) {
@@ -137,20 +140,20 @@ export default class LabelInput extends BaseComponent {
             if(this.checkIfCurrentDate(date)) {
                 dateTextElement.classList.add("current");
             }
-
+            
             if (disabled) {
                 dateElement.classList.add("disabledDate");
             } else {
                 this.days.push({ date, element: dateElement });
                 dateElement.addEventListener("click", (event) => this.selectDate(date, event.shiftKey, event.ctrlKey));
             }
-
+            
             dateElement.appendChild(dateTextElement);
             dateElement.appendChild(ballElement);
             datesElement.appendChild(dateElement);
         }
     }
-
+    
     selectDate(date, shiftKey = false, ctrlKey = false) {
         const element = this.days[this.days.findIndex(item => item.date.getTime() == date.getTime())].element;
         const selected = this.selected.length ? true : false;
@@ -213,6 +216,7 @@ export default class LabelInput extends BaseComponent {
             this.selected.push(this.days[dayIndex]);
             this.selectedUpdateCallback("opened", this.days[dayIndex]);
         }
+
     }
 
     renderDate(selected) {
