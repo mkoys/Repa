@@ -19,6 +19,16 @@ export default class LabelInput extends BaseComponent {
             const firstDescription = fistInputRow.querySelector(".description");
             const firstTime = fistInputRow.querySelector(".time");
             const firstType = fistInputRow.querySelector(".type");
+            const schoolCheckbox = this.shadowRoot.querySelector(".school");
+            const companyCheckbox = this.shadowRoot.querySelector(".company");
+
+            schoolCheckbox.addEventListener("click", () => {
+                if (schoolCheckbox.checked && companyCheckbox.checked) { companyCheckbox.action() }
+            });
+
+            companyCheckbox.addEventListener("click", () => {
+                if (schoolCheckbox.checked && companyCheckbox.checked) { schoolCheckbox.action() }
+            });
 
             firstDescription.addEventListener("keyup", newRow);
             firstTime.addEventListener("keyup", newRow);
