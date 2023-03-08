@@ -228,7 +228,7 @@ export default class LabelInput extends BaseComponent {
 
         for (let index = 1; index < selection.length - 1; index++) {
             const item = selection[index];
-            item.element.children[0].classList.add("range");
+            item.element.classList.add("range");
         }
     }
 
@@ -241,7 +241,7 @@ export default class LabelInput extends BaseComponent {
 
             for (let innerIndex = 1; innerIndex < this.selected[index].length - 1; innerIndex++) {
                 const item = this.selected[index][innerIndex];
-                item.element.children[0].classList.remove("range");
+                item.element.classList.remove("range");
             }
 
             this.selected.splice(index, 1);
