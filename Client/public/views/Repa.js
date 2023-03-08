@@ -20,19 +20,9 @@ export default class Repa extends BaseComponent {
         const userInfoElement = this.shadowRoot.querySelector("marble-usercard");
         const userInfo = await this.getUserInfo();
 
-        attendance.setData({
-            where: "school",
-            date: new Date("2.7.2023"),
-            content: [{
-                description: "xd",
-                time: "22",
-                type: "APL"
-            },
-            {
-                description: "2",
-                time: "12:30",
-                type: "APL"
-            }]
+        attendance.save(() => {
+            const data = attendance.getData();
+            console.log(data);
         })
         
         userInfoElement.setAttribute("avatar", userInfo.avatar);

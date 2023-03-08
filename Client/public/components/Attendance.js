@@ -2,11 +2,12 @@ import BaseComponent from "../source/BaseComponent.js";
 
 export default class LabelInput extends BaseComponent {
 
-    static get observedAttributes() { return ["status", "statusColor", "date"] }
+    static get observedAttributes() { return ["status", "statuscolor", "date"] }
 
     constructor() {
         super();
         this.date = new Date();
+        this.saveCallback = () => { };
         this.monthList = [
             "Jan",
             "Feb",
@@ -28,8 +29,10 @@ export default class LabelInput extends BaseComponent {
 
         this.connected(async () => {
             await this.load;
-
             const firstInputRow = this.shadowRoot.querySelector(".inputRow");
+            const schoolCheckbox = this.shadowRoot.querySelector(".school");
+            const companyCheckbox = this.shadowRoot.querySelector(".company");
+            const saveButton = this.shadowRoot.querySelector(".save");
 
             this.emptyRow = firstInputRow.cloneNode(true);
 
@@ -37,8 +40,6 @@ export default class LabelInput extends BaseComponent {
             const firstDescription = firstInputRow.querySelector(".description");
             const firstTime = firstInputRow.querySelector(".time");
             const firstType = firstInputRow.querySelector(".type");
-            const schoolCheckbox = this.shadowRoot.querySelector(".school");
-            const companyCheckbox = this.shadowRoot.querySelector(".company");
 
             firstGrab.addEventListener("click", () => this.getData())
 
@@ -49,6 +50,8 @@ export default class LabelInput extends BaseComponent {
             companyCheckbox.addEventListener("click", () => {
                 if (schoolCheckbox.checked && companyCheckbox.checked) { schoolCheckbox.action() }
             });
+
+            saveButton.addEventListener("click", () => this.saveCallback());
 
             firstDescription.addEventListener("keyup", this.newRow);
             firstTime.addEventListener("keyup", this.newRow);
@@ -93,6 +96,8 @@ export default class LabelInput extends BaseComponent {
             }
         }
     }
+
+    save(callback) { this.saveCallback = callback }
 
     async setData(data) {
         await this.load;
@@ -144,7 +149,7 @@ export default class LabelInput extends BaseComponent {
         const time = rowElement.querySelector(".time");
         const type = rowElement.querySelector(".type");
 
-        return {rowElement, grab, description, time, type}
+        return { rowElement, grab, description, time, type }
     }
 
     getData() {
@@ -169,9 +174,14 @@ export default class LabelInput extends BaseComponent {
             const description = inputRow.querySelector(".description").value;
             const time = inputRow.querySelector(".time").value;
             const type = inputRow.querySelector(".type").value;
-            data.content[index] = { description, time, type }
-            index++;
+
+            if(description !== "" || time !== "" || type !== "") {
+                data.content[index] = { description, time, type }
+                index++;
+            }
         }
+
+        return data;
     }
 
     async attributeChangedCallback(name, oldValue, newValue) {
@@ -180,7 +190,7 @@ export default class LabelInput extends BaseComponent {
         const dateElement = this.shadowRoot.querySelector(".date");
 
         switch (name) {
-            case "statusColor":
+            case "statuscolor":
                 statusElement.style.color = newValue;
                 break;
             case "status":
