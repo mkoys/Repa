@@ -28,16 +28,19 @@ export default class LabelInput extends BaseComponent {
 
         this.connected(async () => {
             await this.load;
+
             const firstInputRow = this.shadowRoot.querySelector(".inputRow");
-            const grab = firstInputRow.querySelector(".grab");
+
             this.emptyRow = firstInputRow.cloneNode(true);
+
+            const firstGrab = firstInputRow.querySelector(".grab");
             const firstDescription = firstInputRow.querySelector(".description");
             const firstTime = firstInputRow.querySelector(".time");
             const firstType = firstInputRow.querySelector(".type");
             const schoolCheckbox = this.shadowRoot.querySelector(".school");
             const companyCheckbox = this.shadowRoot.querySelector(".company");
 
-            grab.addEventListener("click", () => this.getData())
+            firstGrab.addEventListener("click", () => this.getData())
 
             schoolCheckbox.addEventListener("click", () => {
                 if (schoolCheckbox.checked && companyCheckbox.checked) { companyCheckbox.action() }
@@ -68,18 +71,13 @@ export default class LabelInput extends BaseComponent {
                 type.removeEventListener("keyup", this.newRow);
 
                 const content = this.shadowRoot.querySelector(".content");
-                const newRowElement = this.emptyRow.cloneNode(true);
+                const newRow = this.createRow();
 
-                const newGrab = newRowElement.querySelector(".grab");
-                const newDescription = newRowElement.querySelector(".description");
-                const newTime = newRowElement.querySelector(".time");
-                const newType = newRowElement.querySelector(".type");
+                newRow.description.addEventListener("keyup", this.newRow);
+                newRow.time.addEventListener("keyup", this.newRow);
+                newRow.type.addEventListener("keyup", this.newRow);
 
-                newDescription.addEventListener("keyup", this.newRow);
-                newTime.addEventListener("keyup", this.newRow);
-                newType.addEventListener("keyup", this.newRow);
-
-                content.appendChild(newRowElement);
+                content.appendChild(newRow.rowElement);
             }
         }
 
@@ -114,35 +112,39 @@ export default class LabelInput extends BaseComponent {
         }
 
         data.content.forEach((rowData, index) => {
-            const newRowElement = this.emptyRow.cloneNode(true);
-            const description = newRowElement.querySelector(".description");
-            const time = newRowElement.querySelector(".time");
-            const type = newRowElement.querySelector(".type");
+            const newRow = this.createRow();
 
-            description.value = rowData.description;
-            time.value = rowData.time;
-            type.value = rowData.type;
-            contentElement.appendChild(newRowElement);
+            newRow.description.value = rowData.description;
+            newRow.time.value = rowData.time;
+            newRow.type.value = rowData.type;
+            contentElement.appendChild(newRow.rowElement);
 
-            description.addEventListener("keyup", this.removeRow);
-            time.addEventListener("keyup", this.removeRow);
-            type.addEventListener("keyup", this.removeRow);
+            newRow.description.addEventListener("keyup", this.removeRow);
+            newRow.time.addEventListener("keyup", this.removeRow);
+            newRow.type.addEventListener("keyup", this.removeRow);
         });
 
-        const newRowElement = this.emptyRow.cloneNode(true);
-        const description = newRowElement.querySelector(".description");
-        const time = newRowElement.querySelector(".time");
-        const type = newRowElement.querySelector(".type");
+        const newRow = this.createRow();
 
-        contentElement.appendChild(newRowElement);
+        contentElement.appendChild(newRow.rowElement);
 
-        description.addEventListener("keyup", this.removeRow);
-        time.addEventListener("keyup", this.removeRow);
-        type.addEventListener("keyup", this.removeRow);
+        newRow.description.addEventListener("keyup", this.removeRow);
+        newRow.time.addEventListener("keyup", this.removeRow);
+        newRow.type.addEventListener("keyup", this.removeRow);
 
-        description.addEventListener("keyup", this.newRow);
-        time.addEventListener("keyup", this.newRow);
-        type.addEventListener("keyup", this.newRow);
+        newRow.description.addEventListener("keyup", this.newRow);
+        newRow.time.addEventListener("keyup", this.newRow);
+        newRow.type.addEventListener("keyup", this.newRow);
+    }
+
+    createRow() {
+        const rowElement = this.emptyRow.cloneNode(true);
+        const grab = rowElement.querySelector(".grab");
+        const description = rowElement.querySelector(".description");
+        const time = rowElement.querySelector(".time");
+        const type = rowElement.querySelector(".type");
+
+        return {rowElement, grab, description, time, type}
     }
 
     getData() {
@@ -170,8 +172,6 @@ export default class LabelInput extends BaseComponent {
             data.content[index] = { description, time, type }
             index++;
         }
-
-        console.log(data);
     }
 
     async attributeChangedCallback(name, oldValue, newValue) {
