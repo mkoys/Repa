@@ -10,12 +10,17 @@ main {
 }
 
 .main {
+    align-items: center;
     width: 100%;
-    justify-content: center;
     display: flex;
+    flex-direction: column;
     height: 100%;
 }
 
 marble-usercard {
     margin-bottom: 20px;
+}
+
+marble-attendance {
+    margin-bottom: 15px;
 }

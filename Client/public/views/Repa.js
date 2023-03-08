@@ -15,25 +15,51 @@ export default class Repa extends BaseComponent {
 
     async connectedCallback() {
         await this.load;
-        const attendance = this.shadowRoot.querySelector("marble-attendance");
+        const mainElement = this.shadowRoot.querySelector(".main");
         const calendar = this.shadowRoot.querySelector("marble-calendar");
         const userInfoElement = this.shadowRoot.querySelector("marble-usercard");
         const userInfo = await this.getUserInfo();
 
-        attendance.save(() => {
-            const data = attendance.getData();
-            console.log(data);
-        })
-        
+        // attendance.save(async () => {
+        //     const data = attendance.getData();
+
+        //     console.log(data);
+
+        //     const response = await fetch(config.baseURL + "/repa/save", {
+        //         method: "POST",
+        //         body: JSON.stringify(data),
+        //         headers: {
+        //             "Content-type": "application/json",
+        //             "Authorization": "Bearer " + localStorage.getItem("token")
+        //         }
+        //     });
+
+        //     const result = await response.json();
+
+        //     console.log(result);
+        // });
+
         userInfoElement.setAttribute("avatar", userInfo.avatar);
         userInfoElement.setAttribute("username", userInfo.username);
         userInfoElement.setAttribute("role", userInfo.role);
-        
+
         calendar.selectedUpdate((type, item) => {
-            if(Array.isArray(item)) {
-                console.log(type, item);
-            }else {
-                console.log(type, new Date(item.date).getDate());
+            if (type === "opened") {
+                if (!Array.isArray(item)) {
+                    const newAttendance = document.createElement("marble-attendance");
+                    newAttendance.setAttribute("date", item.date);
+                    mainElement.appendChild(newAttendance);
+                }
+            }
+
+            if (type === "closed") {
+                if (!Array.isArray(item)) {
+                    for (const child of mainElement.children) {
+                        if (child.date.getTime() == item.date.getTime()) {
+                            mainElement.removeChild(child);
+                        }
+                    }
+                }
             }
         });
     }

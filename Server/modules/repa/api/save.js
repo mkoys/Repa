@@ -17,7 +17,13 @@ export default async (req, res) => {
 
     if (!data) { return res.json({ error: { token: "Invalid data" } }) }
 
-    wave.addon.insert("repa", { id: session.id, content: data.content, date: data.date });
+    const found = await wave.addon.read("repa", { date: data.date, id: session.id });
 
-    return res.json(user);
+    if (found) {
+        wave.addon.update("repa", { id: session.id, date: data.date }, { $set: { content: data.content, where: data.where } });
+    } else {
+        wave.addon.insert("repa", { id: session.id, content: data.content, date: data.date, where: data.where });
+    }
+
+    return res.json({message: "ok"});
 }
