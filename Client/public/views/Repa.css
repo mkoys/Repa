@@ -1,11 +1,17 @@
+main {
+    display: flex;
+    margin: 20px;
+}
+
 .cards {
     display: flex;
     flex-direction: column;
     height: 100%;
-    margin: 20px;
 }
 
 .main {
+    width: 100%;
+    justify-content: center;
     display: flex;
     height: 100%;
 }
