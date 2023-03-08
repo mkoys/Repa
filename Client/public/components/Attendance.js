@@ -72,13 +72,14 @@ export default class LabelInput extends BaseComponent {
             const newRow = this.createRow();
             const data = this.getData();
 
-            if(data.content.length == 0) {
+            if (data.content.length == 0) {
                 contentElement.appendChild(newRow.rowElement);
                 newRow.description.addEventListener("keyup", this.newRow);
                 newRow.time.addEventListener("keyup", this.newRow);
                 newRow.type.addEventListener("keyup", this.newRow);
             }
 
+            closeButton.addEventListener("keydown", (event) => { if (event.key === "Enter") { this.closeCallback() } });
             closeButton.addEventListener("click", () => this.closeCallback());
             saveButton.addEventListener("click", () => this.saveCallback());
             submitButton.addEventListener("click", () => this.submitCallback());
