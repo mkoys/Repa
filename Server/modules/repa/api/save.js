@@ -19,11 +19,15 @@ export default async (req, res) => {
 
     const found = await wave.addon.read("repa", { date: data.date, id: session.id });
 
+    let insert = { id: session.id, content: data.content, date: data.date, where: data.where, submited: data.submited };
+
     if (found) {
-        wave.addon.update("repa", { id: session.id, date: data.date }, { $set: { content: data.content, where: data.where } });
+        if (!found.submited) {
+            wave.addon.update("repa", { id: session.id, date: data.date }, { $set: insert });
+        }
     } else {
-        wave.addon.insert("repa", { id: session.id, content: data.content, date: data.date, where: data.where });
+        wave.addon.insert("repa", insert);
     }
 
-    return res.json({message: "ok"});
+    return res.json({ not: "Already submited" });
 }

@@ -8,6 +8,7 @@ export default class LabelInput extends BaseComponent {
         super();
         this.date = new Date();
         this.saveCallback = () => { };
+        this.submitCallback = () => { };
         this.closeCallback = () => { };
         const htmlParser = new DOMParser();
         const emptyRowHtml = `
@@ -54,6 +55,7 @@ export default class LabelInput extends BaseComponent {
             const schoolCheckbox = this.shadowRoot.querySelector(".school");
             const companyCheckbox = this.shadowRoot.querySelector(".company");
             const saveButton = this.shadowRoot.querySelector(".save");
+            const submitButton = this.shadowRoot.querySelector(".submit");
             const closeButton = this.shadowRoot.querySelector(".close");
 
             const firstGrab = firstInputRow.querySelector(".grab");
@@ -62,6 +64,8 @@ export default class LabelInput extends BaseComponent {
             const firstType = firstInputRow.querySelector(".type");
 
             closeButton.addEventListener("click", () => this.closeCallback());
+            saveButton.addEventListener("click", () => this.saveCallback());
+            submitButton.addEventListener("click", () => this.submitCallback());
 
             schoolCheckbox.change(() => {
                 if (schoolCheckbox.checked && companyCheckbox.checked) { companyCheckbox.action() }
@@ -71,7 +75,6 @@ export default class LabelInput extends BaseComponent {
                 if (schoolCheckbox.checked && companyCheckbox.checked) { schoolCheckbox.action() }
             });
 
-            saveButton.addEventListener("click", () => this.saveCallback());
 
             firstDescription.addEventListener("keyup", this.newRow);
             firstTime.addEventListener("keyup", this.newRow);
@@ -118,7 +121,7 @@ export default class LabelInput extends BaseComponent {
     }
 
     close(callback) { this.closeCallback = callback }
-
+    submit(callback) { this.submitCallback = callback }
     save(callback) { this.saveCallback = callback }
 
     async setData(data) {

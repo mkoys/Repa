@@ -34,6 +34,18 @@ export default class Repa extends BaseComponent {
 
                     if (foundDataIndex > -1) {
                         newAttendance.setData(this.userAttendance[foundDataIndex]);
+                        if(this.userAttendance[foundDataIndex].submited) {
+                            newAttendance.setAttribute("statuscolor", "var(--warning-color-1)");
+                            newAttendance.setAttribute("status", "Submited");
+                        }else if(this.userAttendance[foundDataIndex].accepted) {
+                            newAttendance.setAttribute("statuscolor", "var(--success-color-1)");
+                            newAttendance.setAttribute("status", "Accepted");
+                        }else if(this.userAttendance[foundDataIndex].declined) {
+                            newAttendance.setAttribute("statuscolor", "var(--error-color-1)");
+                            newAttendance.setAttribute("status", "Declined");
+                        }else {
+                            newAttendance.setAttribute("status", "Saved");
+                        }
                     } else {
                         newAttendance.setAttribute("date", item.date);
                     }
@@ -41,8 +53,12 @@ export default class Repa extends BaseComponent {
                     newAttendance.close(() => calendar.selectDate(newAttendance.date));
 
                     newAttendance.save(async () => {
+                        if(foundDataIndex > -1 && this.userAttendance[foundDataIndex].submited) {
+                            return;
+                        } 
                         const data = newAttendance.getData();
                         newAttendance.setAttribute("loading", "true");
+                        newAttendance.setAttribute("statuscolor", "var(--text-color-1)");
                         newAttendance.setAttribute("status", "Saving...");
                         newAttendance.setAttribute("disableinput", "true");
                         const result = await this.saveData(data);
@@ -51,6 +67,22 @@ export default class Repa extends BaseComponent {
 
                         if (!result.error) {
                             newAttendance.setAttribute("status", "Saved")
+                            this.updateData();
+                        }
+                    });
+
+                    newAttendance.submit(async () => {
+                        const data = newAttendance.getData();
+                        newAttendance.setAttribute("loading", "true");
+                        newAttendance.setAttribute("statuscolor", "var(--warning-color-1)");
+                        newAttendance.setAttribute("status", "Submiting...");
+                        newAttendance.setAttribute("disableinput", "true");
+                        const result = await this.submitData(data);
+                        newAttendance.removeAttribute("loading");
+                        newAttendance.removeAttribute("disableinput");
+
+                        if (!result.error) {
+                            newAttendance.setAttribute("status", "Submited");
                             this.updateData();
                         }
                     });
@@ -75,6 +107,20 @@ export default class Repa extends BaseComponent {
         const calendar = this.shadowRoot.querySelector("marble-calendar");
         this.userAttendance = await this.getAttendance();
         calendar.setData(this.userAttendance);
+    }
+
+    async submitData(data) {
+        data.submited = true;
+        const response = await fetch(config.baseURL + "/repa/save", {
+            method: "POST",
+            body: JSON.stringify(data),
+            headers: {
+                "Content-type": "application/json",
+                "Authorization": "Bearer " + localStorage.getItem("token")
+            }
+        });
+
+        return await response.json();
     }
 
     async saveData(data) {
