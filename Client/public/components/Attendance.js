@@ -62,21 +62,29 @@ export default class LabelInput extends BaseComponent {
 
         this.connected(async () => {
             await this.load;
-            const firstInputRow = this.shadowRoot.querySelector(".inputRow");
             const schoolCheckbox = this.shadowRoot.querySelector(".school");
             const companyCheckbox = this.shadowRoot.querySelector(".company");
             const saveButton = this.shadowRoot.querySelector(".save");
             const submitButton = this.shadowRoot.querySelector(".submit");
             const closeButton = this.shadowRoot.querySelector(".close");
+            const contentElement = this.shadowRoot.querySelector(".content");
 
-            const firstGrab = firstInputRow.querySelector(".grab");
-            const firstDescription = firstInputRow.querySelector(".description");
-            const firstTime = firstInputRow.querySelector(".time");
-            const firstType = firstInputRow.querySelector(".type");
+            const newRow = this.createRow();
 
-            closeButton.addEventListener("click", () => this.closeCallback());
-            saveButton.addEventListener("click", () => this.saveCallback());
-            submitButton.addEventListener("click", () => this.submitCallback());
+            const data = this.getData();
+
+            if(data.content.length == 0) {
+                contentElement.appendChild(newRow.rowElement);
+        
+                newRow.description.addEventListener("keyup", this.newRow);
+                newRow.time.addEventListener("keyup", this.newRow);
+                newRow.type.addEventListener("keyup", this.newRow);
+    
+                closeButton.addEventListener("click", () => this.closeCallback());
+                saveButton.addEventListener("click", () => this.saveCallback());
+                submitButton.addEventListener("click", () => this.submitCallback());
+            }
+
 
             schoolCheckbox.change(() => {
                 if (schoolCheckbox.checked && companyCheckbox.checked) { companyCheckbox.action() }
@@ -85,11 +93,6 @@ export default class LabelInput extends BaseComponent {
             companyCheckbox.change(() => {
                 if (schoolCheckbox.checked && companyCheckbox.checked) { schoolCheckbox.action() }
             });
-
-
-            firstDescription.addEventListener("keyup", this.newRow);
-            firstTime.addEventListener("keyup", this.newRow);
-            firstType.addEventListener("keyup", this.newRow);
         });
 
         this.newRow = (event) => {
