@@ -14,11 +14,12 @@ export default class LabelInput extends BaseComponent {
 
         this.connected(async () => {
             await this.load;
-            const fistInputRow = this.shadowRoot.querySelector(".inputRow");
-            this.emptyRow = fistInputRow.cloneNode(true);
-            const firstDescription = fistInputRow.querySelector(".description");
-            const firstTime = fistInputRow.querySelector(".time");
-            const firstType = fistInputRow.querySelector(".type");
+            const firstInputRow = this.shadowRoot.querySelector(".inputRow");
+            const grab = firstInputRow.querySelector(".grab");
+            this.emptyRow = firstInputRow.cloneNode(true);
+            const firstDescription = firstInputRow.querySelector(".description");
+            const firstTime = firstInputRow.querySelector(".time");
+            const firstType = firstInputRow.querySelector(".type");
             const schoolCheckbox = this.shadowRoot.querySelector(".school");
             const companyCheckbox = this.shadowRoot.querySelector(".company");
 
@@ -53,6 +54,7 @@ export default class LabelInput extends BaseComponent {
                 const content = this.shadowRoot.querySelector(".content");
                 const newRowElement = this.emptyRow.cloneNode(true);
 
+                const newGrab = newRowElement.querySelector(".grab");
                 const newDescription = newRowElement.querySelector(".description");
                 const newTime = newRowElement.querySelector(".time");
                 const newType = newRowElement.querySelector(".type");
@@ -77,7 +79,6 @@ export default class LabelInput extends BaseComponent {
             }
         }
     }
-
 
     async attributeChangedCallback(name, oldValue, newValue) {
         await this.load;
