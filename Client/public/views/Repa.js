@@ -37,14 +37,22 @@ export default class Repa extends BaseComponent {
                         if(this.userAttendance[foundDataIndex].submited) {
                             newAttendance.setAttribute("statuscolor", "var(--warning-color-1)");
                             newAttendance.setAttribute("status", "Submited");
+                            newAttendance.setAttribute("disablesave", "true");
+                            newAttendance.setAttribute("disablesubmit", "true");
                         }else if(this.userAttendance[foundDataIndex].accepted) {
                             newAttendance.setAttribute("statuscolor", "var(--success-color-1)");
                             newAttendance.setAttribute("status", "Accepted");
+                            newAttendance.setAttribute("disablesave", "true");
+                            newAttendance.setAttribute("disablesubmit", "true");
                         }else if(this.userAttendance[foundDataIndex].declined) {
                             newAttendance.setAttribute("statuscolor", "var(--error-color-1)");
                             newAttendance.setAttribute("status", "Declined");
+                            newAttendance.setAttribute("disablesave", "true");
+                            newAttendance.setAttribute("disablesubmit", "true");
                         }else {
+                            newAttendance.setAttribute("statuscolor", "var(--text-color-1)");
                             newAttendance.setAttribute("status", "Saved");
+                            newAttendance.setAttribute("disablesubmit", "true");
                         }
                     } else {
                         newAttendance.setAttribute("date", item.date);
@@ -61,25 +69,34 @@ export default class Repa extends BaseComponent {
                         newAttendance.setAttribute("statuscolor", "var(--text-color-1)");
                         newAttendance.setAttribute("status", "Saving...");
                         newAttendance.setAttribute("disableinput", "true");
+                        newAttendance.setAttribute("disablesave", "true");
+                        newAttendance.setAttribute("disablesubmit", "true");
+                        newAttendance.setAttribute("disablemore", "true");
                         const result = await this.saveData(data);
                         newAttendance.removeAttribute("loading");
                         newAttendance.removeAttribute("disableinput");
-
+                        newAttendance.removeAttribute("disablesave", "true");
+                        newAttendance.removeAttribute("disablesubmit", "true");
+                        newAttendance.removeAttribute("disablemore", "true");
+                        
                         if (!result.error) {
                             newAttendance.setAttribute("status", "Saved")
                             this.updateData();
                         }
                     });
-
+                    
                     newAttendance.submit(async () => {
                         const data = newAttendance.getData();
                         newAttendance.setAttribute("loading", "true");
                         newAttendance.setAttribute("statuscolor", "var(--warning-color-1)");
                         newAttendance.setAttribute("status", "Submiting...");
                         newAttendance.setAttribute("disableinput", "true");
+                        newAttendance.setAttribute("disablesave", "true");
+                        newAttendance.setAttribute("disablesubmit", "true");
+                        newAttendance.setAttribute("disablemore", "true");
                         const result = await this.submitData(data);
                         newAttendance.removeAttribute("loading");
-                        newAttendance.removeAttribute("disableinput");
+                        newAttendance.removeAttribute("disablemore", "true");
 
                         if (!result.error) {
                             newAttendance.setAttribute("status", "Submited");
@@ -124,22 +141,22 @@ export default class Repa extends BaseComponent {
     }
 
     async saveData(data) {
-        const response = await fetch(config.baseURL + "/repa/save", {
-            method: "POST",
-            body: JSON.stringify(data),
-            headers: {
-                "Content-type": "application/json",
-                "Authorization": "Bearer " + localStorage.getItem("token")
-            }
-        });
+        // const response = await fetch(config.baseURL + "/repa/save", {
+        //     method: "POST",
+        //     body: JSON.stringify(data),
+        //     headers: {
+        //         "Content-type": "application/json",
+        //         "Authorization": "Bearer " + localStorage.getItem("token")
+        //     }
+        // });
 
-        return await response.json();
+        // return await response.json();
 
-        // return await new Promise((resolve) => {
-        //     setTimeout(() => {
-        //         resolve({ message: "ok" });
-        //     }, 2000);
-        // })
+        return await new Promise((resolve) => {
+            setTimeout(() => {
+                resolve({ message: "ok" });
+            }, 2000);
+        })
     }
 
     async getAttendance() {

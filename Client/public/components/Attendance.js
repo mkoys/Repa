@@ -2,7 +2,18 @@ import BaseComponent from "../source/BaseComponent.js";
 
 export default class LabelInput extends BaseComponent {
 
-    static get observedAttributes() { return ["status", "statuscolor", "date", "loading", "disableinput"] }
+    static get observedAttributes() {
+        return [
+            "status",
+            "statuscolor",
+            "date",
+            "loading",
+            "disableinput",
+            "disablesave",
+            "disablemore",
+            "disablesubmit"
+        ]
+    }
 
     constructor() {
         super();
@@ -214,7 +225,9 @@ export default class LabelInput extends BaseComponent {
         const statusElement = this.shadowRoot.querySelector(".status");
         const dateElement = this.shadowRoot.querySelector(".date");
         const content = this.shadowRoot.querySelector(".content");
-        const buttons = this.shadowRoot.querySelectorAll(".button");
+        const saveButton = this.shadowRoot.querySelector(".save");
+        const submitButton = this.shadowRoot.querySelector(".submit");
+        const moreButton = this.shadowRoot.querySelector(".more");
         const schoolCheckbox = this.shadowRoot.querySelector(".school");
         const companyCheckbox = this.shadowRoot.querySelector(".company");
 
@@ -243,10 +256,6 @@ export default class LabelInput extends BaseComponent {
                 schoolCheckbox.setAttribute("disable", newValue);
                 companyCheckbox.setAttribute("disable", newValue);
 
-                for (const button of buttons) {
-                    button.disabled = newValue;
-                }
-
                 for (const row of content.children) {
                     const description = row.querySelector(".description");
                     const time = row.querySelector(".time");
@@ -256,6 +265,18 @@ export default class LabelInput extends BaseComponent {
                     time.disabled = newValue;
                     type.disabled = newValue;
                 }
+                break;
+            case "disablesave":
+                newValue = JSON.parse(newValue);
+                saveButton.disabled = newValue;
+                break;
+            case "disablesubmit":
+                newValue = JSON.parse(newValue);
+                submitButton.disabled = newValue;
+                break;
+            case "disablemore":
+                newValue = JSON.parse(newValue);
+                moreButton.disabled = newValue;
                 break;
             default:
                 break;
