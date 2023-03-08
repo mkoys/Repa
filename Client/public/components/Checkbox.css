@@ -1,4 +1,5 @@
 .box {
+    cursor: pointer;
     background-color: var(--back-color-2);
     width: 20px;
     height: 20px;

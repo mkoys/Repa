@@ -61,7 +61,7 @@
 
 .inputRow > input {
     font-size: 17px;
-    color: white;
+    color: var(--text-color-1);
     outline: none;
     border-radius: 5px;
     background-color: var(--back-color-2);
@@ -101,6 +101,7 @@
 }
 
 .button {
+    cursor: pointer;
     border: none;
     width: 48px;
     height: 48px;
@@ -109,8 +110,24 @@
     justify-content: center;
     align-items: center;
     background-color: var(--main-color-1);
+    opacity: 0.8;
+    transition: 0.2s ease opacity;
+}
+
+.button:hover {
+    opacity: 1;
 }
 
 .icon > circle, .icon > path {
     fill: var(--main-color-lower-1);
+}
+
+.close {
+    cursor: pointer;
+    fill: var(--text-color-2);
+    transition: 0.2s ease fill;
+}
+
+.close:hover {
+    fill: var(--text-color-1);
 }
