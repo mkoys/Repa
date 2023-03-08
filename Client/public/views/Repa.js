@@ -33,7 +33,12 @@ export default class Repa extends BaseComponent {
                     newAttendance.close(() => calendar.selectDate(newAttendance.date));
                     newAttendance.save(async () => {
                         const data = newAttendance.getData();
-                        const result = await this.saveData(data)
+                        newAttendance.setAttribute("loading", "true");
+                        newAttendance.setAttribute("status", "Saving...");
+                        newAttendance.setAttribute("disableinput", "true");
+                        const result = await this.saveData(data);
+                        newAttendance.removeAttribute("loading");
+                        newAttendance.removeAttribute("disableinput");
 
                         if (!result.error) {
                             newAttendance.setAttribute("status", "Saved");
@@ -57,16 +62,22 @@ export default class Repa extends BaseComponent {
     }
 
     async saveData(data) {
-        const response = await fetch(config.baseURL + "/repa/save", {
-            method: "POST",
-            body: JSON.stringify(data),
-            headers: {
-                "Content-type": "application/json",
-                "Authorization": "Bearer " + localStorage.getItem("token")
-            }
-        });
+        // const response = await fetch(config.baseURL + "/repa/save", {
+        //     method: "POST",
+        //     body: JSON.stringify(data),
+        //     headers: {
+        //         "Content-type": "application/json",
+        //         "Authorization": "Bearer " + localStorage.getItem("token")
+        //     }
+        // });
 
-        return await response.json();
+        // return await response.json();
+
+        return await new Promise((resolve) => {
+            setTimeout(() => {
+                resolve({ message: "ok" });
+            }, 2000);
+        })
     }
 
     async getUserInfo() {

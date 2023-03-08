@@ -1,8 +1,10 @@
 .shape {
+    position: relative;
     padding: 15px;
     max-width: 846px;
     background-color: var(--back-color-1);
     border-radius: 6px;
+    overflow: hidden;
 }
 
 .header {
@@ -46,7 +48,7 @@
     margin-left: 15px;
 }
 
-.checkbox > p {
+.checkbox>p {
     font-size: 13px;
     color: var(--text-color-1);
     margin-left: 5px;
@@ -59,14 +61,19 @@
     margin-bottom: 8px;
 }
 
-.inputRow > input {
+.inputRow>input {
     font-size: 17px;
     color: var(--text-color-1);
     outline: none;
     border-radius: 5px;
     background-color: var(--back-color-2);
-    padding:12px;
+    padding: 12px;
     border: 1px solid transparent;
+    transition: 0.2s ease color;
+}
+
+.inputRow>input:disabled {
+    color: var(--text-color-2);
 }
 
 .grab {
@@ -111,14 +118,29 @@
     align-items: center;
     background-color: var(--main-color-1);
     opacity: 0.8;
-    transition: 0.2s ease opacity;
+    transition: 0.4s linear all;
+}
+
+*:disabled {
+    cursor: not-allowed;
+}
+
+button:disabled {
+    opacity: 1;
+    background-color: var(--main-color-lower-1);
+}
+
+button:disabled>svg>path,
+button:disabled>svg>circle {
+    fill: var(--main-color-1) !important;
 }
 
 .button:hover {
     opacity: 1;
 }
 
-.icon > circle, .icon > path {
+.icon>circle,
+.icon>path {
     fill: var(--main-color-lower-1);
 }
 
@@ -130,4 +152,37 @@
 
 .close:hover {
     fill: var(--text-color-1);
+}
+
+.loading {
+    transform: translateX(-200%);
+    border-radius: 10px;
+    top: 0px;
+    left: 0px;
+    position: absolute;
+    width: 50%;
+    background-color: transparent;
+    height: 6px;
+    animation-duration: 0.8s;
+    animation-name: loading;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+    animation-play-state: paused;
+    animation-fill-mode: forwards;
+    transition: 0.5s ease background-color;
+}
+
+.load {
+    background-color: var(--main-color-1);
+    animation-play-state: running;
+}
+
+@keyframes loading {
+    from {
+        transform: translateX(-200%);
+    }
+
+    to {
+        transform: translateX(280%);
+    }
 }

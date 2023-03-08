@@ -2,7 +2,7 @@ import BaseComponent from "../source/BaseComponent.js";
 
 export default class LabelInput extends BaseComponent {
 
-    static get observedAttributes() { return ["status", "statuscolor", "date"] }
+    static get observedAttributes() { return ["status", "statuscolor", "date", "loading", "disableinput"] }
 
     constructor() {
         super();
@@ -204,7 +204,33 @@ export default class LabelInput extends BaseComponent {
                 this.date = new Date(newValue);
                 dateElement.textContent = `${this.date.getDate()}. ${this.monthList[this.date.getMonth()]} ${this.date.getFullYear()}`;
                 break;
+            case "loading":
+                const loading = this.shadowRoot.querySelector(".loading");
+                newValue = JSON.parse(newValue);
+                if (newValue) {
+                    loading.classList.add("load");
+                } else {
+                    loading.classList.remove("load");
+                }
+                break;
+            case "disableinput":
+                const content = this.shadowRoot.querySelector(".content");
+                newValue = JSON.parse(newValue);
+                const buttons = this.shadowRoot.querySelectorAll(".button");
+                for (const button of buttons) {
+                    button.disabled = newValue;
+                }
 
+                for (const row of content.children) {
+                    const description = row.querySelector(".description");
+                    const time = row.querySelector(".time");
+                    const type = row.querySelector(".type");
+
+                    description.disabled = newValue;
+                    time.disabled = newValue;
+                    type.disabled = newValue;
+                }
+                break;
             default:
                 break;
         }
