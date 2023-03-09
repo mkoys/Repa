@@ -43,6 +43,10 @@ export default class LabelInput extends BaseComponent {
             dropdown.click(async (data) => {
                 this.date.setFullYear(parseInt(data.text));
                 this.updateDate();
+                while (this.selected.length) {
+                    this.selectedUpdateCallback("closed", this.selected[0]);
+                    this.removeSelection(0);
+                }
                 this.setData(this.data);
                 this.updateDropdown();
                 dropdown.action();
@@ -57,7 +61,6 @@ export default class LabelInput extends BaseComponent {
                     dateDropdown.classList.remove("downAnim");
                 }
             });
-
 
             dateDropdown.addEventListener("click", () => {
                 dropdown.action();
