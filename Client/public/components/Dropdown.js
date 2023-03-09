@@ -116,11 +116,11 @@ disconnectedCallback() {
 
                 shapeElement.append(optionBox);
 
-                if (optionIndex != this.options.length - 1) {
-                    const delimiter = document.createElement("div");
-                    delimiter.classList.add("delimiter");
-                    shapeElement.appendChild(delimiter);
-                }
+                // if (optionIndex != this.options.length - 1) {
+                //     const delimiter = document.createElement("div");
+                //     delimiter.classList.add("delimiter");
+                //     shapeElement.appendChild(delimiter);
+                // }
             });
             break;
 

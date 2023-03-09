@@ -2,23 +2,29 @@
 
 # Minimal Viable Product
 
+## UserSpace
+
+- [ ] Range Attendance
+- [ ] Prompt attendace change close
+- [ ] More options attenance dropdown
+
 ## Components
 - [x] Usercard
     - [x] Avatar
     - [x] Username
     - [x] Role
-    - [ ] Dropdown
-- [ ] Calendar
+    - [x] Dropdown
+- [x] Calendar
     - [x] Current date view
-    - [ ] Year selector
+    - [x] Year selector
     - [x] Month hands
     - [x] Date generation
     - [x] Current day hint
     - [x] Date selection
     - [x] Multy date selction
     - [x] Range date selction
-- [ ] Dropdown
-- [ ] Attendace Card
+- [x] Dropdown
+- [x] Attendace Card
 - [ ] Admin panel
 - [ ] Settings
 - [ ] Tooltip
@@ -30,7 +36,7 @@
 - [x] Save attendance
 - [x] Update attendance
 - [ ] Delete attendance
-- [ ] Submit attendance
+- [x] Submit attendance
 - [ ] Remove submition
 
 ### Admin
