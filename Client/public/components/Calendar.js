@@ -37,7 +37,6 @@ export default class LabelInput extends BaseComponent {
             const previousMonthElement = this.shadowRoot.querySelector(".previousMonth");
             const dateDropdown = this.shadowRoot.querySelector(".dateDropdown");
             const dropdown = this.shadowRoot.querySelector("marble-dropdown");
-
             this.updateDropdown();
 
             dropdown.click(async (data) => {
@@ -119,7 +118,7 @@ export default class LabelInput extends BaseComponent {
             const year = this.date.getFullYear() + index;
             let data = { type: year, text: year };
 
-            if(index == 0) {
+            if (index == 0) {
                 data["active"] = true;
             }
 
@@ -193,10 +192,12 @@ export default class LabelInput extends BaseComponent {
 
             if (disabled) {
                 dateElement.classList.add("disabledDate");
-            } else {
-                this.days.push({ date, element: dateElement });
+            }else {
                 dateElement.addEventListener("click", (event) => this.selectDate(date, event.shiftKey, event.ctrlKey));
             }
+            
+            this.days.push({ date, element: dateElement });
+
 
             dateElement.appendChild(dateTextElement);
             dateElement.appendChild(ballElement);
