@@ -25,7 +25,7 @@ export default class Dropdown extends BaseComponent {
             this.action = (action, reset) => {
                 this.visible = typeof action !== "undefined" ? action : !this.visible;
                 if (reset) {
-                    closeElement.style.display = "none";
+                    closeElement.style.visibility = "hidden";
                     shapeElement.classList.remove("fadeIn");
                     shapeElement.classList.remove("fadeOut");
                     this.visible = true;
@@ -33,11 +33,11 @@ export default class Dropdown extends BaseComponent {
                     this.actionCallback(this.visible);
                 } else {
                     if (this.visible) {
-                        closeElement.style.display = "flex";
+                        closeElement.style.visibility = "hidden";
                         shapeElement.classList.remove("fadeIn");
                         shapeElement.classList.add("fadeOut");
                     } else {
-                        closeElement.style.display = "none";
+                        closeElement.style.visibility = "visible";
                         shapeElement.classList.remove("fadeOut");
                         shapeElement.classList.add("fadeIn");
                     }
@@ -55,7 +55,8 @@ export default class Dropdown extends BaseComponent {
         this.action(undefined, true);
     }
 
-    updateSize() {
+    async updateSize() {
+        await this.load;
         const closeElement = this.shadowRoot.querySelector(".close");
         const position = this.getPosition(closeElement);
         closeElement.style.top = `${-position.y}px`;
