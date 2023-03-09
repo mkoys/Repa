@@ -25,7 +25,7 @@ export default class Dropdown extends BaseComponent {
             }
             return { x, y };
         }
-        
+
         this.connected(async () => {
             await this.load;
             const shapeElement = this.shadowRoot.querySelector(".shape");
@@ -36,26 +36,38 @@ export default class Dropdown extends BaseComponent {
 
             closeElement.addEventListener("click", () => this.action());
 
-            this.action = () => {
-                this.visible = !this.visible;
-
-                if (this.visible) {
+            this.action = (action, reset) => {
+                this.visible = typeof action !== "undefined" ? action : !this.visible;
+                if (reset) {
                     closeElement.style.visibility = "hidden";
-                    shapeElement.classList.remove("fadeIn")
-                    shapeElement.classList.add("fadeOut")
-                } else {
-                    closeElement.style.visibility = "visible";
-                    shapeElement.classList.remove("fadeOut")
-                    shapeElement.classList.add("fadeIn")
-                }
+                    shapeElement.classList.remove("fadeIn");
+                    shapeElement.classList.remove("fadeOut");
+                    this.visible = true;
 
-                this.actionCallback(this.visible);
+                    this.actionCallback(this.visible);
+                } else {
+                    if (this.visible) {
+                        closeElement.style.visibility = "hidden";
+                        shapeElement.classList.remove("fadeIn");
+                        shapeElement.classList.add("fadeOut");
+                    } else {
+                        closeElement.style.visibility = "visible";
+                        shapeElement.classList.remove("fadeOut");
+                        shapeElement.classList.add("fadeIn");
+                    }
+
+                    this.actionCallback(this.visible);
+                }
             }
         });
     }
 
     update(callback) { this.actionCallback = callback }
     click(callback) { this.clickCallback = callback }
+
+    disconnectedCallback() {
+        this.action(undefined, true);
+    }
 
     async attributeChangedCallback(name, oldValue, newValue) {
         await this.load;

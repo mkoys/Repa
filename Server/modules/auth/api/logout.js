@@ -8,5 +8,5 @@ export default async (req, res) => {
 
     await logoutUser(token);
 
-    return res.sendStatus(200);
+    return res.json({ message: "ok" });
 }

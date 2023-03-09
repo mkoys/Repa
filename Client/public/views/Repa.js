@@ -20,6 +20,11 @@ export default class Repa extends BaseComponent {
         const userInfoElement = this.shadowRoot.querySelector("marble-usercard");
         const userInfo = await this.getUserInfo();
 
+        if(!localStorage.getItem("token") || userInfo.error) {
+            localStorage.removeItem("token");
+            this.router.setRoute("login");
+        }
+
         this.updateData();
 
         userInfoElement.setAttribute("avatar", userInfo.avatar);
