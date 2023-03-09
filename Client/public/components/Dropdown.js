@@ -2,7 +2,7 @@ import BaseComponent from "../source/BaseComponent.js";
 
 export default class Dropdown extends BaseComponent {
 
-    static get observedAttributes() { return ["options", "left", "top"] }
+    static get observedAttributes() { return ["options", "left", "top", "height"] }
 
     constructor() {
         super();
@@ -29,8 +29,6 @@ export default class Dropdown extends BaseComponent {
                     shapeElement.classList.remove("fadeIn");
                     shapeElement.classList.remove("fadeOut");
                     this.visible = true;
-
-                    this.actionCallback(this.visible);
                 } else {
                     if (this.visible) {
                         closeElement.style.visibility = "hidden";
@@ -41,9 +39,10 @@ export default class Dropdown extends BaseComponent {
                         shapeElement.classList.remove("fadeOut");
                         shapeElement.classList.add("fadeIn");
                     }
-
-                    this.actionCallback(this.visible);
                 }
+
+                if (this.active) { this.active.scrollIntoView() }
+                this.actionCallback(this.visible);
             }
         });
     }
@@ -74,6 +73,9 @@ export default class Dropdown extends BaseComponent {
             case "top":
                 shapeElement.style.top = newValue + "px";
                 break;
+            case "height":
+                shapeElement.style.height = newValue + "px";
+                break;
             case "options":
                 shapeElement.innerHTML = "";
                 newValue = JSON.parse(newValue);
@@ -91,14 +93,15 @@ export default class Dropdown extends BaseComponent {
 
                     optionBox.addEventListener("click", () => this.clickCallback(option));
 
-                    if(option.active) {
+                    if (option.active) {
+                        this.active = optionBox;
                         optionBox.classList.add("active");
                     }
 
                     if (option.icon) {
                         optionIcon = new DOMParser().parseFromString(option.icon, "text/html").body.children[0];
                         optionBox.appendChild(optionIcon);
-                    }else {
+                    } else {
                         optionText.style.margin = "0px";
                         optionBox.style.justifyContent = "center";
                     }
