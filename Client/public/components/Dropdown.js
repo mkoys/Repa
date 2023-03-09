@@ -7,6 +7,7 @@ export default class Dropdown extends BaseComponent {
     constructor() {
         super();
         this.options = [];
+        this.clickCallback = () => { };
         this.visible = true;
         this.addStyle("/style.css");
         this.addStyle("/components/Dropdown.css");
@@ -54,6 +55,8 @@ export default class Dropdown extends BaseComponent {
         })
     }
 
+    click(callback) { this.clickCallback = callback }
+
     async attributeChangedCallback(name, oldValue, newValue) {
         await this.load;
         const shapeElement = this.shadowRoot.querySelector(".shape");
@@ -77,6 +80,8 @@ export default class Dropdown extends BaseComponent {
                     optionText.classList.add("optionText");
                     optionBox.classList.add("optionBox");
                     optionBox.appendChild(optionText);
+
+                    optionBox.addEventListener("click", () => this.clickCallback(option));
 
                     if (option.icon) {
                         optionIcon = new DOMParser().parseFromString(option.icon, "text/html").body.children[0];
