@@ -1,4 +1,5 @@
 .shape {
+    z-index: 1000;
     display: flex;
     flex-direction: column;
     opacity: 0;
@@ -9,11 +10,20 @@
     0 22.3px 17.9px rgba(0, 0, 0, 0.072),
     0 41.8px 33.4px rgba(0, 0, 0, 0.086),
     0 100px 80px rgba(0, 0, 0, 0.12);
-    top: 50px;
-    left: 164px;
+    top: 0px;
+    left: 0px;
     position: absolute;
     border-radius: 5px;
     background-color: var(--back-color-3);
+}
+
+.close {
+    visibility: hidden;
+    top: 0px;
+    left: 0px;
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
 }
 
 .fadeIn {
