@@ -1,4 +1,5 @@
 .shape {
+    position: relative;
     width: 256px;
     display: flex;
     align-items: center;

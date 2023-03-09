@@ -3,6 +3,7 @@ import marble from "./marble.js";
 import LabelInput from "./components/LabelInput.js";
 import Button from "./components/Button.js";
 import Checkbox from "./components/Checkbox.js";
+import Dropdown from "./components/Dropdown.js";
 
 import Login from "./views/Login.js";
 import Register from "./views/Register.js";
@@ -18,6 +19,7 @@ marble.init();
 customElements.define("marble-label-input", LabelInput);
 customElements.define("marble-button", Button);
 customElements.define("marble-checkbox", Checkbox);
+customElements.define("marble-dropdown", Dropdown);
 
 customElements.define("marble-login", Login);
 customElements.define("marble-register", Register);
