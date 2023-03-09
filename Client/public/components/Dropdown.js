@@ -7,12 +7,26 @@ export default class Dropdown extends BaseComponent {
     constructor() {
         super();
         this.options = [];
+        this.visible = true;
         this.addStyle("/style.css");
         this.addStyle("/components/Dropdown.css");
         this.useTemplate("/components/Dropdown.html");
 
         this.connected(async () => {
-            console.log(this.attributes);
+            const shapeElement = this.shadowRoot.querySelector(".shape");
+
+            this.action = () => {
+                this.visible = !this.visible;
+
+                if (this.visible) {
+                    shapeElement.classList.remove("fadeIn")
+                    shapeElement.classList.add("fadeOut")
+                } else {
+                    shapeElement.classList.remove("fadeOut")
+                    shapeElement.classList.add("fadeIn")
+                }
+            }
+
             await this.load;
         })
     }
@@ -24,7 +38,7 @@ export default class Dropdown extends BaseComponent {
                 newValue = JSON.parse(newValue);
                 this.options = newValue;
                 const shapeElement = this.shadowRoot.querySelector(".shape");
-                this.options.forEach(option => {
+                this.options.forEach((option, optionIndex) => {
                     const optionBox = document.createElement("div");
                     const optionText = document.createElement("p");
                     let optionIcon;
@@ -48,6 +62,12 @@ export default class Dropdown extends BaseComponent {
                     }
 
                     shapeElement.append(optionBox);
+
+                    if(optionIndex != this.options.length - 1) {
+                        const delimiter = document.createElement("div");
+                        delimiter.classList.add("delimiter");
+                        shapeElement.appendChild(delimiter);
+                    }
                 });
                 break;
 

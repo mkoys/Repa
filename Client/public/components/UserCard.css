@@ -40,3 +40,17 @@
     font-size: 13px;
     text-transform: capitalize;
 }
+
+.more {
+    transition: 0.2s linear fill;
+    cursor: pointer;
+    fill: var(--text-color-2);
+}
+
+.more:hover {
+    fill: var(--text-color-1);
+}
+
+.active {
+    fill: var(--text-color-1) !important;
+}
