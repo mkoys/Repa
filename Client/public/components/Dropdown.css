@@ -18,6 +18,8 @@
 }
 
 .close {
+    cursor: pointer;
+    z-index: 100;
     visibility: hidden;
     top: 0px;
     left: 0px;

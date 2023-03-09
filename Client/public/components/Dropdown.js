@@ -7,6 +7,7 @@ export default class Dropdown extends BaseComponent {
     constructor() {
         super();
         this.options = [];
+        this.actionCallback = () => { }
         this.clickCallback = () => { };
         this.visible = true;
         this.addStyle("/style.css");
@@ -14,21 +15,19 @@ export default class Dropdown extends BaseComponent {
         this.useTemplate("/components/Dropdown.html");
 
         function getPosition(element) {
-            var xPosition = 0,
-                yPosition = 0;
+            var x = 0,
+                y = 0;
 
             while (element) {
-                xPosition += (element.offsetLeft + element.clientLeft);
-                yPosition += (element.offsetTop + element.clientTop);
+                x += (element.offsetLeft + element.clientLeft);
+                y += (element.offsetTop + element.clientTop);
                 element = element.offsetParent;
             }
-            return {
-                x: xPosition,
-                y: yPosition
-            };
+            return { x, y };
         }
-
+        
         this.connected(async () => {
+            await this.load;
             const shapeElement = this.shadowRoot.querySelector(".shape");
             const closeElement = this.shadowRoot.querySelector(".close");
             const position = getPosition(closeElement);
@@ -49,12 +48,13 @@ export default class Dropdown extends BaseComponent {
                     shapeElement.classList.remove("fadeOut")
                     shapeElement.classList.add("fadeIn")
                 }
-            }
 
-            await this.load;
-        })
+                this.actionCallback(this.visible);
+            }
+        });
     }
 
+    update(callback) { this.actionCallback = callback }
     click(callback) { this.clickCallback = callback }
 
     async attributeChangedCallback(name, oldValue, newValue) {

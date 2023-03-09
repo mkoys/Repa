@@ -31,15 +31,17 @@ export default class LabelInput extends BaseComponent {
 
             dropdown.click((data) => {
                 console.log(data);
-            })
+            });
 
-            more.addEventListener("click", () => {
-                if (more.classList.contains("active")) {
+            dropdown.update(event => {
+                if (event) {
                     more.classList.remove("active");
                 } else {
                     more.classList.add("active");
                 }
+            });
 
+            more.addEventListener("click", () => {
                 dropdown.action();
             });
         })
