@@ -153,6 +153,8 @@ export default class Repa extends BaseComponent {
             }
         });
 
+        console.log(JSON.parse(JSON.stringify(data)));
+
         return await response.json();
 
         // return await new Promise((resolve) => {
