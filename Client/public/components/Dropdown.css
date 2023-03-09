@@ -17,10 +17,14 @@
     background-color: var(--back-color-3);
 }
 
+.active {
+    background-color: var(--back-color-1) !important;
+}
+
 .close {
     cursor: pointer;
     z-index: 100;
-    visibility: hidden;
+    display: none;
     top: 0px;
     left: 0px;
     position: absolute;

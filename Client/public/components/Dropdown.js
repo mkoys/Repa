@@ -14,32 +14,18 @@ export default class Dropdown extends BaseComponent {
         this.addStyle("/components/Dropdown.css");
         this.useTemplate("/components/Dropdown.html");
 
-        function getPosition(element) {
-            var x = 0,
-                y = 0;
-
-            while (element) {
-                x += (element.offsetLeft + element.clientLeft);
-                y += (element.offsetTop + element.clientTop);
-                element = element.offsetParent;
-            }
-            return { x, y };
-        }
-
         this.connected(async () => {
             await this.load;
             const shapeElement = this.shadowRoot.querySelector(".shape");
             const closeElement = this.shadowRoot.querySelector(".close");
-            const position = getPosition(closeElement);
-            closeElement.style.top = `${-position.y}px`;
-            closeElement.style.left = `${-position.x}px`;
+            this.updateSize();
 
             closeElement.addEventListener("click", () => this.action());
 
             this.action = (action, reset) => {
                 this.visible = typeof action !== "undefined" ? action : !this.visible;
                 if (reset) {
-                    closeElement.style.visibility = "hidden";
+                    closeElement.style.display = "none";
                     shapeElement.classList.remove("fadeIn");
                     shapeElement.classList.remove("fadeOut");
                     this.visible = true;
@@ -47,11 +33,11 @@ export default class Dropdown extends BaseComponent {
                     this.actionCallback(this.visible);
                 } else {
                     if (this.visible) {
-                        closeElement.style.visibility = "hidden";
+                        closeElement.style.display = "flex";
                         shapeElement.classList.remove("fadeIn");
                         shapeElement.classList.add("fadeOut");
                     } else {
-                        closeElement.style.visibility = "visible";
+                        closeElement.style.display = "none";
                         shapeElement.classList.remove("fadeOut");
                         shapeElement.classList.add("fadeIn");
                     }
@@ -69,9 +55,17 @@ export default class Dropdown extends BaseComponent {
         this.action(undefined, true);
     }
 
+    updateSize() {
+        const closeElement = this.shadowRoot.querySelector(".close");
+        const position = this.getPosition(closeElement);
+        closeElement.style.top = `${-position.y}px`;
+        closeElement.style.left = `${-position.x}px`;
+    }
+
     async attributeChangedCallback(name, oldValue, newValue) {
         await this.load;
         const shapeElement = this.shadowRoot.querySelector(".shape");
+
         switch (name) {
             case "left":
                 shapeElement.style.left = newValue + "px";
@@ -80,6 +74,7 @@ export default class Dropdown extends BaseComponent {
                 shapeElement.style.top = newValue + "px";
                 break;
             case "options":
+                shapeElement.innerHTML = "";
                 newValue = JSON.parse(newValue);
                 this.options = newValue;
                 this.options.forEach((option, optionIndex) => {
@@ -95,9 +90,16 @@ export default class Dropdown extends BaseComponent {
 
                     optionBox.addEventListener("click", () => this.clickCallback(option));
 
+                    if(option.active) {
+                        optionBox.classList.add("active");
+                    }
+
                     if (option.icon) {
                         optionIcon = new DOMParser().parseFromString(option.icon, "text/html").body.children[0];
                         optionBox.appendChild(optionIcon);
+                    }else {
+                        optionText.style.margin = "0px";
+                        optionBox.style.justifyContent = "center";
                     }
 
                     if (option.color) {
@@ -120,5 +122,17 @@ export default class Dropdown extends BaseComponent {
             default:
                 break;
         }
+    }
+
+    getPosition(element) {
+        var x = 0,
+            y = 0;
+
+        while (element) {
+            x += (element.offsetLeft + element.clientLeft);
+            y += (element.offsetTop + element.clientTop);
+            element = element.offsetParent;
+        }
+        return { x, y };
     }
 }

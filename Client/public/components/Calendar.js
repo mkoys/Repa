@@ -35,6 +35,33 @@ export default class LabelInput extends BaseComponent {
             await this.load;
             const nextMonthElement = this.shadowRoot.querySelector(".nextMonth");
             const previousMonthElement = this.shadowRoot.querySelector(".previousMonth");
+            const dateDropdown = this.shadowRoot.querySelector(".dateDropdown");
+            const dropdown = this.shadowRoot.querySelector("marble-dropdown");
+
+            this.updateDropdown();
+
+            dropdown.click(async (data) => {
+                this.date.setFullYear(parseInt(data.text));
+                this.updateDate();
+                this.setData(this.data);
+                this.updateDropdown();
+                dropdown.action();
+            });
+
+            dropdown.update(event => {
+                if (event) {
+                    dateDropdown.classList.add("downAnim");
+                    dateDropdown.classList.remove("upAnim");
+                } else {
+                    dateDropdown.classList.add("upAnim");
+                    dateDropdown.classList.remove("downAnim");
+                }
+            });
+
+
+            dateDropdown.addEventListener("click", () => {
+                dropdown.action();
+            });
 
             nextMonthElement.addEventListener("click", () => this.setMonth(1));
             previousMonthElement.addEventListener("click", () => this.setMonth(-1));
@@ -47,16 +74,16 @@ export default class LabelInput extends BaseComponent {
         this.data = data;
         data.forEach(item => {
             const foundIndex = this.days.findIndex(value => value.date.getTime() == item.date.getTime());
-            if(foundIndex > -1) {
+            if (foundIndex > -1) {
                 const element = this.days[foundIndex].element;
                 const ballElement = element.querySelector(".ball");
-                if(item.submited) {
+                if (item.submited) {
                     ballElement.classList.add("submited");
-                }else if(item.accepted) {
+                } else if (item.accepted) {
                     ballElement.classList.add("accepted");
-                }else if(item.declined) {
+                } else if (item.declined) {
                     ballElement.classList.add("declined");
-                }else {
+                } else {
                     ballElement.classList.add("saved");
                 }
             }
@@ -77,6 +104,26 @@ export default class LabelInput extends BaseComponent {
         }
 
         this.setData(this.data);
+        this.updateDropdown();
+    }
+
+    updateDropdown() {
+        const dropdown = this.shadowRoot.querySelector("marble-dropdown");
+
+        let years = [];
+
+        for (let index = -4; index < 5; index++) {
+            const year = this.date.getFullYear() + index;
+            let data = { type: year, text: year };
+
+            if(index == 0) {
+                data["active"] = true;
+            }
+
+            years.push(data);
+        }
+
+        dropdown.setAttribute("options", JSON.stringify(years));
     }
 
     async attributeChangedCallback(name, oldValue, newValue) {
@@ -137,23 +184,23 @@ export default class LabelInput extends BaseComponent {
 
             dateTextElement.textContent = date.getDate();
 
-            if(this.checkIfCurrentDate(date)) {
+            if (this.checkIfCurrentDate(date)) {
                 dateTextElement.classList.add("current");
             }
-            
+
             if (disabled) {
                 dateElement.classList.add("disabledDate");
             } else {
                 this.days.push({ date, element: dateElement });
                 dateElement.addEventListener("click", (event) => this.selectDate(date, event.shiftKey, event.ctrlKey));
             }
-            
+
             dateElement.appendChild(dateTextElement);
             dateElement.appendChild(ballElement);
             datesElement.appendChild(dateElement);
         }
     }
-    
+
     selectDate(date, shiftKey = false, ctrlKey = false) {
         const element = this.days[this.days.findIndex(item => item.date.getTime() == date.getTime())].element;
         const selected = this.selected.length ? true : false;
@@ -172,7 +219,7 @@ export default class LabelInput extends BaseComponent {
             this.selectedUpdateCallback("closed", this.selected[daySelectedIndex]);
             this.removeSelection(daySelectedIndex);
         } else if (this.range !== false && shiftKey) {
-            if (this.range == dayIndex) {return this.range = false}
+            if (this.range == dayIndex) { return this.range = false }
 
             const start = this.range > dayIndex ? dayIndex : this.range;
             const end = this.range > dayIndex ? this.range : dayIndex;
@@ -229,7 +276,7 @@ export default class LabelInput extends BaseComponent {
         selection[0].element.classList.add("rangeStart");
         selection[selection.length - 1].element.classList.add("rangeEnd");
         this.renderDate(selection[0].element);
-        this.renderDate( selection[selection.length - 1].element);
+        this.renderDate(selection[selection.length - 1].element);
 
         for (let index = 1; index < selection.length - 1; index++) {
             const item = selection[index];
