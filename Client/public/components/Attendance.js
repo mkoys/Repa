@@ -80,7 +80,7 @@ export default class LabelInput extends BaseComponent {
                         downloadAnchorNode.setAttribute("download",
                             "Attendance_" + this.date.getDate() + "/" + this.date.getMonth() + "/" + this.date.getFullYear() + ".json"
                         );
-                        document.body.appendChild(downloadAnchorNode); // required for firefox
+                        document.body.appendChild(downloadAnchorNode);
                         downloadAnchorNode.click();
                         downloadAnchorNode.remove();
                         dropdown.action();

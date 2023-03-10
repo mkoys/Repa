@@ -1,7 +1,7 @@
 .shape {
     overflow: auto;
-    z-index: 2000;
     opacity: 0;
+    z-index: 2;
     visibility: hidden;
     box-shadow: 5px 5px 30px -10px #000000;
     top: 0px;
@@ -32,7 +32,7 @@
 
 .close {
     cursor: pointer;
-    z-index: 1000;
+    z-index: 1;
     visibility: hidden;
     top: 0px;
     left: 0px;

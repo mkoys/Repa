@@ -160,6 +160,16 @@ button:disabled>svg>circle {
     fill: var(--text-color-1);
 }
 
+.hidden {
+    top: 0px;
+    left: 0px;
+
+    position: absolute;
+    width: 100%;
+    overflow: hidden;
+    height: 6px;
+}
+
 .loading {
     transform: translateX(-200%);
     border-radius: 10px;
