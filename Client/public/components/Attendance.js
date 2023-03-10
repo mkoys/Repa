@@ -68,6 +68,48 @@ export default class LabelInput extends BaseComponent {
             const submitButton = this.shadowRoot.querySelector(".submit");
             const closeButton = this.shadowRoot.querySelector(".close");
             const contentElement = this.shadowRoot.querySelector(".content");
+            const more = this.shadowRoot.querySelector(".more");
+            const dropdown = this.shadowRoot.querySelector("marble-dropdown");
+
+            dropdown.click(async (data) => {
+                switch (data.type) {
+                    case "download":
+                        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(this.getData()));
+                        const downloadAnchorNode = document.createElement('a');
+                        downloadAnchorNode.setAttribute("href", dataStr);
+                        downloadAnchorNode.setAttribute("download",
+                            "Attendance_" + this.date.getDate() + "/" + this.date.getMonth() + "/" + this.date.getFullYear() + ".json"
+                        );
+                        document.body.appendChild(downloadAnchorNode); // required for firefox
+                        downloadAnchorNode.click();
+                        downloadAnchorNode.remove();
+                        dropdown.action();
+                        break;
+
+                    default:
+                        break;
+                }
+            });
+
+            dropdown.setAttribute("options", JSON.stringify([
+                {
+                    type: "download",
+                    text: "Download",
+                    icon: `<svg xmlns="http://www.w3.org/2000/svg" height="20" width="20"><path d="M5.333 17.917q-.666 0-1.125-.459Q3.75 17 3.75 16.333V7.458q0-.312.125-.604t.354-.542l3.75-3.75q.25-.229.542-.354.291-.125.604-.125h5.542q.666 0 1.125.459.458.458.458 1.125v12.666q0 .667-.458 1.125-.459.459-1.125.459ZM10 13.5q.146 0 .292-.052t.27-.198l2.063-2.062q.187-.188.187-.459t-.187-.479q-.229-.208-.479-.198-.25.01-.458.198l-1.021 1.021V8.312q0-.27-.198-.468T10 7.646q-.271 0-.469.198-.198.198-.198.468v2.959L8.312 10.25q-.187-.188-.458-.188t-.458.188q-.229.229-.229.49 0 .26.229.448l2.042 2.062q.124.146.27.198.146.052.292.052Z"/></svg>`,
+                },
+                {
+                    type: "delete",
+                    text: "Delete",
+                    icon: `<svg xmlns="http://www.w3.org/2000/svg" height="20" width="20"><path d="M6.146 17.083q-.667 0-1.125-.458-.459-.458-.459-1.125V5.125h-.208q-.271 0-.469-.198-.197-.198-.197-.469 0-.27.197-.468.198-.198.469-.198h3.167q0-.313.239-.542.24-.229.552-.229h3.355q.312 0 .552.229.239.229.239.542h3.167q.271 0 .469.198.198.198.198.468 0 .271-.198.469-.198.198-.469.198h-.208V15.5q0 .667-.459 1.125-.458.458-1.125.458Zm1.625-3.75q0 .271.198.469.198.198.469.198.27 0 .468-.198t.198-.469V7.542q0-.271-.198-.469-.198-.198-.468-.198-.271 0-.469.198-.198.198-.198.469Zm3.083 0q0 .271.198.469.198.198.469.198.271 0 .469-.198.198-.198.198-.469V7.542q0-.271-.198-.469-.198-.198-.469-.198-.271 0-.469.198-.198.198-.198.469Z"/></svg>`,
+                    color: "var(--error-color-1)"
+                },
+            ]));
+
+            more.addEventListener("click", (event) => {
+                if (event.target.localName !== "marble-dropdown") {
+                    dropdown.action();
+                }
+            });
 
             const newRow = this.createRow();
             const data = this.getData();
