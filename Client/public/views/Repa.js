@@ -15,12 +15,13 @@ export default class Repa extends BaseComponent {
 
     async connectedCallback() {
         await this.load;
+        const cardsElement = this.shadowRoot.querySelector(".cards");
         const mainElement = this.shadowRoot.querySelector(".main");
         const calendar = this.shadowRoot.querySelector("marble-calendar");
         const userInfoElement = this.shadowRoot.querySelector("marble-usercard");
         const userInfo = await this.getUserInfo();
 
-        if(!localStorage.getItem("token") || userInfo.error) {
+        if (!localStorage.getItem("token") || userInfo.error) {
             localStorage.removeItem("token");
             this.router.setRoute("login");
         }
@@ -31,101 +32,107 @@ export default class Repa extends BaseComponent {
         userInfoElement.setAttribute("username", userInfo.username);
         userInfoElement.setAttribute("role", userInfo.role);
 
-        calendar.selectedUpdate((type, item) => {
-            if (type === "opened") {
-                if (!Array.isArray(item)) {
-                    const foundDataIndex = this.userAttendance.findIndex(value => value.date.getTime() == item.date.getTime());
-                    const newAttendance = document.createElement("marble-attendance");
+        if (userInfo.role.toLowerCase() === "admin") {
+            cardsElement.removeChild(calendar);
+            const adminPanel = document.createElement("marble-admin");
+            mainElement.appendChild(adminPanel);
+        } else {
+            calendar.selectedUpdate((type, item) => {
+                if (type === "opened") {
+                    if (!Array.isArray(item)) {
+                        const foundDataIndex = this.userAttendance.findIndex(value => value.date.getTime() == item.date.getTime());
+                        const newAttendance = document.createElement("marble-attendance");
 
-                    if (foundDataIndex > -1) {
-                        newAttendance.setData(this.userAttendance[foundDataIndex]);
-                        if(this.userAttendance[foundDataIndex].submited) {
-                            newAttendance.setAttribute("statuscolor", "var(--warning-color-1)");
-                            newAttendance.setAttribute("status", "Submited");
-                            newAttendance.setAttribute("disablesave", "true");
-                            newAttendance.setAttribute("disableinput", "true");
+                        if (foundDataIndex > -1) {
+                            newAttendance.setData(this.userAttendance[foundDataIndex]);
+                            if (this.userAttendance[foundDataIndex].submited) {
+                                newAttendance.setAttribute("statuscolor", "var(--warning-color-1)");
+                                newAttendance.setAttribute("status", "Submited");
+                                newAttendance.setAttribute("disablesave", "true");
+                                newAttendance.setAttribute("disableinput", "true");
+                                newAttendance.setAttribute("disablesubmit", "true");
+                            } else if (this.userAttendance[foundDataIndex].accepted) {
+                                newAttendance.setAttribute("statuscolor", "var(--success-color-1)");
+                                newAttendance.setAttribute("status", "Accepted");
+                                newAttendance.setAttribute("disableinput", "true");
+                                newAttendance.setAttribute("disablesave", "true");
+                                newAttendance.setAttribute("disablesubmit", "true");
+                            } else if (this.userAttendance[foundDataIndex].declined) {
+                                newAttendance.setAttribute("statuscolor", "var(--error-color-1)");
+                                newAttendance.setAttribute("status", "Declined");
+                                newAttendance.removeAttribute("disablesubmit");
+                            } else {
+                                newAttendance.setAttribute("statuscolor", "var(--text-color-1)");
+                                newAttendance.setAttribute("status", "Saved");
+                                newAttendance.setAttribute("disablesubmit", "true");
+                                newAttendance.removeAttribute("disablesubmit");
+                            }
+                        } else {
+                            newAttendance.setAttribute("date", item.date);
                             newAttendance.setAttribute("disablesubmit", "true");
-                        }else if(this.userAttendance[foundDataIndex].accepted) {
-                            newAttendance.setAttribute("statuscolor", "var(--success-color-1)");
-                            newAttendance.setAttribute("status", "Accepted");
-                            newAttendance.setAttribute("disableinput", "true");
-                            newAttendance.setAttribute("disablesave", "true");
-                            newAttendance.setAttribute("disablesubmit", "true");
-                        }else if(this.userAttendance[foundDataIndex].declined) {
-                            newAttendance.setAttribute("statuscolor", "var(--error-color-1)");
-                            newAttendance.setAttribute("status", "Declined");
-                            newAttendance.removeAttribute("disablesubmit");
-                        }else {
+                        }
+
+                        newAttendance.close(() => calendar.selectDate(newAttendance.date));
+
+                        newAttendance.save(async () => {
+                            if (foundDataIndex > -1 && this.userAttendance[foundDataIndex].submited) {
+                                return;
+                            }
+                            const data = newAttendance.getData();
+                            newAttendance.setAttribute("loading", "true");
                             newAttendance.setAttribute("statuscolor", "var(--text-color-1)");
-                            newAttendance.setAttribute("status", "Saved");
+                            newAttendance.setAttribute("status", "Saving...");
+                            newAttendance.setAttribute("disableinput", "true");
+                            newAttendance.setAttribute("disablesave", "true");
                             newAttendance.setAttribute("disablesubmit", "true");
-                            newAttendance.removeAttribute("disablesubmit");
-                        }
-                    } else {
-                        newAttendance.setAttribute("date", item.date);
-                        newAttendance.setAttribute("disablesubmit", "true");
+                            newAttendance.setAttribute("disablemore", "true");
+                            const result = await this.saveData(data);
+                            newAttendance.removeAttribute("loading");
+                            newAttendance.removeAttribute("disableinput");
+                            newAttendance.removeAttribute("disablesave", "true");
+                            newAttendance.removeAttribute("disablesubmit", "true");
+                            newAttendance.removeAttribute("disablemore", "true");
+
+                            if (!result.error) {
+                                newAttendance.setAttribute("status", "Saved")
+                                this.updateData();
+                            }
+                        });
+
+                        newAttendance.submit(async () => {
+                            const data = newAttendance.getData();
+                            newAttendance.setAttribute("loading", "true");
+                            newAttendance.setAttribute("statuscolor", "var(--warning-color-1)");
+                            newAttendance.setAttribute("status", "Submiting...");
+                            newAttendance.setAttribute("disableinput", "true");
+                            newAttendance.setAttribute("disablesave", "true");
+                            newAttendance.setAttribute("disablesubmit", "true");
+                            newAttendance.setAttribute("disablemore", "true");
+                            const result = await this.submitData(data);
+                            newAttendance.removeAttribute("loading");
+                            newAttendance.removeAttribute("disablemore", "true");
+
+                            if (!result.error) {
+                                newAttendance.setAttribute("status", "Submited");
+                                this.updateData();
+                            }
+                        });
+
+                        mainElement.appendChild(newAttendance);
                     }
-
-                    newAttendance.close(() => calendar.selectDate(newAttendance.date));
-
-                    newAttendance.save(async () => {
-                        if(foundDataIndex > -1 && this.userAttendance[foundDataIndex].submited) {
-                            return;
-                        } 
-                        const data = newAttendance.getData();
-                        newAttendance.setAttribute("loading", "true");
-                        newAttendance.setAttribute("statuscolor", "var(--text-color-1)");
-                        newAttendance.setAttribute("status", "Saving...");
-                        newAttendance.setAttribute("disableinput", "true");
-                        newAttendance.setAttribute("disablesave", "true");
-                        newAttendance.setAttribute("disablesubmit", "true");
-                        newAttendance.setAttribute("disablemore", "true");
-                        const result = await this.saveData(data);
-                        newAttendance.removeAttribute("loading");
-                        newAttendance.removeAttribute("disableinput");
-                        newAttendance.removeAttribute("disablesave", "true");
-                        newAttendance.removeAttribute("disablesubmit", "true");
-                        newAttendance.removeAttribute("disablemore", "true");
-                        
-                        if (!result.error) {
-                            newAttendance.setAttribute("status", "Saved")
-                            this.updateData();
-                        }
-                    });
-                    
-                    newAttendance.submit(async () => {
-                        const data = newAttendance.getData();
-                        newAttendance.setAttribute("loading", "true");
-                        newAttendance.setAttribute("statuscolor", "var(--warning-color-1)");
-                        newAttendance.setAttribute("status", "Submiting...");
-                        newAttendance.setAttribute("disableinput", "true");
-                        newAttendance.setAttribute("disablesave", "true");
-                        newAttendance.setAttribute("disablesubmit", "true");
-                        newAttendance.setAttribute("disablemore", "true");
-                        const result = await this.submitData(data);
-                        newAttendance.removeAttribute("loading");
-                        newAttendance.removeAttribute("disablemore", "true");
-
-                        if (!result.error) {
-                            newAttendance.setAttribute("status", "Submited");
-                            this.updateData();
-                        }
-                    });
-
-                    mainElement.appendChild(newAttendance);
                 }
-            }
 
-            if (type === "closed") {
-                if (!Array.isArray(item)) {
-                    for (const child of mainElement.children) {
-                        if (child.date.getTime() == item.date.getTime()) {
-                            mainElement.removeChild(child);
+                if (type === "closed") {
+                    if (!Array.isArray(item)) {
+                        for (const child of mainElement.children) {
+                            if (child.date.getTime() == item.date.getTime()) {
+                                mainElement.removeChild(child);
+                            }
                         }
                     }
                 }
-            }
-        });
+            });
+        }
     }
 
     async updateData() {

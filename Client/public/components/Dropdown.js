@@ -52,7 +52,9 @@ update(callback) { this.actionCallback = callback }
 click(callback) { this.clickCallback = callback }
 
 disconnectedCallback() {
-    this.action(undefined, true);
+    if(this.action) {
+        this.action(undefined, true);
+    }
 }
 
     async updateSize() {

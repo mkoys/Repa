@@ -13,6 +13,7 @@ import Calendar from "./components/Calendar.js";
 import Attendance from "./components/Attendance.js";
 
 import Repa from "./views/Repa.js";
+import Admin from "./views/Admin.js";
 
 marble.init();
 
@@ -29,6 +30,7 @@ customElements.define("marble-calendar", Calendar);
 customElements.define("marble-attendance", Attendance);
 
 customElements.define("marble-repa", Repa);
+customElements.define("marble-admin", Admin);
 
 const router = marble.router();
 

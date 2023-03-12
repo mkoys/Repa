@@ -1,0 +1,60 @@
+.shape {
+    position: relative;
+    padding: 15px;
+    max-width: 846px;
+    width: 846px;
+    background-color: var(--back-color-1);
+    border-radius: 6px;
+}
+
+.header {
+    margin-left: 15px;
+    margin-right: 15px;
+    margin-top: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.headerText {
+    color: var(--text-color-1);
+    font-size: 26px;
+    font-weight: 500;
+}
+
+.options {
+    display: flex;
+}
+
+.option {
+    cursor: pointer;
+    margin-left: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.option:hover .optionText  {
+    color: var(--text-color-1);
+}
+
+.option:hover .optionIcon > path  {
+    fill: var(--text-color-1);
+}
+
+.optionText {
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--text-color-2);
+    transition: 0.2s ease color;
+}
+
+.optionIcon {
+    width: 15px;
+    margin-right: 6px;
+}
+
+.optionIcon > path {
+    fill: var(--text-color-2);
+    transition: 0.2s ease fill;
+}
