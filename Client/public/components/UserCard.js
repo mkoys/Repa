@@ -39,6 +39,7 @@ export default class LabelInput extends BaseComponent {
                         await this.logout();
                         localStorage.removeItem("token");
                         this.router.setRoute("login");
+                        this.router.addRoute("repa", document.createElement("marble-repa"))
                         break;
                 
                     default:
