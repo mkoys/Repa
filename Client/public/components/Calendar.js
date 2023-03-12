@@ -2,7 +2,7 @@ import BaseComponent from "../source/BaseComponent.js";
 
 export default class LabelInput extends BaseComponent {
 
-    static get observedAttributes() { return ["date"] }
+    static get observedAttributes() { return ["date", "visible"] }
 
     constructor() {
         super();
@@ -136,6 +136,14 @@ export default class LabelInput extends BaseComponent {
                 this.date = new Date(newValue);
                 this.updateDate();
                 break;
+            case "visible":
+                newValue = JSON.parse(newValue);
+                if (newValue) {
+                    this.shadowRoot.host.style.display = "flex";
+                } else {
+                    this.shadowRoot.host.style.display = "none";
+                }
+                break;
 
             default:
                 break;
@@ -192,10 +200,10 @@ export default class LabelInput extends BaseComponent {
 
             if (disabled) {
                 dateElement.classList.add("disabledDate");
-            }else {
+            } else {
                 dateElement.addEventListener("click", (event) => this.selectDate(date, event.shiftKey, event.ctrlKey));
             }
-            
+
             this.days.push({ date, element: dateElement });
 
 

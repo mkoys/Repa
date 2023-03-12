@@ -33,10 +33,11 @@ export default class Repa extends BaseComponent {
         userInfoElement.setAttribute("role", userInfo.role);
 
         if (userInfo.role.toLowerCase() === "admin") {
-            cardsElement.removeChild(calendar);
             const adminPanel = document.createElement("marble-admin");
             mainElement.appendChild(adminPanel);
         } else {
+            calendar.setAttribute("visible", "true");
+
             calendar.selectedUpdate((type, item) => {
                 if (type === "opened") {
                     if (!Array.isArray(item)) {
