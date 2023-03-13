@@ -8,6 +8,7 @@ import Dropdown from "./components/Dropdown.js";
 import Login from "./views/Login.js";
 import Register from "./views/Register.js";
 
+import User from "./components/User.js";
 import UserCard from "./components/UserCard.js";
 import Calendar from "./components/Calendar.js";
 import Attendance from "./components/Attendance.js";
@@ -25,6 +26,7 @@ customElements.define("marble-dropdown", Dropdown);
 customElements.define("marble-login", Login);
 customElements.define("marble-register", Register);
 
+customElements.define("marble-user", User);
 customElements.define("marble-usercard", UserCard);
 customElements.define("marble-calendar", Calendar);
 customElements.define("marble-attendance", Attendance);

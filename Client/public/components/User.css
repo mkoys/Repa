@@ -1,0 +1,93 @@
+.shape {
+    justify-content: space-between;
+    display: flex;
+    padding: 15px;
+    background-color: var(--back-color-2);
+    border-radius: 5px;
+    align-items: center;
+}
+
+.userDetails {
+    display: flex;
+    align-items: center;
+    margin-left: 5px;
+}
+
+.username {
+    font-size: 15px;
+    color: var(--text-color-1);
+}
+
+.avatar {
+    margin-right: 10px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: var(--text-color-2);
+}
+
+.emailDetails {
+    display: flex;
+    align-items: center;
+}
+
+.emailIcon {
+    margin-right: 10px;
+}
+
+.emailIcon > path {
+    fill: var(--main-color-1);
+}
+
+.email {
+    font-size: 15px;
+    color: var(--text-color-1);
+}
+
+.statDetails {
+    display: flex;
+    align-items: center;
+}
+
+.ball {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    font-size: 14px;
+}
+
+.submited {
+    background-color: var(--main-color-lower-1);
+    color: var(--main-color-1);
+    margin-right: 8px;
+}
+
+.accepted {
+    background-color: var(--main-color-lower-1);
+    color: var(--main-color-1);
+    margin-right: 8px;
+}
+
+.declined {
+    background-color: var(--main-color-lower-1);
+    color: var(--main-color-1);
+}
+
+.roleDetails {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 4px;
+    padding: 4px 16px;
+    font-weight: 500;
+    background-color: var(--main-color-lower-1);
+    color: var(--main-color-1);
+    font-size: 14px;
+}
+
+.more > path {
+    fill: var(--text-color-2);
+}

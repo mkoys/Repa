@@ -75,7 +75,7 @@ export default class LabelInput extends BaseComponent {
 
             dropdown.click(async (data) => {
                 switch (data.type) {
-                    case "download":
+                    case "export":
                         const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(this.getData()));
                         const downloadAnchorNode = document.createElement('a');
                         downloadAnchorNode.setAttribute("href", dataStr);
@@ -103,9 +103,14 @@ export default class LabelInput extends BaseComponent {
 
             dropdown.setAttribute("options", JSON.stringify([
                 {
-                    type: "download",
-                    text: "Download",
+                    type: "export",
+                    text: "Export",
                     icon: `<svg xmlns="http://www.w3.org/2000/svg" height="20" width="20"><path d="M5.333 17.917q-.666 0-1.125-.459Q3.75 17 3.75 16.333V7.458q0-.312.125-.604t.354-.542l3.75-3.75q.25-.229.542-.354.291-.125.604-.125h5.542q.666 0 1.125.459.458.458.458 1.125v12.666q0 .667-.458 1.125-.459.459-1.125.459ZM10 13.5q.146 0 .292-.052t.27-.198l2.063-2.062q.187-.188.187-.459t-.187-.479q-.229-.208-.479-.198-.25.01-.458.198l-1.021 1.021V8.312q0-.27-.198-.468T10 7.646q-.271 0-.469.198-.198.198-.198.468v2.959L8.312 10.25q-.187-.188-.458-.188t-.458.188q-.229.229-.229.49 0 .26.229.448l2.042 2.062q.124.146.27.198.146.052.292.052Z"/></svg>`,
+                },
+                {
+                    type: "import",
+                    text: "Import",
+                    icon: `<svg xmlns="http://www.w3.org/2000/svg" height="20" width="20"><path d="M9.458 11.146v2.792q0 .229.157.385.156.156.385.156t.385-.156q.157-.156.157-.385v-2.792l1.02 1.021q.063.062.178.104.114.041.208.041.094 0 .208-.031.115-.031.177-.114.188-.167.177-.386-.01-.219-.177-.385l-1.875-1.875q-.083-.104-.198-.146-.114-.042-.26-.042-.146 0-.26.042-.115.042-.198.146l-1.875 1.875q-.167.166-.167.375 0 .208.188.375.166.187.374.187.209 0 .376-.166ZM5.75 17.583q-.562 0-.948-.385-.385-.386-.385-.948V3.75q0-.562.385-.948.386-.385.948-.385h5.896q.271 0 .521.093.25.094.437.302l2.584 2.584q.208.187.302.437.093.25.093.521v9.896q0 .562-.385.948-.386.385-.948.385Zm5.667-11.666q0 .291.187.479.188.187.479.187H14.5L11.417 3.5Z"/></svg>`
                 },
                 {
                     type: "delete",
