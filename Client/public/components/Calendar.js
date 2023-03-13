@@ -74,20 +74,30 @@ export default class LabelInput extends BaseComponent {
 
     setData(data) {
         this.data = data;
-        data.forEach(item => {
-            const foundIndex = this.days.findIndex(value => value.date.getTime() == item.date.getTime());
+        this.days.forEach(item => {
+            const element = item.element;
+            const ballElement = element.querySelector(".ball");
+            const foundIndex = data.findIndex(value => value?.date.getTime() == item.date.getTime());
+
             if (foundIndex > -1) {
-                const element = this.days[foundIndex].element;
-                const ballElement = element.querySelector(".ball");
-                if (item.submited) {
+                const foundData = data[foundIndex];
+
+                if (foundData.submited) {
                     ballElement.classList.add("submited");
-                } else if (item.accepted) {
+                } else if (foundData.accepted) {
                     ballElement.classList.add("accepted");
-                } else if (item.declined) {
+                } else if (foundData.declined) {
                     ballElement.classList.add("declined");
-                } else {
+                } else if (ballElement) {
                     ballElement.classList.add("saved");
                 }
+            } else if (
+                ballElement.classList.contains("saved") ||
+                ballElement.classList.contains("declined") ||
+                ballElement.classList.contains("accepted") ||
+                ballElement.classList.contains("submited")
+            ) {
+                ballElement.className = "ball";
             }
         });
     }

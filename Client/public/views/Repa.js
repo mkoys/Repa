@@ -75,6 +75,16 @@ export default class Repa extends BaseComponent {
 
                         newAttendance.close(() => calendar.selectDate(newAttendance.date));
 
+                        newAttendance.remove(async () => {
+                            newAttendance.setAttribute("disablesubmit", "true");
+                            newAttendance.setAttribute("status", "Unsaved");
+                            newAttendance.removeAttribute("statuscolor");
+                            newAttendance.removeAttribute("disableinput");
+                            newAttendance.removeAttribute("disablesave");
+                            newAttendance.setData({ content: [], where: null, date: new Date(newAttendance.getAttribute("date")) });
+                            await this.updateData();
+                        });
+
                         newAttendance.save(async () => {
                             if (foundDataIndex > -1 && this.userAttendance[foundDataIndex].submited) {
                                 return;

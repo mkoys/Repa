@@ -1,3 +1,4 @@
+import config from "../config.js";
 import BaseComponent from "../source/BaseComponent.js";
 
 export default class LabelInput extends BaseComponent {
@@ -21,6 +22,7 @@ export default class LabelInput extends BaseComponent {
         this.saveCallback = () => { };
         this.submitCallback = () => { };
         this.closeCallback = () => { };
+        this.removeCallback = () => { };
         const htmlParser = new DOMParser();
         const emptyRowHtml = `
             <svg class="grab" xmlns="http://www.w3.org/2000/svg" width="11" height="16" viewBox="0 0 11 16">
@@ -85,7 +87,15 @@ export default class LabelInput extends BaseComponent {
                         downloadAnchorNode.remove();
                         dropdown.action();
                         break;
-
+                    case "delete":
+                        await (await fetch(config.baseURL + "/repa/delete", {
+                            method: "POST",
+                            headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+                            body: JSON.stringify({ date: this.date })
+                        })).json();
+                        this.removeCallback();
+                        dropdown.action();
+                        break;
                     default:
                         break;
                 }
@@ -174,6 +184,7 @@ export default class LabelInput extends BaseComponent {
         }
     }
 
+    remove(callback) {this.removeCallback = callback }
     close(callback) { this.closeCallback = callback }
     submit(callback) { this.submitCallback = callback }
     save(callback) { this.saveCallback = callback }
