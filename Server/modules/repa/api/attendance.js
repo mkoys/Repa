@@ -11,7 +11,7 @@ export default async (req, res) => {
 
     if (!session) { return res.json({ error: { session: "No session" } }) }
 
-    const attendance = await wave.addon.readMany("repa", { id: session.id });
+    const attendance = await wave.addon.readMany("repa", null, { id: session.id });
 
     for(const item of attendance) {
         delete item.id;

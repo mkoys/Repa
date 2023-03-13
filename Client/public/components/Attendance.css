@@ -130,7 +130,7 @@
 }
 
 button:disabled {
-    background-color: var(--main-color-lower-1);
+    background-color: var(--main-color-lower-1) !important;
 }
 
 button:disabled>svg>path,
