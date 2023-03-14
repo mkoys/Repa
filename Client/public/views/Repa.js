@@ -15,9 +15,8 @@ export default class Repa extends BaseComponent {
 
     async connectedCallback() {
         await this.load;
-        const cardsElement = this.shadowRoot.querySelector(".cards");
+
         const mainElement = this.shadowRoot.querySelector(".main");
-        const calendar = this.shadowRoot.querySelector("marble-calendar");
         const userInfoElement = this.shadowRoot.querySelector("marble-usercard");
         const userInfo = await this.getUserInfo();
 
@@ -25,8 +24,6 @@ export default class Repa extends BaseComponent {
             localStorage.removeItem("token");
             this.router.setRoute("login");
         }
-
-        this.updateData();
 
         userInfoElement.setAttribute("avatar", userInfo.avatar);
         userInfoElement.setAttribute("username", userInfo.username);
@@ -43,6 +40,7 @@ export default class Repa extends BaseComponent {
                 this.createAttendance();
             }
         } else {
+            await this.updateData();
             this.createAttendance();
         }
     }
@@ -61,87 +59,20 @@ export default class Repa extends BaseComponent {
                     if (foundDataIndex > -1) {
                         newAttendance.setData(this.userAttendance[foundDataIndex]);
                         if (this.userAttendance[foundDataIndex].submited) {
-                            newAttendance.setAttribute("statuscolor", "var(--warning-color-1)");
-                            newAttendance.setAttribute("status", "Submited");
-                            newAttendance.setAttribute("disablesave", "true");
-                            newAttendance.setAttribute("disableinput", "true");
-                            newAttendance.setAttribute("disablesubmit", "true");
+                            this.attendanceSubmited(newAttendance);
                         } else if (this.userAttendance[foundDataIndex].accepted) {
-                            newAttendance.setAttribute("statuscolor", "var(--success-color-1)");
-                            newAttendance.setAttribute("status", "Accepted");
-                            newAttendance.setAttribute("disableinput", "true");
-                            newAttendance.setAttribute("disablesave", "true");
-                            newAttendance.setAttribute("disablesubmit", "true");
+                            this.attendanceAccepted(newAttendance);
                         } else if (this.userAttendance[foundDataIndex].declined) {
-                            newAttendance.setAttribute("statuscolor", "var(--error-color-1)");
-                            newAttendance.setAttribute("status", "Declined");
-                            newAttendance.removeAttribute("disablesubmit");
+                            this.attendanceDeclined(newAttendance);
                         } else {
-                            newAttendance.setAttribute("statuscolor", "var(--text-color-1)");
-                            newAttendance.setAttribute("status", "Saved");
-                            newAttendance.setAttribute("disablesubmit", "true");
-                            newAttendance.removeAttribute("disablesubmit");
+                            this.attendanceSaved(newAttendance);
                         }
                     } else {
                         newAttendance.setAttribute("date", item.date);
                         newAttendance.setAttribute("disablesubmit", "true");
                     }
 
-                    newAttendance.close(() => calendar.selectDate(newAttendance.date));
-
-                    newAttendance.remove(async () => {
-                        newAttendance.setAttribute("disablesubmit", "true");
-                        newAttendance.setAttribute("status", "Unsaved");
-                        newAttendance.removeAttribute("statuscolor");
-                        newAttendance.removeAttribute("disableinput");
-                        newAttendance.removeAttribute("disablesave");
-                        newAttendance.setData({ content: [], where: null, date: new Date(newAttendance.getAttribute("date")) });
-                        await this.updateData();
-                    });
-
-                    newAttendance.save(async () => {
-                        if (foundDataIndex > -1 && this.userAttendance[foundDataIndex].submited) {
-                            return;
-                        }
-                        const data = newAttendance.getData();
-                        newAttendance.setAttribute("loading", "true");
-                        newAttendance.setAttribute("statuscolor", "var(--text-color-1)");
-                        newAttendance.setAttribute("status", "Saving...");
-                        newAttendance.setAttribute("disableinput", "true");
-                        newAttendance.setAttribute("disablesave", "true");
-                        newAttendance.setAttribute("disablesubmit", "true");
-                        newAttendance.setAttribute("disablemore", "true");
-                        const result = await this.saveData(data);
-                        newAttendance.removeAttribute("loading");
-                        newAttendance.removeAttribute("disableinput");
-                        newAttendance.removeAttribute("disablesave", "true");
-                        newAttendance.removeAttribute("disablesubmit", "true");
-                        newAttendance.removeAttribute("disablemore", "true");
-
-                        if (!result.error) {
-                            newAttendance.setAttribute("status", "Saved")
-                            this.updateData();
-                        }
-                    });
-
-                    newAttendance.submit(async () => {
-                        const data = newAttendance.getData();
-                        newAttendance.setAttribute("loading", "true");
-                        newAttendance.setAttribute("statuscolor", "var(--warning-color-1)");
-                        newAttendance.setAttribute("status", "Submiting...");
-                        newAttendance.setAttribute("disableinput", "true");
-                        newAttendance.setAttribute("disablesave", "true");
-                        newAttendance.setAttribute("disablesubmit", "true");
-                        newAttendance.setAttribute("disablemore", "true");
-                        const result = await this.submitData(data);
-                        newAttendance.removeAttribute("loading");
-                        newAttendance.removeAttribute("disablemore", "true");
-
-                        if (!result.error) {
-                            newAttendance.setAttribute("status", "Submited");
-                            this.updateData();
-                        }
-                    });
+                    this.attendanceListeners(newAttendance, calendar);
 
                     mainElement.appendChild(newAttendance);
                 }
@@ -155,6 +86,94 @@ export default class Repa extends BaseComponent {
                         }
                     }
                 }
+            }
+        });
+    }
+
+    attendanceSaved(attendance) {
+        attendance.setAttribute("statuscolor", "var(--text-color-1)");
+        attendance.setAttribute("status", "Saved");
+        attendance.setAttribute("disablesubmit", "true");
+        attendance.removeAttribute("disablesubmit");
+    }
+
+    attendanceSubmited(attendance) {
+        attendance.setAttribute("statuscolor", "var(--warning-color-1)");
+        attendance.setAttribute("status", "Submited");
+        attendance.setAttribute("disablesave", "true");
+        attendance.setAttribute("disableinput", "true");
+        attendance.setAttribute("disablesubmit", "true");
+    }
+
+    attendanceAccepted(attendance) {
+        attendance.setAttribute("statuscolor", "var(--success-color-1)");
+        attendance.setAttribute("status", "Accepted");
+        attendance.setAttribute("disableinput", "true");
+        attendance.setAttribute("disablesave", "true");
+        attendance.setAttribute("disablesubmit", "true");
+    }
+
+    attendanceDeclined(attendance) {
+        attendance.setAttribute("statuscolor", "var(--error-color-1)");
+        attendance.setAttribute("status", "Declined");
+        attendance.removeAttribute("disablesubmit")
+    }
+
+    async attendanceListeners(newAttendance, calendar) {
+        newAttendance.close(() => calendar.selectDate(newAttendance.date));
+
+        newAttendance.remove(async () => {
+            newAttendance.setAttribute("disablesubmit", "true");
+            newAttendance.setAttribute("status", "Unsaved");
+            newAttendance.removeAttribute("statuscolor");
+            newAttendance.removeAttribute("disableinput");
+            newAttendance.removeAttribute("disablesave");
+            newAttendance.setData({ content: [], where: null, date: new Date(newAttendance.getAttribute("date")) });
+            await this.updateData();
+        });
+
+        newAttendance.save(async () => {
+            if (foundDataIndex > -1 && this.userAttendance[foundDataIndex].submited) {
+                return;
+            }
+
+            const data = newAttendance.getData();
+            newAttendance.setAttribute("loading", "true");
+            newAttendance.setAttribute("statuscolor", "var(--text-color-1)");
+            newAttendance.setAttribute("status", "Saving...");
+            newAttendance.setAttribute("disableinput", "true");
+            newAttendance.setAttribute("disablesave", "true");
+            newAttendance.setAttribute("disablesubmit", "true");
+            newAttendance.setAttribute("disablemore", "true");
+            const result = await this.saveData(data);
+            newAttendance.removeAttribute("loading");
+            newAttendance.removeAttribute("disableinput");
+            newAttendance.removeAttribute("disablesave", "true");
+            newAttendance.removeAttribute("disablesubmit", "true");
+            newAttendance.removeAttribute("disablemore", "true");
+
+            if (!result.error) {
+                newAttendance.setAttribute("status", "Saved")
+                this.updateData();
+            }
+        });
+
+        newAttendance.submit(async () => {
+            const data = newAttendance.getData();
+            newAttendance.setAttribute("loading", "true");
+            newAttendance.setAttribute("statuscolor", "var(--warning-color-1)");
+            newAttendance.setAttribute("status", "Submiting...");
+            newAttendance.setAttribute("disableinput", "true");
+            newAttendance.setAttribute("disablesave", "true");
+            newAttendance.setAttribute("disablesubmit", "true");
+            newAttendance.setAttribute("disablemore", "true");
+            const result = await this.submitData(data);
+            newAttendance.removeAttribute("loading");
+            newAttendance.removeAttribute("disablemore", "true");
+
+            if (!result.error) {
+                newAttendance.setAttribute("status", "Submited");
+                this.updateData();
             }
         });
     }
