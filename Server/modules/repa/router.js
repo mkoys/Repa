@@ -5,6 +5,7 @@ import save from "./api/save.js";
 import remove from "./api/delete.js";
 import users from "./api/users.js";
 import attendance from "./api/attendance.js";
+import attendances from "./api/attendances.js";
 
 const router = post.app();
 
@@ -13,5 +14,6 @@ router.post("/save", save);
 router.get("/users", users);
 router.post("/delete", remove);
 router.get("/attendance", attendance);
+router.post("/attendance", attendances);
 
 export default router;
