@@ -33,7 +33,7 @@ export default class Repa extends BaseComponent {
                 }
 
                 userComponent.addEventListener("click", async () => {
-                    this.updateCallback(user.id);
+                    this.updateCallback(user.id, user);
                 });
 
                 listElement.appendChild(userComponent);

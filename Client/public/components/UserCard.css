@@ -13,6 +13,16 @@
     display: flex;
 }
 
+.back {
+    display: none;
+    fill: var(--text-color-2);
+    transition: 0.2s ease fill;
+}
+
+.back:hover {
+    fill: var(--error-color-1);
+}
+
 .avatar {
     height: 36px;
     width: 36px;
@@ -23,6 +33,7 @@
 }
 
 .userText {
+    justify-content: center;
     margin-left: 10px;
     display: flex;
     flex-direction: column;

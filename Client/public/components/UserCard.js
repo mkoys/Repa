@@ -4,10 +4,11 @@ import BaseComponent from "../source/BaseComponent.js";
 
 export default class LabelInput extends BaseComponent {
 
-    static get observedAttributes() { return ["username", "role", "avatar"] }
+    static get observedAttributes() { return ["username", "role", "avatar", "undo"] }
 
     constructor() {
         super();
+        this.backCallback = () => { }
         this.router = marble.router();
         this.addStyle("/style.css");
         this.addStyle("/components/UserCard.css");
@@ -16,8 +17,11 @@ export default class LabelInput extends BaseComponent {
         this.connected(async () => {
             this.load;
 
+            const back = this.shadowRoot.querySelector(".back");
             const more = this.shadowRoot.querySelector(".more");
             const dropdown = this.shadowRoot.querySelector("marble-dropdown");
+
+            back.addEventListener("click", () => this.backCallback());
 
             dropdown.setAttribute("options", JSON.stringify([
                 {
@@ -41,7 +45,7 @@ export default class LabelInput extends BaseComponent {
                         this.router.setRoute("login");
                         this.router.addRoute("repa", document.createElement("marble-repa"))
                         break;
-                
+
                     default:
                         break;
                 }
@@ -61,15 +65,20 @@ export default class LabelInput extends BaseComponent {
         })
     }
 
+    back(callback) { this.backCallback = callback }
+
     async logout() {
-        return await (await fetch(config.baseURL + "/auth/logout", {headers: {Authorization: `Bearer ${localStorage.getItem("token")}`}})).json();
+        return await (await fetch(config.baseURL + "/auth/logout", { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } })).json();
     }
 
     async attributeChangedCallback(name, oldValue, newValue) {
         await this.load;
+        const shape = this.shadowRoot.querySelector(".shape");
         const avatar = this.shadowRoot.querySelector(".avatar");
         const username = this.shadowRoot.querySelector(".username");
         const role = this.shadowRoot.querySelector(".role");
+        const more = this.shadowRoot.querySelector(".more");
+        const back = this.shadowRoot.querySelector(".back");
 
         switch (name) {
             case "username":
@@ -80,6 +89,22 @@ export default class LabelInput extends BaseComponent {
                 break;
             case "avatar":
                 avatar.style.backgroundImage = `url('${newValue}')`;
+                break;
+            case "undo":
+                newValue = JSON.parse(newValue);
+
+                if (newValue) {
+                    shape.style.padding = "14px";
+                    back.style.display = "flex";
+                    more.style.display = "none";
+                    role.style.display = "none";
+                } else {
+                    console.log(2);
+                    shape.style.padding = "22px";
+                    back.style.display = "none";
+                    more.style.display = "flex";
+                    role.style.display = "flex";
+                }
                 break;
             default:
                 break;

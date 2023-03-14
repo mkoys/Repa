@@ -16,6 +16,8 @@ export default class Repa extends BaseComponent {
     async connectedCallback() {
         await this.load;
 
+        const cards = this.shadowRoot.querySelector(".cards");
+        const calendar = this.shadowRoot.querySelector("marble-calendar");
         const mainElement = this.shadowRoot.querySelector(".main");
         const userInfoElement = this.shadowRoot.querySelector("marble-usercard");
         const userInfo = await this.getUserInfo();
@@ -33,11 +35,28 @@ export default class Repa extends BaseComponent {
             const adminPanel = document.createElement("marble-admin");
             mainElement.appendChild(adminPanel);
 
-            adminPanel.updateCallback = async (attendance) => {
+            adminPanel.updateCallback = async (attendance, user) => {
                 adminPanel.remove();
+
+                const userPanel = document.createElement("marble-usercard");
+
+                userPanel.setAttribute("undo", "true");
+                userPanel.setAttribute("avatar", user.avatar);
+                userPanel.setAttribute("username", user.username);
+                userPanel.setAttribute("role", user .role);
+
+                cards.insertBefore(userPanel, calendar);
+
                 this.view = attendance;
                 await this.updateData();
                 this.createAttendance();
+
+                userPanel.back(() => {
+                    userPanel.remove();
+                    calendar.setAttribute("visible", "false");
+                    this.view = undefined;
+                    mainElement.appendChild(adminPanel);
+                })
             }
         } else {
             await this.updateData();
