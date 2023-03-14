@@ -91,7 +91,7 @@ export default class Repa extends BaseComponent {
                         newAttendance.setAttribute("disablesubmit", "true");
                     }
 
-                    this.attendanceListeners(newAttendance, calendar);
+                    this.attendanceListeners(newAttendance, calendar, foundDataIndex);
 
                     mainElement.appendChild(newAttendance);
                 }
@@ -138,7 +138,7 @@ export default class Repa extends BaseComponent {
         attendance.removeAttribute("disablesubmit")
     }
 
-    async attendanceListeners(newAttendance, calendar) {
+    async attendanceListeners(newAttendance, calendar, foundDataIndex) {
         newAttendance.close(() => calendar.selectDate(newAttendance.date));
 
         newAttendance.remove(async () => {
