@@ -6,6 +6,7 @@
     --main-color-1-80: rgba(142, 55, 241, 0.8);
     --main-color-2: #8e37f16d;
     --main-color-3: #6537f1cc;
+    --success-color-lower-1: rgba(52, 196, 52, 0.1);
     --success-color-1: #34c434;
     --warning-color-1: rgb(234, 183, 43);
     --back-color-1: #151515;
@@ -13,6 +14,7 @@
     --back-color-3: #212121;
     --text-color-1: white;
     --text-color-2: rgb(200, 200, 200);
+    --error-color-lower-1: rgba(227, 82, 82, 0.1);
     --error-color-1: rgb(227, 82, 82);
 }
 

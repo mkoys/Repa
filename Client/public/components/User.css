@@ -5,6 +5,19 @@
     background-color: var(--back-color-2);
     border-radius: 5px;
     align-items: center;
+    cursor: pointer;
+}
+
+.shape:hover .username {
+    color: var(--text-color-1);
+}
+
+.shape:hover .email {
+    color: var(--text-color-1);
+}
+
+.shape:hover .class {
+    color: var(--text-color-1);
 }
 
 .userDetails {
@@ -14,11 +27,14 @@
 }
 
 .username {
+    transition: 0.2s ease color;
     font-size: 15px;
-    color: var(--text-color-1);
+    color: var(--text-color-2);
 }
 
 .avatar {
+    background-position: center;
+    background-size: cover;
     margin-right: 10px;
     width: 30px;
     height: 30px;
@@ -40,8 +56,29 @@
 }
 
 .email {
+    transition: 0.2s ease color;
     font-size: 15px;
-    color: var(--text-color-1);
+    color: var(--text-color-2);
+}
+
+.classDetails {
+    visibility: hidden;
+    display: flex;
+    align-items: center;
+}
+
+.classIcon {
+    margin-right: 5px;
+}
+
+.classIcon > path {
+    fill: var(--main-color-1);
+}
+
+.class {
+    transition: 0.2s ease color;
+    color: var(--text-color-2);
+    font-size: 14px;
 }
 
 .statDetails {
@@ -66,14 +103,14 @@
 }
 
 .accepted {
-    background-color: var(--main-color-lower-1);
-    color: var(--main-color-1);
+    background-color: var(--success-color-lower-1);
+    color: var(--success-color-1);
     margin-right: 8px;
 }
 
 .declined {
-    background-color: var(--main-color-lower-1);
-    color: var(--main-color-1);
+    background-color: var(--error-color-lower-1);
+    color: var(--error-color-1);
 }
 
 .roleDetails {
@@ -90,4 +127,8 @@
 
 .more > path {
     fill: var(--text-color-2);
+    transition: 0.2s ease fill;
 }
+
+.more:hover > path {
+    fill: var(--text-color-1);}
