@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="style.css">
+	<script src="register.js" defer></script>
+	<title>Register</title>
+</head>
+<body>
+	<div class="auth register">
+		<div class="authBox">
+			<div class="loading"></div>
+			<div class="authContainer">
+				<h3 class="authHeader">Register</h3>	
+				<div class="authForm">
+					<div class="authField">
+						<label for="" class="authFieldLabel" id="usernameLabel">Username<span class="errorField usernameError"></span></label>
+						<input type="text" class="authFieldInput username">
+					</div>
+					<div class="authField">
+						<label for="" class="authFieldLabel" id="emailLabel">Email<span class="errorField emailError"></span></label>
+						<input type="email" class="authFieldInput email">
+					</div>
+					<div class="authField">
+						<label for="" class="authFieldLabel" id="passwordLabel">Password<span class="errorField passwordError"></label>
+						<input type="password" class="authFieldInput password">
+					</div>
+					<div class="authField">
+						<label for="" class="authFieldLabel" id="rePasswordLabel">Re-Password<span class="errorField rePasswordError"></label>
+						<input type="password" class="authFieldInput rePassword">
+					</div>
+					<div class="authAction">
+						<button class="authButton">Register</button>
+						<p class="authActionText">Already have an account? <a href="login.html">Login</a></p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

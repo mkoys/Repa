@@ -1,0 +1,772 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap');
+
+* {
+	padding: 0px;
+	margin: 0px;
+	box-sizing: border-box;
+	font-family: 'IBM Plex Sans', sans-serif;
+}
+
+:root {
+	--back-color: rgb(14, 14, 14);
+	--front-color: #212121;
+	--box-color: #151515;
+	--text-color: white;
+	--text-color-70: rgba(255, 255, 255, 0.7); 
+	--main-color: #8632e6;
+	--main-dark-color: #231632;
+	--secondary-color: #d78cf1;
+	--error-color: #CB4154;
+}
+
+html, body {
+	background-color: var(--back-color);
+	width: 100%;
+	height: 100%;
+}
+
+.auth {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.authBox {
+	background-color: var(--box-color);
+	border-radius: 5px;
+	overflow: hidden;
+	position: relative;
+}
+
+.authContainer {
+	padding: 30px 40px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	background-color: var(--box-color);
+}
+
+.authHeader {
+	width: 100%;
+	font-size: 30px;
+	font-weight: bold;
+	color: var(--text-color);
+}
+
+.authForm {
+	margin-top: 30px;
+	display: flex;
+	flex-direction: column;
+}
+
+.authField {
+	display: flex;
+	flex-direction: column;
+	margin-bottom: 15px;
+}
+
+.authFieldLabel {
+	margin-left: 6px;
+	margin-bottom: 8px;
+	color: var(--text-color);
+	font-weight: 600;
+	font-size: 13.5px;
+	transition: 0.5s ease color;
+}
+
+.authFieldInput {
+	width: 440px;
+	height: 41px;
+	outline: none;
+	padding: 2px 15px 2px 15px;
+	border-radius: 6px;
+	border: 1px solid transparent;
+	background-color: var(--front-color);
+	color: var(--text-color);
+	font-size: 18px;
+}
+
+.authAction {
+	margin-top: 18px;
+}
+
+.authButton {
+	cursor: pointer;
+	border: none;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	height: 45px;
+	background-color: var(--text-color);
+	color: var(--back-color);
+	border-radius: 6px;
+	font-size: 14px;
+}
+
+.authActionText {
+	margin-top: 5px;
+	color: var(--text-color);
+	font-size: 13px;
+}
+
+.authActionText > a {
+	color: var(--main-color);
+	text-decoration: none;
+}
+
+.loading {
+	width: 50%;
+	height: 6px;
+	transform: translateX(-200%);
+	border-radius: 5px;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	background-color: transparent;
+	animation-duration: 0.8s;
+	animation-name: loading;
+	animation-iteration-count: infinite;
+	animation-timing-function: linear;
+	animation-play-state: paused;
+	animation-fill-mode: forwards;
+	transition: 0.5s ease background-color;
+}
+
+.load {
+	background-color: var(--main-color);
+	animation-play-state: running;
+}
+
+.errorField {
+	opacity: 0;
+	font-style: italic;
+	font-weight: lighter;
+	color: var(--error-color);
+	transition: 0.5s ease opacity;
+}
+
+.errorValue {
+	opacity: 1;
+	color: var(--error-color);
+}
+
+@keyframes loading {
+	from {
+		transform: translateX(-200%);
+	}
+
+	to {
+		transform: translateX(280%);
+	}
+}
+
+.content {
+	display: flex;
+	width: 100%;
+	height: 100%;
+}
+
+.bar {
+	display: flex;
+	flex-direction: column;
+	min-width: 296px;
+	max-width: 296px;
+	width: 30vw;
+	height: 100%;
+}
+
+.userBox {
+	min-width: 75px;
+	height: 80px;
+	padding: 22px 20px;
+	background-color: var(--box-color);
+	border-radius: 5px;
+	display: flex;
+	width: 256px;
+	margin: 20px;
+	justify-content: space-between;
+}
+
+.userInfo {
+	display: flex;
+}
+
+.avatar {
+	width: 36px;
+	height: 36px;
+	border-radius: 50%;
+	background-color: white;
+}
+
+.userDetails {
+	margin-left: 10px;
+	display: flex;
+	flex-direction: column;
+}
+
+.username {
+	color: var(--text-color);
+	font-weight: 500;
+	font-size: 15px;
+	text-transform: capitalize;
+}
+
+.role {
+	color: var(--text-color);
+	opacity: 0.7;
+	font-size: 13px;
+	text-transform: capitalize;
+}
+
+.userOptions {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.icon {
+	fill: var(--text-color);
+	opacity: 0.7;
+}
+
+.icon:hover {
+	opacity: 1;
+	cursor: pointer;
+}
+
+.calendar {
+	background-color: var(--box-color);
+	border-radius: 5px;
+	margin-left: 20px;
+	padding: 16px;
+	width: 256px;
+}
+
+.calendarHeader {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin: 0px 8px 10px 8px;
+}
+
+.calendarTime {
+	align-items: center;
+	display: flex;
+}
+
+.calendarDateText {
+	color: var(--text-color);
+	opacity: 0.85;
+	font-size: 15px;
+	font-weight: 500;
+	user-select: none;
+}
+
+.calendarDatePicker {
+	display: flex;
+	align-items: center;
+}
+
+.calendarDateOptions {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 28px;
+}
+
+.calendarContent {
+	margin-bottom: 5px;
+	display: flex;
+	flex-direction: column;
+}
+
+.calendarDays {
+	justify-content: space-between;
+	display: flex;
+}
+
+.calendarDay {
+	user-select: none;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	color: var(--text-color);
+	opacity: 0.85;
+	font-size: 13px;
+	width: 32px;
+	height: 32px;
+}
+
+.calendarDates {
+	justify-content: space-between;
+	display: grid;
+	grid-template-columns: auto auto auto auto auto auto auto;
+}
+
+.calendarDate {
+	position: relative;
+	flex-direction: column;
+	user-select: none;
+	cursor: pointer;
+	color: var(--text-color);
+	font-size: 14px;
+	width: 32px;
+	height: 32px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border-radius: 50%;
+	transition: 0.2s ease all;
+}
+
+.calendarDateDay {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.calendarDateDayDot {
+	top: 25px;
+	position: absolute;
+	width: 4px;
+	height: 4px;
+	border-radius: 50%;
+}
+
+.savedDate {
+	background-color: var(--text-color);
+}
+
+.submitedDate {
+	background-color: yellow;
+}
+
+.calendarDateDayText {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border-radius: 50%;
+}
+
+.disabledDateBox {
+	border-color: grey !important;
+}
+
+.disabledDate {
+	color: var(--text-color);
+	opacity: 0.7;
+}
+
+.todayDate {
+	border-radius: 50%;
+	border: 1px solid var(--text-color);
+}
+
+.calendarDateAction {
+	padding: 3px;
+}
+
+.calendarDaySelected {
+	background-color: var(--main-color);
+}
+
+.multiSelect {
+	background-color: var(--secondary-color);
+}
+
+.rangeSelect {
+	background-color: var(--secondary-color);
+	border-radius: 0px;
+}
+
+.rangeSelectStart {
+	background-color: var(--secondary-color);
+	border-radius: 50px 0px 0px 50px;
+}
+
+.rangeSelectEnd {
+	background-color: var(--secondary-color);
+	border-radius: 0px 50px 50px 0px;
+}
+
+.attendance {
+	overflow: hidden;
+	position: relative;
+	min-width: 397px;
+	width: 100%;
+	position: relative;
+	padding: 15px;
+	max-width: 846px;
+	background-color: var(--box-color);
+	border-radius: 6px;
+	margin-top: 20px;
+}
+
+.attendanceHeader {
+	display: grid;
+	grid-template-columns: auto auto auto;
+	align-items: center;
+	justify-content: space-between;
+	margin-right: 4px;
+	margin-left: 28px;
+	margin-bottom: 15px;
+}
+
+.attendanceStatus {
+	font-size: 13px;
+	font-weight: 500;
+	color: var(--text-color);
+	opacity: 0.7;
+}
+
+.attendanceDate {
+	margin-right: 28px;
+	font-size: 14px;
+	font-weight: 500;
+	color: var(--text-color);
+}
+
+.attendanceContent {
+
+}
+
+.attendanceInput {
+	display: flex;
+	align-items: center;
+	margin-bottom: 8px;
+}
+
+.attendanceInput > input {
+	font-size: 17px;
+	color: var(--text-color);
+	outline: none;
+	border-radius: 5px;
+	background-color: var(--back-color);
+	padding: 12px;
+	border: 1px solid transparent;
+	transition: 0.2s ease color;
+}
+
+.attendanceInputDrag {
+	min-width: 13px;
+	margin-right: 15px;
+}
+
+.attendanceInputDescription {
+	width: 100%;
+	margin-right: 10px;
+}
+
+.attendanceInputTime {
+	text-align: center;
+	width: 77px;
+	margin-right: 10px;
+}
+
+.attendanceInputClass {
+	text-align: center;
+	width: 77px;
+}
+
+.attendanceFooter {
+	margin-top: 15px;
+	justify-content: space-between;
+	display: flex;
+	align-items: center;
+}
+
+.attendanceCheckboxes {
+	margin-right: 15px;
+	margin-left: 28px;
+	display: flex;
+}
+
+.attendanceCheckbox {
+ display: flex;
+}
+
+.attendanceCheckboxText {
+	font-size: 13px;
+	color: var(--text-color);
+	margin-left: 5px;
+}
+
+.boxcheck {
+	cursor: pointer;
+	background-color: var(--back-color);
+	width: 20px;
+	height: 20px;
+	border-radius: 3px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	opacity: 1;
+}
+
+.check {
+ fill: var(--main-color);
+}
+
+.attendanceButtons {
+ display: flex;
+}
+
+.attendanceButtons > button:disabled {
+	background-color: var(--main-dark-color);
+	cursor: not-allowed;
+}
+
+input:disabled { 
+	color: var(--text-color-70);
+
+}
+
+.attendanceMore {
+	margin-right: 10px;
+}
+
+.attendanceButtonIcon {
+ fill: var(--main-dark-color);
+}
+
+.attendanceButtons > button:disabled > .attendanceButtonIcon {
+ fill: var(--main-color);
+}
+
+.attendanceSave {
+	margin-right: 10px;
+}
+
+.attendanceSubmit {
+
+}
+
+.attendanceButtons > button {
+	cursor: pointer;
+	border: none;
+	width: 48px;
+	height: 48px;
+	border-radius: 5px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: var(--main-color);
+	transition: 0.4s linear all;
+}
+
+.main {
+	margin-right: 20px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 100%;
+	height: fit-content;
+}
+
+.userList {
+	border-radius: 5px;
+	padding: 15px;
+	max-width: 846px;
+	width: 100%;
+	background-color: var(--box-color);
+	display: flex;
+	flex-direction: column;
+	margin-top: 20px;
+}
+
+.userListHeader {
+	margin: 0px 15px 0px 15px;
+	align-items: center;
+	display: flex;
+	justify-content: space-between;
+}
+
+.userListActions {
+	justify-content: space-between;
+	display: flex;
+}
+
+.userListHeaderText {
+	color: var(--text-color);
+	font-size: 26px;
+	font-weight: 500;
+}
+
+.userAction {
+	margin-left: 24px;
+	align-items: center;
+	display: flex;
+}
+
+.actionIcon {
+	font-size: 20px !important;
+	fill: var(--text-color-70);
+	color: var(--text-color-70) !important;
+	margin-right: 4px;
+}
+
+.actionText {
+	font-weight: 600;
+	font-size: 14px;
+	color: var(--text-color-70);
+	transition: 0.2s ease color;
+}
+
+.userListFooter {
+	margin: 0px 15px 0px 15px;
+	align-items: center;
+	display: flex;
+	justify-content: space-between;
+}
+
+.paging {
+	align-items: center;
+	display: flex;
+}
+
+.pagingText {
+	user-select: none;
+	color: var(--text-color-70);
+	font-size: 13px;
+}
+
+.pagingActions {
+	margin: 0px 10px 0px 10px;
+}
+
+.pagingPicker {
+	fill: var(--text-color-70);
+}
+
+.pagingBack {
+	margin-right: 5px;
+}
+
+.pagingTextVisible {
+	user-select: none;
+	color: var(--text-color-70);
+	font-size: 13px;
+}
+
+.pagesVisible {
+	color: var(--text-color);
+	font-weight: 500;
+}
+
+.pageNumber {
+	color: var(--text-color);
+	font-weight: 500;
+}
+
+.pageLength {
+	color: var(--text-color);
+	font-weight: 500;
+}
+
+@media only screen and (max-width: 712px) {
+	.bar {
+		width: 100%;
+		flex-direction: row;
+		width: 100%;
+		height: 317px;
+	}
+
+	.userBox {
+		width: 100%;
+	}
+
+	.calendar {
+		margin: 0px;
+		margin-right: 20px;
+		margin-top: 20px;
+	}
+
+	.attendance {
+		width: calc(100% - 40px);
+	}
+
+	.main {
+		padding-bottom: 15px;
+	}
+
+	.content {
+		flex-direction: column;
+	}
+}
+
+@media only screen and (max-width: 500px) {
+	.bar {
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		height: fit-content;
+		min-width: 296px;
+	}
+
+	.userBox {
+		margin-bottom: 15px;
+		width: calc(100% - 40px);
+	}
+
+	.calendar {
+		width: calc(100% - 40px);
+		margin: 0px;
+		margin-right: 20px;
+		margin-left: 20px;
+	}
+
+	.attendance {
+		margin-top: 15px;
+	}
+}
+
+@media only screen and (max-width: 438px) {
+	.attendance {
+		min-width: 369px;
+	}
+
+	.attendanceHeader {
+		margin-left: 0px;
+	}
+
+	.attendanceCheckboxes {
+		margin-left: 0px;
+	}
+
+ .attendanceInputDrag {
+		display: none;
+ }
+}
+
+@media only screen and (max-width: 405px) {
+	.attendance {
+		min-width: 286px;
+	}
+
+	.attendanceCheckboxes {
+		flex-direction: column;
+	}
+
+  #school {
+		margin-bottom: 5px;
+	}
+}
+
+@media only screen and (max-width: 325px) {
+	.attendance {
+		min-width: 246px;
+	}
+
+	.attendanceButtons > button {
+		width: 38px;
+		height: 38px;
+	}
+}
+
+
