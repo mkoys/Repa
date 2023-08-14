@@ -346,6 +346,14 @@ html, body {
 	background-color: yellow;
 }
 
+.declinedDate {
+	background-color: red;
+}
+
+.acceptedDate {
+	background-color: lime;
+}
+
 .calendarDateDayText {
 	width: 100%;
 	height: 100%;

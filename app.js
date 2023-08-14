@@ -123,9 +123,10 @@ app.put("/attendance", async (req, res) => {
 	let updateAttendance = {};
 
 	if(req.query.id) {
-		updateAttendance = await attendances.updateOne({user: req.query.id, date}, {$set: { status: 2 }});
+		console.log(req.query)
+		updateAttendance = await attendances.updateOne({user: req.query.id, date}, {$set: { status: req.query.status ? parseInt(req.query.status) : 2 }});
 	}else {
-		updateAttendance = await attendances.updateOne({user: session.id, date}, {$set: { status: 2 }});
+		updateAttendance = await attendances.updateOne({user: session.id, date}, {$set: { status: req.query.status ? parseInt(req.query.status) : 2 }});
 	}
 
 	if(updateAttendance.modifiedCount == 0) return res.json({error: {id: 10, message: "No saved attendance"}});

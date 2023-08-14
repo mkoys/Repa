@@ -15,6 +15,7 @@ const userData = await fetch("/user", {headers: {Authorization: `token ${token}`
 const userDataJson = await userData.json();
 usernameElement.textContent = userDataJson.username;
 const userAdmin = userDataJson.role === "admin";
+const userMode = 1;
 if(userDataJson.role) roleElement.textContent = userDataJson.role;
 if(userDataJson.avatar) avatarElement.style.backgroudImage = `url(${userDataJson.avatar})`;
 
@@ -25,8 +26,6 @@ if(userAdmin) {
 		if(param[0] === "id") userIdentifier = param[1];
 	}
 }
-
-console.log(userAdmin, userIdentifier);
 
 const MonthsOfYear = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 let calendarDates = [];
@@ -149,8 +148,6 @@ function createAttendance({ date, status, checkbox, onClose, content } = {}) {
 		const lastInputTime = lastInput.querySelector(".attendanceInputTime");
 		const lastInputClass = lastInput.querySelector(".attendanceInputClass");
 
-
-
 		if(status < 2) {
 			lastInput.addEventListener("dragover", event => event.preventDefault());
 			lastInput.addEventListener("dragstart", event => {
@@ -173,16 +170,16 @@ function createAttendance({ date, status, checkbox, onClose, content } = {}) {
 
 	attendanceSubmitElement.addEventListener("click", async event => {
 		if(!event.srcElement.disabled) {
-			const response = await fetch(`/attendance${userIdentifier ? `?id=${userIdentifier}` : ""}`, {
+			const response = await fetch(`/attendance${userIdentifier ? `?id=${userIdentifier}${userMode ? `&status=3` : ""}` : ""}`, {
 				method: "PUT",
 				headers: { "Content-type": "application/json", Authorization: `token ${token}` },
 				body: JSON.stringify({date})
 			});
 			const responseJson = await response.json();
 			const attendanceIndex = attendances.findIndex(attendance => compareDates(attendance.date, date));
-			attendances[attendanceIndex].status = 2;
+			attendances[attendanceIndex].status = userMode ? 3 : 2;
 			calendarDates = generateCalendarDates();
-			setStatus(2);
+			setStatus(userMode ? 3 : 2);
 			setContent(attendances[attendanceIndex].content);
 		}
 	});
@@ -209,7 +206,7 @@ function createAttendance({ date, status, checkbox, onClose, content } = {}) {
 				place: getABox(),
 				date,
 				content,
-				status: 1
+				status: userMode ? 4 : 1
 			}
 
 			const response = await fetch(`/attendance${userIdentifier ? `?id=${userIdentifier}` : ""}`, {
@@ -228,7 +225,7 @@ function createAttendance({ date, status, checkbox, onClose, content } = {}) {
 					attendances.push(body)
 				}
 				calendarDates = generateCalendarDates();
-				setStatus(1);
+				setStatus(userMode ? 4 : 1);
 				setContent(content);
 			}
 		}
@@ -330,10 +327,6 @@ function createAttendance({ date, status, checkbox, onClose, content } = {}) {
 		}
 	}
 
-
-
-
-
 	setStatus(status);
 	setDate(date);
 	if(checkbox !== undefined) checkABox(checkbox); 
@@ -346,23 +339,67 @@ function createAttendance({ date, status, checkbox, onClose, content } = {}) {
 			attendanceStatusElement.textContent = "Unsaved";
 			attendanceStatusElement.style.opacity = 0.7;
 			attendanceStatusElement.style.color = "var(--text-color)";
-			attendanceSubmitElement.disabled = true;
-			attendanceMoreElement.disabled = false;
-			attendanceSaveElement.disabled = false;
+			if(!userMode) {
+				attendanceSubmitElement.disabled = true;
+				attendanceMoreElement.disabled = false;
+				attendanceSaveElement.disabled = false;
+			}else {
+				attendanceSubmitElement.disabled = true;
+				attendanceMoreElement.disabled = true;
+				attendanceSaveElement.disabled = true;
+			}
 		}else if(status == 1) {
 			attendanceStatusElement.textContent = "Saved";
 			attendanceStatusElement.style.color = "var(--text-color)";
 			attendanceStatusElement.style.opacity = 1;
-			attendanceSubmitElement.disabled = false;
-			attendanceMoreElement.disabled = false;
-			attendanceSaveElement.disabled = false;
+			if(!userMode) {
+				attendanceSubmitElement.disabled = false;
+				attendanceMoreElement.disabled = false;
+				attendanceSaveElement.disabled = false;
+			}else {
+				attendanceSubmitElement.disabled = true;
+				attendanceMoreElement.disabled = true;
+				attendanceSaveElement.disabled = true;
+			}
 		}else if(status == 2) {
 			attendanceStatusElement.textContent = "Submited";
 			attendanceStatusElement.style.color = "yellow";
 			attendanceStatusElement.style.opacity = 1;
-			attendanceSubmitElement.disabled = true;
-			attendanceMoreElement.disabled = false;
-			attendanceSaveElement.disabled = true;
+			if(!userMode) {
+				attendanceSubmitElement.disabled = true;
+				attendanceMoreElement.disabled = false;
+				attendanceSaveElement.disabled = true;
+			}else {
+				attendanceSubmitElement.disabled = false;
+				attendanceMoreElement.disabled = false;
+				attendanceSaveElement.disabled = false;
+			}
+		}else if(status == 3) {
+			attendanceStatusElement.textContent = "Declined";
+			attendanceStatusElement.style.color = "red";
+			attendanceStatusElement.style.opacity = 1;
+			if(!userMode) {
+				attendanceSubmitElement.disabled = true;
+				attendanceMoreElement.disabled = false;
+				attendanceSaveElement.disabled = true;
+			}else {
+				attendanceSubmitElement.disabled = true;
+				attendanceMoreElement.disabled = false;
+				attendanceSaveElement.disabled = true;
+			}
+		}else if(status == 4) {
+			attendanceStatusElement.textContent = "Accepted";
+			attendanceStatusElement.style.color = "lime";
+			attendanceStatusElement.style.opacity = 1;
+			if(!userMode) {
+				attendanceSubmitElement.disabled = true;
+				attendanceMoreElement.disabled = false;
+				attendanceSaveElement.disabled = true;
+			}else {
+				attendanceSubmitElement.disabled = true;
+				attendanceMoreElement.disabled = false;
+				attendanceSaveElement.disabled = true;
+			}
 		}
 	}
 
@@ -463,6 +500,12 @@ function generateCalendarDates() {
 					break;
 				case 2: 
 					calendarDateDayDotElement.classList.add("submitedDate");
+					break;
+				case 3: 
+					calendarDateDayDotElement.classList.add("declinedDate");
+					break;
+				case 4: 
+					calendarDateDayDotElement.classList.add("acceptedDate");
 					break;
 				default: break;
 			}
