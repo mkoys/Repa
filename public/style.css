@@ -16,6 +16,7 @@
 	--main-color: #8632e6;
 	--main-dark-color: #231632;
 	--secondary-color: #d78cf1;
+	--secondary-dark-color: #8F5B9F;
 	--error-color: #CB4154;
 }
 
@@ -619,7 +620,7 @@ input:disabled {
 }
 
 .userListFooter {
-	margin: 0px 15px 0px 15px;
+	margin-top: 15px;
 	align-items: center;
 	display: flex;
 	justify-content: space-between;
@@ -667,6 +668,136 @@ input:disabled {
 .pageLength {
 	color: var(--text-color);
 	font-weight: 500;
+}
+
+.userListContent {
+	margin-top: 20px;
+	display: flex;
+	flex-direction: column;
+}
+
+.userListContentList {
+	display: flex;
+	flex-direction: column;
+}
+
+.userContainer {
+	margin-bottom: 5px;
+	border-radius: 5px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 15px;
+	background-color: var(--back-color);
+}
+
+.userSelect {
+	justify-content: center;
+	align-items: center;
+	width: 20px;
+	height: 20px;
+	border-radius: 2px;
+	background-color: var(--box-color);
+}
+
+.userAvatarUsername {
+	width: 120px;
+	align-items: center;
+	display: flex;
+}
+
+.userAvatar {
+	margin-right: 10px;
+	width: 30px;
+	height: 30px;
+	border-radius: 50%;
+	background-color: var(--text-color);
+}
+
+.userUsernameText {
+	color: var(--text-color);
+	font-size: 16px;
+	font-style: normal;
+	font-weight: 400;
+	line-height: normal;
+}
+
+.userEmail {
+	max-width: 200px;
+	width: 100%;
+	display: flex;
+	align-items: center;
+}
+
+.userEmailText {
+	color: var(--text-color);
+	font-size: 16px;
+	font-style: normal;
+	font-weight: 400;
+	line-height: normal;
+}
+
+.userEmailIcon {
+ margin-right: 8px;
+}
+
+.tags {
+	width: 200px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.userClass {
+	margin-right: 8px;
+	display: none;
+	justify-content: center;
+	align-items: center;
+	padding: 6px;
+	background-color: var(--main-dark-color);
+	border-radius: 5px;
+}
+
+.userClassText {
+	color: var(--main-color);
+	font-size: 15px;
+	font-weight: 500;
+	line-height: normal;
+}
+
+.userClassIcon {
+ margin-right: 5px;
+}
+
+.userRole {
+	display: none;
+	justify-content: center;
+	align-items: center;
+	padding: 6px;
+	background-color: var(--secondary-dark-color);
+	border-radius: 5px;
+}
+
+.userRoleText {
+	color: var(--secondary-color);
+	font-size: 15px;
+	font-weight: 500;
+	line-height: normal;
+}
+
+.userRoleIcon {
+ margin-right: 5px;
+}
+
+.userRoleIcon > path {
+	fill: var(--secondary-color);
+}
+
+.userActions {
+	margin-right: 20px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 @media only screen and (max-width: 712px) {

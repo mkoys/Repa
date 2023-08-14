@@ -14,8 +14,19 @@ if(!token) window.location = "/login.html";
 const userData = await fetch("/user", {headers: {Authorization: `token ${token}`}});
 const userDataJson = await userData.json();
 usernameElement.textContent = userDataJson.username;
-if(userDataJson.role) roleElement.textContent = role;
+const userAdmin = userDataJson.role === "admin";
+if(userDataJson.role) roleElement.textContent = userDataJson.role;
 if(userDataJson.avatar) avatarElement.style.backgroudImage = `url(${userDataJson.avatar})`;
+
+let userIdentifier = false;
+
+if(userAdmin) {
+	for(let param of new URLSearchParams(window.location.search)) {
+		if(param[0] === "id") userIdentifier = param[1];
+	}
+}
+
+console.log(userAdmin, userIdentifier);
 
 const MonthsOfYear = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 let calendarDates = [];
@@ -24,7 +35,7 @@ const calendarEvents = [];
 const contentState = [];
 
 const calendarDate = new Date();
-const attendances = await fetch("/attendance", {headers: {Authorization: `token ${token}`}}).then(async res => await res.json());
+const attendances = await fetch(`/attendance${userIdentifier ? `?id=${userIdentifier}` : ""}`, {headers: {Authorization: `token ${token}`}}).then(async res => await res.json());
 
 attendances.forEach(attendance => {
 	attendance.date = new Date(attendance.date);
@@ -160,12 +171,9 @@ function createAttendance({ date, status, checkbox, onClose, content } = {}) {
 		}
 	}
 
-
-
-
 	attendanceSubmitElement.addEventListener("click", async event => {
 		if(!event.srcElement.disabled) {
-			const response = await fetch("/attendance", {
+			const response = await fetch(`/attendance${userIdentifier ? `?id=${userIdentifier}` : ""}`, {
 				method: "PUT",
 				headers: { "Content-type": "application/json", Authorization: `token ${token}` },
 				body: JSON.stringify({date})
@@ -204,7 +212,7 @@ function createAttendance({ date, status, checkbox, onClose, content } = {}) {
 				status: 1
 			}
 
-			const response = await fetch("/attendance", {
+			const response = await fetch(`/attendance${userIdentifier ? `?id=${userIdentifier}` : ""}`, {
 				method: "POST",
 				headers: { "Content-type": "application/json", Authorization: `token ${token}` },
 				body: JSON.stringify(body)

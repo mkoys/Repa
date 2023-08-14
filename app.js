@@ -1,7 +1,7 @@
 import { MongoClient } from "mongodb";
 import { nanoid } from "nanoid";
 import bcrypt from "bcrypt";
-import express from "express";
+import express, { query } from "express";
 import helmet from "helmet";
 import cors from "cors";
 import morgan from "morgan";
@@ -24,6 +24,7 @@ try { mongoClient.connect() }
 catch (error) { throw new Error("Couldn`t connect to database") }
 
 app.get("/user", async (req, res) => {
+	const removeKeys = ["password", "_id"];
 	const notAuthorized = {error: {id: 5, message: "User not authorized"}};
 
 	const token = req.headers.authorization.split(" ")[1];
@@ -33,9 +34,13 @@ app.get("/user", async (req, res) => {
 	if(!session) return res.json(notAuthorized);
 
 	const user = await users.findOne({id: session.id});
-	if(!user) res.json({error: {id: 6, message: "User not found"}});
+	if(!user) return res.json({error: {id: 6, message: "User not found"}});
 
-	res.json({ id: user.id, username: user.username });
+	Object.keys(user).forEach(key => {
+		if(removeKeys.findIndex(removeKey => removeKey === key) > -1) delete user[key];
+	});
+
+	res.json({ ...user});
 });
 
 app.get("/users", async (req, res) => {
@@ -96,8 +101,14 @@ app.get("/attendance", async (req, res) => {
 	if(!token) return res.json({error: {id: 5, message: "User not authorized"}});
 	const session = await sessions.findOne({ token });
 	if(!session) return res.json({error: {id: 5, message: "User not authorized"}});
-	const attendancesResult = await attendances.find({user: session.id}).toArray()
-	res.json(attendancesResult);
+	if(req.query.id) {
+		const attendancesResult = await attendances.find({user: req.query.id}).toArray()
+		if(!attendancesResult) return res.json({error: {id: 7, message: "User not found"}});
+		res.json(attendancesResult);
+	}else {
+		const attendancesResult = await attendances.find({user: session.id}).toArray()
+		res.json(attendancesResult);
+	}
 });
 
 app.put("/attendance", async (req, res) => {
@@ -109,10 +120,15 @@ app.put("/attendance", async (req, res) => {
 	const data = req.body;
 	if(!data || !data.date) return res.json({error: { id: 0, message: "Invalid request" }});
 	const date = new Date(data.date);
+	let updateAttendance = {};
 
-	const updateAttendance = await attendances.updateOne({user: session.id, date}, {$set: { status: 2 }});
+	if(req.query.id) {
+		updateAttendance = await attendances.updateOne({user: req.query.id, date}, {$set: { status: 2 }});
+	}else {
+		updateAttendance = await attendances.updateOne({user: session.id, date}, {$set: { status: 2 }});
+	}
+
 	if(updateAttendance.modifiedCount == 0) return res.json({error: {id: 10, message: "No saved attendance"}});
-
 	res.json({message: "ok"});
 });
 
@@ -134,7 +150,13 @@ app.post("/attendance", async (req, res) => {
 		return res.json({error: {id: 1, message: "Invalid type"}});
 	}
 
-	const foundAttendance = await attendances.findOne({ user: user.id, date: new Date(data.date)  });
+	let foundAttendance = null;
+
+	if(req.query.id) {
+		foundAttendance = await attendances.findOne({ user: req.query.id, date: new Date(data.date)  });
+	}else {
+		foundAttendance = await attendances.findOne({ user: user.id, date: new Date(data.date)  });
+	}
 
 	if(foundAttendance) {
 		attendances.updateOne({id: foundAttendance.id}, {
@@ -147,7 +169,7 @@ app.post("/attendance", async (req, res) => {
 	}else {
 		attendances.insertOne({
 			id: nanoid(),
-			user: user.id,
+			user: req.query.id ? req.query.id : user.id,
 			date: new Date(data.date),
 			content: data.content,
 			place: data.place,
