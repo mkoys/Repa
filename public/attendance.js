@@ -7,6 +7,10 @@ const attendanceElementTemplate = document.querySelector("#attendanceTemplate");
 const roleElement = document.querySelector(".role");
 const usernameElement = document.querySelector(".username");
 const avatarElement = document.querySelector(".avatar");
+const userBoxOther = document.querySelector(".userBoxOther");
+const usernameOtherElement = document.querySelector(".usernameOther");
+const roleOtherElement = document.querySelector(".roleOther");
+const userBack = document.querySelector(".userBack"); 
 
 const token = localStorage.getItem("token");
 if(!token) window.location = "/login.html";
@@ -15,15 +19,32 @@ const userData = await fetch("/user", {headers: {Authorization: `token ${token}`
 const userDataJson = await userData.json();
 usernameElement.textContent = userDataJson.username;
 const userAdmin = userDataJson.role === "admin";
-const userMode = 1;
 if(userDataJson.role) roleElement.textContent = userDataJson.role;
 if(userDataJson.avatar) avatarElement.style.backgroudImage = `url(${userDataJson.avatar})`;
 
 let userIdentifier = false;
+let userUsername = false;
+let userRole = false;
+
+userBack.addEventListener("click", () => window.location.href = "/users.html");
 
 if(userAdmin) {
 	for(let param of new URLSearchParams(window.location.search)) {
 		if(param[0] === "id") userIdentifier = param[1];
+		if(param[0] === "username") userUsername = param[1];
+		if(param[0] === "role") userRole = param[1];
+	}
+}
+
+const userMode = userIdentifier ? 1 : 0;
+
+if(userIdentifier) {
+	userBoxOther.style.display = "flex";
+	usernameOtherElement.textContent = userUsername;
+	if(userRole !== "undefined") {
+		roleOtherElement.textContent = userRole;
+	}else {
+		roleOtherElement.textContent = "Student";
 	}
 }
 
@@ -98,10 +119,12 @@ function createAttendance({ date, status, checkbox, onClose, content } = {}) {
 
 	const inputCopy = lastInput.cloneNode(true);
 
+	let checkboxDisable = false;
+
 	attendanceCheckboxCompanyCheck.style.display = "none";
 	attendanceCheckboxSchoolCheck.style.display = "none";
-	attendanceCheckboxCompanyBox.addEventListener("click", _event => checkCheckbox(attendanceCheckboxCompanyCheck, attendanceCheckboxSchoolCheck));
-	attendanceCheckboxSchoolBox.addEventListener("click", _event => checkCheckbox(attendanceCheckboxSchoolCheck, attendanceCheckboxCompanyCheck));
+	attendanceCheckboxCompanyBox.addEventListener("click", _event => checkCheckbox(attendanceCheckboxCompanyCheck, attendanceCheckboxSchoolCheck, checkboxDisable));
+	attendanceCheckboxSchoolBox.addEventListener("click", _event => checkCheckbox(attendanceCheckboxSchoolCheck, attendanceCheckboxCompanyCheck, checkboxDisable));
 
 	setContent(content);
 
@@ -362,6 +385,7 @@ function createAttendance({ date, status, checkbox, onClose, content } = {}) {
 				attendanceSaveElement.disabled = true;
 			}
 		}else if(status == 2) {
+			checkboxDisable = true;
 			attendanceStatusElement.textContent = "Submited";
 			attendanceStatusElement.style.color = "yellow";
 			attendanceStatusElement.style.opacity = 1;
@@ -375,6 +399,7 @@ function createAttendance({ date, status, checkbox, onClose, content } = {}) {
 				attendanceSaveElement.disabled = false;
 			}
 		}else if(status == 3) {
+			checkboxDisable = true;
 			attendanceStatusElement.textContent = "Declined";
 			attendanceStatusElement.style.color = "red";
 			attendanceStatusElement.style.opacity = 1;
@@ -388,6 +413,7 @@ function createAttendance({ date, status, checkbox, onClose, content } = {}) {
 				attendanceSaveElement.disabled = true;
 			}
 		}else if(status == 4) {
+			checkboxDisable = true;
 			attendanceStatusElement.textContent = "Accepted";
 			attendanceStatusElement.style.color = "lime";
 			attendanceStatusElement.style.opacity = 1;
@@ -421,14 +447,16 @@ function createAttendance({ date, status, checkbox, onClose, content } = {}) {
 		}
 	}
 
-	function checkCheckbox(primary, secondary) {
-		if(primary.style.display === "none") {
-			primary.style.display = null;
-			if(secondary.style.display !== "none") {
-				secondary.style.display = "none";
+	function checkCheckbox(primary, secondary, disabled) {
+		if(!disabled) {
+			if(primary.style.display === "none") {
+				primary.style.display = null;
+				if(secondary.style.display !== "none") {
+					secondary.style.display = "none";
+				}
+			}else {
+				primary.style.display = "none";
 			}
-		}else {
-			primary.style.display = "none";
 		}
 	}
 

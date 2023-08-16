@@ -172,16 +172,17 @@ html, body {
 }
 
 .bar {
+	margin-top: 20px;
 	display: flex;
 	flex-direction: column;
 	min-width: 296px;
 	max-width: 296px;
 	width: 30vw;
-	height: 100%;
+	height: calc(100% - 20px);
 }
 
 .userBox {
-	min-width: 75px;
+	min-width: 180px;
 	height: 80px;
 	padding: 22px 20px;
 	background-color: var(--box-color);
@@ -189,6 +190,7 @@ html, body {
 	display: flex;
 	width: 256px;
 	margin: 20px;
+	margin-top: 0px;
 	justify-content: space-between;
 }
 
@@ -579,6 +581,7 @@ input:disabled {
 }
 
 .userList {
+	min-width: 260px;
 	border-radius: 5px;
 	padding: 15px;
 	max-width: 846px;
@@ -611,6 +614,10 @@ input:disabled {
 	margin-left: 24px;
 	align-items: center;
 	display: flex;
+}
+
+.userActionMore {
+	margin-left: 48px;
 }
 
 .actionIcon {
@@ -808,12 +815,78 @@ input:disabled {
 	align-items: center;
 }
 
+.userActionCalendar:hover > path {
+	fill: var(--text-color);
+	cursor: pointer;
+}
+
+.userBoxOther {
+	display: none;
+}
+
+.userBack:hover {
+	cursor: pointer;
+}
+
+.userBack:hover > path {
+	fill: white;
+}
+
+
+@media only screen and (max-width: 1070px) {
+	.userAvatar {
+		display: none;
+	}
+
+	.userAvatarUsername {
+		width: 60px;
+	}
+}
+
+@media only screen and (max-width: 1000px) {
+	.tags {
+		display: none;
+	}
+}
+
+@media only screen and (max-width: 790px) {
+	.userActionCalendar {
+		display: none;
+	}
+
+	.userActionMore {
+		margin-left: 0px;
+	}
+}
+
 @media only screen and (max-width: 712px) {
+	.userInfoGroup {
+		width: 100%;
+		margin-right: 20px;
+	}
+
+	.userActionCalendar {
+		display: flex;
+	}
+
+	.userActionMore {
+		margin-left: 48px;
+	}
+
+	.userList {
+		width: calc(100% - 40px);
+		margin-top: 0px;
+		margin-left: 20px;
+		margin-right: 20px;
+	}
+
+
 	.bar {
-		width: 100%;
+		margin-top: 20px;
 		flex-direction: row;
+		max-width: none;
 		width: 100%;
-		height: 317px;
+		height: fit-content;
 	}
 
 	.userBox {
@@ -823,7 +896,7 @@ input:disabled {
 	.calendar {
 		margin: 0px;
 		margin-right: 20px;
-		margin-top: 20px;
+		margin-left: 20px;
 	}
 
 	.attendance {
@@ -840,6 +913,15 @@ input:disabled {
 }
 
 @media only screen and (max-width: 500px) {
+	.userInfoGroup {
+		margin-right: 0px;
+	}
+
+
+	.userAvatarUsername {
+		display: none;
+	}
+
 	.bar {
 		width: 100%;
 		display: flex;
@@ -866,6 +948,19 @@ input:disabled {
 }
 
 @media only screen and (max-width: 438px) {
+
+	.userAvatarUsername {
+		display: flex;
+	}
+
+	.userEmail {
+		display: none;
+	}
+
+	.actionAddUser {
+		display: none;
+	}
+
 	.attendance {
 		min-width: 369px;
 	}
@@ -898,6 +993,10 @@ input:disabled {
 }
 
 @media only screen and (max-width: 325px) {
+	.actionFilter {
+		margin-left: 10px;
+	}
+
 	.attendance {
 		min-width: 246px;
 	}
