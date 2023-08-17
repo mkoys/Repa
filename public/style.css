@@ -58,6 +58,7 @@ html, body {
 }
 
 .authForm {
+	width: 100%;
 	margin-top: 30px;
 	display: flex;
 	flex-direction: column;
@@ -231,8 +232,16 @@ html, body {
 	cursor: pointer;
 }
 
+.userDropdownBox:hover .dropdownTextHeader {
+	color: var(--text-color);
+}
+
 .userDropdownBox:hover path {
 	fill: var(--main-color);
+}
+
+.userDropdownBox:hover .logoutPath {
+	fill: var(--error-color);
 }
 
 .dropdownIconBox {
@@ -260,6 +269,7 @@ html, body {
 	font-style: normal;
 	font-weight: 500;
 	line-height: normal;
+	transition: 0.2s ease color;
 }
 
 .dropdownTextFooter {
@@ -285,6 +295,10 @@ html, body {
 	margin-left: 10px;
 	display: flex;
 	flex-direction: column;
+}
+
+.dropdownAdmin {
+	display: none;
 }
 
 .username {
@@ -998,6 +1012,17 @@ input:disabled {
 
 	.content {
 		flex-direction: column;
+	}
+}
+
+@media only screen and (max-width: 560px) {
+	.authBox {
+		width: 100%;
+		height: 100%;
+	}
+
+	.authFieldInput {
+		width: calc(100%);
 	}
 }
 

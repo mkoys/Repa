@@ -13,6 +13,10 @@ const roleOtherElement = document.querySelector(".roleOther");
 const userBack = document.querySelector(".userBack"); 
 const userDropdownElement = document.querySelector(".userBoxDropdown");
 const userMoreElement = document.querySelector(".userMoreIcon");
+const userAdminDropdowns = document.querySelectorAll(".dropdownAdmin");
+const logoutDropdownElement = document.querySelector(".logoutDropdown");
+const attendanceDropdownElement = document.querySelector(".attendanceDropdown");
+const usersDropdownElement = document.querySelector(".usersDropdown");
 
 const token = localStorage.getItem("token");
 if(!token) window.location = "/login.html";
@@ -20,6 +24,14 @@ if(!token) window.location = "/login.html";
 let userDropdown = false;
 let userDropdownLock = false;
 let userDropdownTimeout = false;
+
+logoutDropdownElement.addEventListener("click", () => {
+	localStorage.removeItem("token");
+	window.location.href = "/login.html";
+});
+
+attendanceDropdownElement.addEventListener("click", () => window.location.href = "/attendance.html");
+usersDropdownElement.addEventListener("click", () => window.location.href = "/users.html");
 
 userMoreElement.addEventListener("mouseenter", () => {
 	setUserDropdown(true);
@@ -68,7 +80,7 @@ const userData = await fetch("/user", {headers: {Authorization: `token ${token}`
 const userDataJson = await userData.json();
 usernameElement.textContent = userDataJson.username;
 const userAdmin = userDataJson.role === "admin";
-if(userDataJson.role) roleElement.textContent = userDataJson.role;
+roleElement.textContent = userDataJson.role ? userDataJson.role : "Student";
 if(userDataJson.avatar) avatarElement.style.backgroudImage = `url(${userDataJson.avatar})`;
 
 let userIdentifier = false;
@@ -83,6 +95,10 @@ if(userAdmin) {
 		if(param[0] === "username") userUsername = param[1];
 		if(param[0] === "role") userRole = param[1];
 	}
+	
+	userAdminDropdowns.forEach(element => {
+		element.style.display = "flex";
+	});
 }
 
 const userMode = userIdentifier ? 1 : 0;

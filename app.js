@@ -45,8 +45,8 @@ app.get("/user", async (req, res) => {
 
 app.get("/users", async (req, res) => {
 	const params = req.query;
-	const pageVisible = params.visible ? params.visible : 5;
-	const pageNumber = params.page ? params.page : 0;
+	const pageVisible = params.visible ? parseInt(params.visible) : 5;
+	const pageNumber = params.page ? parseInt(params.page) : 0;
 
 	const userLength = await users.countDocuments(); 
 
