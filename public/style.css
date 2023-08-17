@@ -194,6 +194,82 @@ html, body {
 	justify-content: space-between;
 }
 
+.dropdownKnob {
+	top: -9px;
+	left: 85%;
+	position: absolute;
+}
+
+.userBoxDropdown {
+	opacity: 0;
+	transition: 0.2s ease opacity;
+	visibility: hidden;
+	position: relative;
+	z-index: 1000;
+	border-radius: 4px;
+	padding: 6px;
+	position: absolute;
+	background-color: var(--box-color);
+	box-shadow: 1px 0px 20px rgba(0, 0, 0, 0.4);
+	display: flex;
+	flex-direction: column;
+	top: 40px;
+	right: -10px;
+}
+
+.userDropdownBox {
+	width: 180px;
+	padding: 7px;
+	display: flex;
+	align-items: center;
+	border-radius: 4px;
+	transition: 0.2s ease background-color;
+}
+
+.userDropdownBox:hover {
+	background-color: var(--back-color);
+	cursor: pointer;
+}
+
+.userDropdownBox:hover path {
+	fill: var(--main-color);
+}
+
+.dropdownIconBox {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-right: 7px;
+	width: 34px;
+	height: 34px;
+	border-radius: 5px;
+}
+
+.dropdownIcon > path {
+	transition: 0.2s ease fill;
+	fill: var(--text-color-70);
+}
+
+.dropdownTextBox {
+
+}
+
+.dropdownTextHeader {
+	color: var(--text-color-70);
+	font-size: 14px;
+	font-style: normal;
+	font-weight: 500;
+	line-height: normal;
+}
+
+.dropdownTextFooter {
+	color: var(--text-color-70);
+	font-size: 12px;
+	font-style: normal;
+	font-weight: 400;
+	line-height: normal;
+}
+
 .userInfo {
 	display: flex;
 }
@@ -226,6 +302,7 @@ html, body {
 }
 
 .userOptions {
+	position: relative;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -550,8 +627,20 @@ input:disabled {
  fill: var(--main-color);
 }
 
+.attendanceButtons > button:disabled > svg > path {
+ fill: var(--main-color);
+}
+
 .attendanceSave {
 	margin-right: 10px;
+}
+
+.attendanceAccept {
+ display: none;
+}
+
+.attendanceAccept {
+ display: none;
 }
 
 .attendanceSubmit {
@@ -912,7 +1001,7 @@ input:disabled {
 	}
 }
 
-@media only screen and (max-width: 500px) {
+@media only screen and (max-width: 516px) {
 	.userInfoGroup {
 		margin-right: 0px;
 	}
@@ -947,7 +1036,7 @@ input:disabled {
 	}
 }
 
-@media only screen and (max-width: 438px) {
+@media only screen and (max-width: 448px) {
 
 	.userAvatarUsername {
 		display: flex;
@@ -992,7 +1081,7 @@ input:disabled {
 	}
 }
 
-@media only screen and (max-width: 325px) {
+@media only screen and (max-width: 340px) {
 	.actionFilter {
 		margin-left: 10px;
 	}

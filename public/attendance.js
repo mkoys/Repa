@@ -11,9 +11,58 @@ const userBoxOther = document.querySelector(".userBoxOther");
 const usernameOtherElement = document.querySelector(".usernameOther");
 const roleOtherElement = document.querySelector(".roleOther");
 const userBack = document.querySelector(".userBack"); 
+const userDropdownElement = document.querySelector(".userBoxDropdown");
+const userMoreElement = document.querySelector(".userMoreIcon");
 
 const token = localStorage.getItem("token");
 if(!token) window.location = "/login.html";
+
+let userDropdown = false;
+let userDropdownLock = false;
+let userDropdownTimeout = false;
+
+userMoreElement.addEventListener("mouseenter", () => {
+	setUserDropdown(true);
+});
+
+userMoreElement.addEventListener("mouseleave", () => {
+	userDropdownTimeout = setTimeout(closeDropdown, 180)
+});
+
+function closeDropdown() {
+	if(!userDropdownLock) {
+		setUserDropdown(false);
+	}
+}
+
+userDropdownElement.addEventListener("mouseenter", () => {
+	userDropdownLock = true;
+});
+
+userDropdownElement.addEventListener("mouseleave", () => {
+	userDropdownLock = false;
+	clearTimeout(userDropdownTimeout);
+	closeDropdown();
+});
+
+
+function setUserDropdown(setter) {
+	if(setter === undefined) {
+		userDropdown = !userDropdown;
+	}else {
+		userDropdown = setter;
+	}
+
+	if(userDropdown) {
+		userMoreElement.style.opacity = 1;
+		userDropdownElement.style.visibility = "visible";
+		userDropdownElement.style.opacity = 1;
+	}else {
+		userMoreElement.style.opacity = null;
+		userDropdownElement.style.visibility = null;
+		userDropdownElement.style.opacity = 0;
+	}
+}
 
 const userData = await fetch("/user", {headers: {Authorization: `token ${token}`}});
 const userDataJson = await userData.json();
@@ -81,7 +130,11 @@ function calendarEvent(date, action) {
 			const attendanceData = attendances[foundAttendanceIndex];
 			attendance = createAttendance({date: date, status: attendanceData.status, checkbox: attendanceData.place, content: attendanceData.content});
 		}else {
-			attendance = createAttendance({date: date, status: 0 });
+			if(!userMode) {
+				attendance = createAttendance({date: date, status: 0 });
+			}else {
+				calendarSetDate(date, false);
+			}
 		}
 		const element = mainElement.children[attendance.index];
 		contentState.push({date, attendance, element});
@@ -113,7 +166,23 @@ function createAttendance({ date, status, checkbox, onClose, content } = {}) {
 	const attendanceCheckboxCompanyCheck = attendanceCheckboxCompany.querySelector(".check");
 	const attendanceCloseElement = attendanceElementCopy.querySelector(".attendanceClose");
 	const attendanceContentElement = attendanceElementCopy.querySelector(".attendanceContent");
+	const attendanceAccept = attendanceElementCopy.querySelector(".attendanceAccept");
+	const attendanceDecline = attendanceElementCopy.querySelector(".attendanceDecline");
+	const attendanceSaveIcon = attendanceElementCopy.querySelector(".attendanceSaveIcon");
+	const attendanceSubmitIcon = attendanceElementCopy.querySelector(".attendanceSubmitIcon");
 	const index = mainElement.children.length;
+
+	if(userMode) {
+		attendanceSaveIcon.style.display = "none";
+		attendanceAccept.style.display = "flex";
+		attendanceSubmitIcon.style.display = "none";
+		attendanceDecline.style.display = "flex";
+	}else {
+		attendanceSaveIcon.style.display = "flex";
+		attendanceAccept.style.display = "none";
+		attendanceSubmitIcon.style.display = "flex";
+		attendanceDecline.style.display = "none";
+	}
 
 	let lastInput = attendanceElementCopy.querySelector(".attendanceInput");
 
@@ -127,6 +196,8 @@ function createAttendance({ date, status, checkbox, onClose, content } = {}) {
 	attendanceCheckboxSchoolBox.addEventListener("click", _event => checkCheckbox(attendanceCheckboxSchoolCheck, attendanceCheckboxCompanyCheck, checkboxDisable));
 
 	setContent(content);
+
+	if(userMode && !content) setTimeout(() => onClose({ date }), 0);
 
 	function setContent(content) {
 		attendanceContentElement.innerHTML = "";
@@ -146,7 +217,7 @@ function createAttendance({ date, status, checkbox, onClose, content } = {}) {
 				newInputTime.value = row.time;
 				newInputClass.value = row.class;
 
-				if(status < 2) {
+				if(status < 2 && !userMode) {
 					newInputDescription.addEventListener("keyup", removeInputListener);
 					newInputTime.addEventListener("keyup", removeInputListener);
 					newInputClass.addEventListener("keyup", removeInputListener);
@@ -171,7 +242,14 @@ function createAttendance({ date, status, checkbox, onClose, content } = {}) {
 		const lastInputTime = lastInput.querySelector(".attendanceInputTime");
 		const lastInputClass = lastInput.querySelector(".attendanceInputClass");
 
-		if(status < 2) {
+		if(userMode) {
+			lastInputDescription.disabled = true;
+			lastInputTime.disabled = true;
+			lastInputClass.disabled = true;
+			checkboxDisable = true;
+		}
+
+		if(status < 2 && !userMode) {
 			lastInput.addEventListener("dragover", event => event.preventDefault());
 			lastInput.addEventListener("dragstart", event => {
 				const source = event.srcElement;
