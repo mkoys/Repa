@@ -287,16 +287,16 @@ function createAttendance({ date, status, checkbox, onClose, content } = {}) {
 
 	attendanceSubmitElement.addEventListener("click", async event => {
 		if(!event.srcElement.disabled) {
-			const response = await fetch(`/attendance${userIdentifier ? `?id=${userIdentifier}${userMode ? `&status=3` : ""}` : ""}`, {
+			const response = await fetch(`/attendance${userIdentifier ? `?id=${userIdentifier}${userMode ? `&status=4` : ""}` : ""}`, {
 				method: "PUT",
 				headers: { "Content-type": "application/json", Authorization: `token ${token}` },
 				body: JSON.stringify({date})
 			});
 			const responseJson = await response.json();
 			const attendanceIndex = attendances.findIndex(attendance => compareDates(attendance.date, date));
-			attendances[attendanceIndex].status = userMode ? 3 : 2;
+			attendances[attendanceIndex].status = userMode ? 4 : 2;
 			calendarDates = generateCalendarDates();
-			setStatus(userMode ? 3 : 2);
+			setStatus(userMode ? 4 : 2);
 			setContent(attendances[attendanceIndex].content);
 		}
 	});
@@ -323,7 +323,7 @@ function createAttendance({ date, status, checkbox, onClose, content } = {}) {
 				place: getABox(),
 				date,
 				content,
-				status: userMode ? 4 : 1
+				status: userMode ? 3 : 1
 			}
 
 			const response = await fetch(`/attendance${userIdentifier ? `?id=${userIdentifier}` : ""}`, {
@@ -342,7 +342,7 @@ function createAttendance({ date, status, checkbox, onClose, content } = {}) {
 					attendances.push(body)
 				}
 				calendarDates = generateCalendarDates();
-				setStatus(userMode ? 4 : 1);
+				setStatus(userMode ? 3 : 1);
 				setContent(content);
 			}
 		}

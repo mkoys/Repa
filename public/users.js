@@ -15,6 +15,67 @@ const userAdminDropdowns = document.querySelectorAll(".dropdownAdmin");
 const logoutDropdownElement = document.querySelector(".logoutDropdown");
 const attendanceDropdownElement = document.querySelector(".attendanceDropdown");
 const usersDropdownElement = document.querySelector(".usersDropdown");
+const pagingForward = document.querySelector(".pagingForward");
+const pagingBackward = document.querySelector(".pagingBack");
+
+pagingForward.addEventListener("click", async () => {
+	if(pageNumber < userList.pageLength) {
+		pageNumber++;
+		const userList = await getUsers(pageVisible, pageNumber);
+
+		pageNumberElement.textContent = pageNumber + 1;
+		pageVisibleElement.textContent = pageVisible;
+		pageLengthElement.textContent = userList.pageLength;
+
+		renderUserList(userList);
+	}
+});
+
+pagingBackward.addEventListener("click", async () => {
+	if(pageNumber > 0) {
+		pageNumber--;
+		const userList = await getUsers(pageVisible, pageNumber);
+
+		pageNumberElement.textContent = pageNumber + 1;
+		pageVisibleElement.textContent = pageVisible;
+		pageLengthElement.textContent = userList.pageLength;
+
+		renderUserList(userList);
+	}
+});
+
+pageVisibleElement.addEventListener("keydown", async event => {
+	if(event.key === "Escape") {
+		pageVisibleElement.blur();
+		pageNumberElement.textContent = pageNumber + 1;
+		pageVisibleElement.textContent = pageVisible;
+		pageLengthElement.textContent = userList.pageLength;
+	}else if(event.key === "Backspace" || event.key === "Delete") {
+	}else if(event.keyCode > 36 && event.keyCode < 41) {
+	}else if(event.keyCode > 47 && event.keyCode < 58) {
+
+	}else {
+		event.preventDefault();
+		if(event.key === "Enter") {
+			pageVisible = parseInt(event.target.innerHTML);
+			pageVisible = pageVisible ? pageVisible : 5;
+			pageNumber = 0;
+			const userList = await getUsers(pageVisible, pageNumber);
+
+			pageNumberElement.textContent = pageNumber + 1;
+			pageVisibleElement.textContent = pageVisible;
+			pageLengthElement.textContent = userList.pageLength;
+			console.log(userList)
+
+			renderUserList(userList);
+			event.srcElement.blur();
+		}
+	}
+});
+
+pageVisibleElement.addEventListener("blur", () => {
+	pageVisibleElement.textContent = pageVisible;
+});
 
 const token = localStorage.getItem("token");
 if(!token) window.location = "/login.html";
@@ -93,36 +154,41 @@ pageNumberElement.textContent = pageNumber + 1;
 pageVisibleElement.textContent = pageVisible;
 pageLengthElement.textContent = userList.pageLength;
 
-userList.page.forEach(user => {
-	const userCloneElement = userTemplateElement.content.cloneNode(true);
-	const userElement = userCloneElement.querySelector(".userContainer");
-	const userAvatar = userElement.querySelector(".userAvatar");
-	const userName = userElement.querySelector(".userUsernameText");
-	const userEmail = userElement.querySelector(".userEmailText");
-	const userClassElement = userElement.querySelector(".userClass");
-	const userClass = userElement.querySelector(".userClassText");
-	const userRoleElement = userElement.querySelector(".userRole");
-	const userRole = userElement.querySelector(".userRoleText");
-	const userCalendar = userElement.querySelector(".userActionCalendar");
+renderUserList(userList);
 
-	userCalendar.addEventListener("click", _event => {
-		window.location = `/attendance.html?id=${user.id}&username=${user.username}&role=${user.role}`;
+function renderUserList(userList) {
+	userListElement.innerHTML = "";
+	userList.page.forEach(user => {
+		const userCloneElement = userTemplateElement.content.cloneNode(true);
+		const userElement = userCloneElement.querySelector(".userContainer");
+		const userAvatar = userElement.querySelector(".userAvatar");
+		const userName = userElement.querySelector(".userUsernameText");
+		const userEmail = userElement.querySelector(".userEmailText");
+		const userClassElement = userElement.querySelector(".userClass");
+		const userClass = userElement.querySelector(".userClassText");
+		const userRoleElement = userElement.querySelector(".userRole");
+		const userRole = userElement.querySelector(".userRoleText");
+		const userCalendar = userElement.querySelector(".userActionCalendar");
+
+		userCalendar.addEventListener("click", _event => {
+			window.location = `/attendance.html?id=${user.id}&username=${user.username}&role=${user.role}`;
+		});
+
+		if(user.avatar) userAvatar.style.backgroundImage = `url(${user.avatar})`;
+
+		userName.textContent = user.username;
+		userEmail.textContent = user.email;
+
+		if(user.class) {
+			userClassElement.style.display = "flex";
+			userClass.textContent = user.class;
+		}
+
+		if(user.role) {
+			userRoleElement.style.display = "flex";
+			userRole.textContent = user.role;
+		}
+
+		userListElement.appendChild(userElement);
 	});
-
-	if(user.avatar) userAvatar.style.backgroundImage = `url(${user.avatar})`;
-
-	userName.textContent = user.username;
-	userEmail.textContent = user.email;
-
-	if(user.class) {
-		userClassElement.style.display = "flex";
-		userClass.textContent = user.class;
-	}
-
-	if(user.role) {
-		userRoleElement.style.display = "flex";
-		userRole.textContent = user.role;
-	}
-
-  userListElement.appendChild(userElement);
-});
+}
