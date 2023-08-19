@@ -9,6 +9,50 @@
 	<title>Users</title>
 </head>
 <body>
+	<div class="popup">
+   <div class="newUser">
+		 <div class="auth register">
+			 <div class="authBox">
+				 <div class="loading"></div>
+				 <div class="authContainer">
+					 <h3 class="authHeader">New user</h3>	
+					 <div class="authForm">
+						 <div class="authField">
+							 <label for="" class="authFieldLabel" id="usernameLabel">Username<span class="errorField usernameError"></span></label>
+							 <input type="text" class="authFieldInput usernameUser">
+						 </div>
+						 <div class="authField">
+							 <label for="" class="authFieldLabel" id="emailLabel">Email<span class="errorField emailError"></span></label>
+							 <input type="email" class="authFieldInput emailUser">
+						 </div>
+						 <div class="authField">
+							 <label for="" class="authFieldLabel" id="passwordLabel">Password<span class="errorField passwordError"></label>
+							 <input type="password" class="authFieldInput passwordUser">
+						 </div>
+						 <div class="authField">
+							 <label for="" class="authFieldLabel" id="rePasswordLabel">Re-Password<span class="errorField rePasswordError"></label>
+							 <input type="password" class="authFieldInput rePasswordUser">
+						 </div>
+
+							 <div style="margin-top: 8px" class="attendanceCheckbox" style="margin-right: 15px">
+								 <div class="boxcheck" style="margin-right: 5px">
+									 <svg class="check" width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+										 <path d="M5.11464 11.3035L0.717829 6.95065C0.322556 6.55933 0.322556 5.92067 0.71783 5.52935L1.23585 5.01651C1.62554 4.63071 2.25324 4.63071 2.64294 5.01651L5.11464 7.46349C5.50433 7.84929 6.13203 7.84929 6.52173 7.46349L13.3571 0.696509C13.7468 0.310711 14.3745 0.310711 14.7642 0.69651L15.2822 1.20935C15.6774 1.60067 15.6774 2.23933 15.2822 2.63065L6.52173 11.3035C6.13203 11.6893 5.50433 11.6893 5.11464 11.3035Z"></path>
+									 </svg>
+								 </div>
+								 <p style="margin: 0px" class="authActionText">Admin account</p>
+							 </div>
+						 <div class="authAction">
+							 <button class="authButton">Create</button>
+							 <button class="authButton cancelNewUser" style="margin-top: 10px;background-color: var(--text-color);color: var(--back-color)">Cancel</button>
+						 </div>
+					 </div>
+				 </div>
+			 </div>
+		 </div>
+
+	 </div>
+	</div>
 	<div class="content">
 		<div class="bar">
 			<div class="userBox">
@@ -32,7 +76,7 @@
 							</div>
 							<div class="dropdownTextBox">
 								<p class="dropdownTextHeader">Attendance</p>
-								<p class="dropdownTextFooter">write down schedule</p>
+								<p class="dropdownTextFooter">Write down schedule</p>
 							</div>
 						</div>
 						<div class="userDropdownBox usersDropdown">
@@ -79,14 +123,36 @@
 		</div>
 		<div class="main">
 			<div class="userList">
+				<div class="loading"></div>
 				<div class="userListHeader">
-					<p class="userListHeaderText">Users</p>
+					<p class="userListHeaderText"><span class="userListHeaderSpan"></span> Users</p>
 					<div class="userListActions">
 						<div class="actionSort userAction">
 							<svg class="actionSortIcon actionIcon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
 								<path d="M1.12857 4.26839L3.31563 2.12548C3.48647 1.95815 3.7636 1.9582 3.93434 2.12548L6.12132 4.26839C6.39667 4.53812 6.20059 5.00001 5.81195 5.00001H4.5V13.5714C4.5 13.8081 4.30414 14 4.0625 14H3.1875C2.94586 14 2.75 13.8081 2.75 13.5714V5.00001H1.43794C1.04853 5.00001 0.853791 4.53758 1.12857 4.26839ZM7.5625 3.7143H14.5625C14.8041 3.7143 15 3.52243 15 3.28573V2.42858C15 2.19188 14.8041 2.00001 14.5625 2.00001H7.5625C7.32086 2.00001 7.125 2.19188 7.125 2.42858V3.28573C7.125 3.52243 7.32086 3.7143 7.5625 3.7143ZM7.125 6.71429V5.85715C7.125 5.62045 7.32086 5.42858 7.5625 5.42858H12.8125C13.0541 5.42858 13.25 5.62045 13.25 5.85715V6.71429C13.25 6.951 13.0541 7.14287 12.8125 7.14287H7.5625C7.32086 7.14287 7.125 6.951 7.125 6.71429ZM7.125 13.5714V12.7143C7.125 12.4776 7.32086 12.2857 7.5625 12.2857H9.3125C9.55414 12.2857 9.75 12.4776 9.75 12.7143V13.5714C9.75 13.8081 9.55414 14 9.3125 14H7.5625C7.32086 14 7.125 13.8081 7.125 13.5714ZM7.125 10.1429V9.28572C7.125 9.04901 7.32086 8.85715 7.5625 8.85715H11.0625C11.3041 8.85715 11.5 9.04901 11.5 9.28572V10.1429C11.5 10.3796 11.3041 10.5714 11.0625 10.5714H7.5625C7.32086 10.5714 7.125 10.3796 7.125 10.1429Z"></path>
 							</svg>
 							<p class="actionSortText actionText">Sort</p>
+							<div class="sortDropdown">
+								<svg class="dropdownKnob" xmlns="http://www.w3.org/2000/svg" width="15" height="12" viewBox="0 0 15 12" fill="none">
+									<path d="M6.63398 0.499999C7.01888 -0.166668 7.98112 -0.166667 8.36602 0.5L13.9952 10.25C14.3801 10.9167 13.899 11.75 13.1292 11.75H1.87083C1.10103 11.75 0.619909 10.9167 1.00481 10.25L6.63398 0.499999Z" fill="#151515"></path>
+								</svg>
+								<div class="sortDropdownItem">
+									<p class="sortDropdownText">Username</p>
+									<p class="sortDropdownBox">✔</p>
+								</div>
+								<div class="sortDropdownItem">
+									<p class="sortDropdownText">Email</p>
+									<p class="sortDropdownBox">✔</p>
+								</div>
+								<div class="sortDropdownItem">
+									<p class="sortDropdownText">Class</p>
+									<p class="sortDropdownBox">✔</p>
+								</div>
+								<div class="sortDropdownItem">
+									<p class="sortDropdownText">Role</p>
+									<p class="sortDropdownBox">✔</p>
+								</div>
+							</div>
 						</div>
 						<div class="actionFilter userAction">
 							<svg class="actionFilterIcon actionIcon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12">
@@ -94,7 +160,7 @@
 							</svg>
 							<p class="actionFilterText actionText">Filter</p>
 						</div>
-						<div class="actionAddUser userAction">
+						<div class="actionExportUser userAction">
 							<svg xmlns="http://www.w3.org/2000/svg" class="actionIcon" viewBox="0 -960 960 960" width="20"><path d="M310-280h340q13 0 21.5-8.5T680-310q0-13-8.5-21.5T650-340H310q-13 0-21.5 8.5T280-310q0 13 8.5 21.5T310-280Zm138-241-64-63q-9-8-21-8.5t-21 8.5q-9 9-9 21t9 21l114 115q9 9 21 9t21-9l116-115q9-9 9-21t-9-21q-9-9-21-8.5t-21 8.5l-64 63v-169q0-13-8.5-21.5T478-720q-13 0-21.5 8.5T448-690v169Zm32 441q-82 0-155-31.5t-127.5-86Q143-252 111.5-325T80-480q0-83 31.5-156t86-127Q252-817 325-848.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 82-31.5 155T763-197.5q-54 54.5-127 86T480-80Z"/></svg>
 							<p class="actionAddUserText actionText">Export</p>
 						</div>
@@ -113,9 +179,9 @@
 						<template class="user">
 							<div class="userContainer">
 								<div class="userSelect">
-
+									<div class="userSelectBox"></div>
 								</div>
-                <div class="userAvatarUsername">
+								<div class="userAvatarUsername">
 									<div class="userAvatar"></div>
 									<div class="userUsernameText">Mkoys</div>
 								</div>

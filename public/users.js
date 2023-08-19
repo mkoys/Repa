@@ -1,11 +1,13 @@
 let pageVisible = 5;
 let pageNumber = 0;
+let selectedUsers = [];
 
 const userTemplateElement = document.querySelector(".user");
 const userListElement = document.querySelector(".userListContentList");
 const pageNumberElement = document.querySelector(".pageNumber");
 const pageLengthElement = document.querySelector(".pageLength");
 const pageVisibleElement = document.querySelector(".pagesVisible");
+const addUserElement = document.querySelector(".actionAddUser");
 const roleElement = document.querySelector(".role");
 const usernameElement = document.querySelector(".username");
 const avatarElement = document.querySelector(".avatar");
@@ -17,9 +19,34 @@ const attendanceDropdownElement = document.querySelector(".attendanceDropdown");
 const usersDropdownElement = document.querySelector(".usersDropdown");
 const pagingForward = document.querySelector(".pagingForward");
 const pagingBackward = document.querySelector(".pagingBack");
+const sortActionElement = document.querySelector(".actionSort");
+const sortActionDropdown = document.querySelector(".sortDropdown"); 
+const sortActionItems = document.querySelectorAll(".sortDropdownItem");
+const sortActionIcon = document.querySelector(".actionSortIcon");
+const sortActionText = document.querySelector(".actionSortText");
+const userCountElement = document.querySelector(".userListHeaderSpan");
+const loadingElement = document.querySelector(".loading");
+const popupElement = document.querySelector(".popup");
+const popupNewUser = document.querySelector(".newUser");
+const cancelNewUser = document.querySelector(".cancelNewUser");
+
+
+cancelNewUser.addEventListener("click", _event => {
+	popupElement.style.opacity = null;
+	popupElement.style.visibility = null; 
+	popupNewUser.style.display = null;
+}); 
+
+addUserElement.addEventListener("click", _event => {
+	popupElement.style.opacity = 1;
+	popupElement.style.visibility = "visible";
+	popupNewUser.style.display = "flex";
+});
 
 pagingForward.addEventListener("click", async () => {
-	if(pageNumber < userList.pageLength) {
+	loadingElement.classList.add("load");
+	const userList = await getUsers(pageVisible, pageNumber);
+	if(pageNumber < userList.pageLength -1) {
 		pageNumber++;
 		const userList = await getUsers(pageVisible, pageNumber);
 
@@ -29,9 +56,53 @@ pagingForward.addEventListener("click", async () => {
 
 		renderUserList(userList);
 	}
+	loadingElement.classList.remove("load");
+});
+
+let sortItem = null;
+let sort = false;
+
+sortActionItems.forEach(element => {
+	element.addEventListener("click", async _event => {
+		loadingElement.classList.add("load");
+		const value = element.querySelector(".sortDropdownText").textContent;
+		const box = element.querySelector(".sortDropdownBox");
+
+		if(box.style.opacity) {
+			box.style.opacity = null;
+			sort = false;
+		}else {
+			if(sortItem) {
+				const oldBox = sortItem.querySelector(".sortDropdownBox");
+				oldBox.style.opacity = null;
+			}
+			box.style.opacity = 1;
+			sortItem = element;
+			sort = value;
+		}
+
+
+		const userList = await getUsers(pageVisible, pageNumber);
+		renderUserList(userList);
+		loadingElement.classList.remove("load");
+	});
+});
+
+sortActionElement.addEventListener("click", _event => {
+	if(sortActionDropdown.style.display) {
+		sortActionDropdown.style.display = null;
+		sortActionText.style.color = null;
+		sortActionIcon.style.fill = null;
+	}else {
+		sortActionDropdown.style.display = "flex";
+		sortActionText.style.color = "var(--text-color)";
+		sortActionIcon.style.fill = "var(--text-color)";
+	}
 });
 
 pagingBackward.addEventListener("click", async () => {
+	loadingElement.classList.add("load");
+	const userList = await getUsers(pageVisible, pageNumber);
 	if(pageNumber > 0) {
 		pageNumber--;
 		const userList = await getUsers(pageVisible, pageNumber);
@@ -41,6 +112,7 @@ pagingBackward.addEventListener("click", async () => {
 		pageLengthElement.textContent = userList.pageLength;
 
 		renderUserList(userList);
+	loadingElement.classList.remove("load");
 	}
 });
 
@@ -65,7 +137,6 @@ pageVisibleElement.addEventListener("keydown", async event => {
 			pageNumberElement.textContent = pageNumber + 1;
 			pageVisibleElement.textContent = pageVisible;
 			pageLengthElement.textContent = userList.pageLength;
-			console.log(userList)
 
 			renderUserList(userList);
 			event.srcElement.blur();
@@ -143,22 +214,26 @@ if(userDataJson.role) roleElement.textContent = userDataJson.role;
 if(userDataJson.avatar) avatarElement.style.backgroudImage = `url(${userDataJson.avatar})`;
 
 async function getUsers(pageVisible, pageNumber) {
-	const request = await fetch(`/users${pageVisible ? `?visible=${pageVisible}&page=${pageNumber}` : ""}`);
+	const request = await fetch(`/users?visible=${pageVisible}&page=${pageNumber}${sort ? `&sort=${sort}` : ""}`);
 	const requestJson = await request.json();
 	return requestJson;
 }
 
+loadingElement.classList.add("load");
 const userList = await getUsers(pageVisible, pageNumber);
 
 pageNumberElement.textContent = pageNumber + 1;
 pageVisibleElement.textContent = pageVisible;
 pageLengthElement.textContent = userList.pageLength;
+userCountElement.textContent = userList.userLength;
 
 renderUserList(userList);
+loadingElement.classList.remove("load");
 
 function renderUserList(userList) {
 	userListElement.innerHTML = "";
 	userList.page.forEach(user => {
+		const userIndex = selectedUsers.findIndex(item => item.user.id === user.id);
 		const userCloneElement = userTemplateElement.content.cloneNode(true);
 		const userElement = userCloneElement.querySelector(".userContainer");
 		const userAvatar = userElement.querySelector(".userAvatar");
@@ -169,6 +244,19 @@ function renderUserList(userList) {
 		const userRoleElement = userElement.querySelector(".userRole");
 		const userRole = userElement.querySelector(".userRoleText");
 		const userCalendar = userElement.querySelector(".userActionCalendar");
+		const userSelect = userElement.querySelector(".userSelect");
+		const userBox = userElement.querySelector(".userSelectBox");
+
+		userSelect.addEventListener("click", _event => {
+			const selectFound = selectedUsers.findIndex(item => item.user.id === user.id);
+			if(selectFound > -1) {
+				selectedUsers.splice(selectFound, 1);
+				userBox.style.opacity = null;
+			}else {
+				userBox.style.opacity = 0.5;
+				selectedUsers.push({user, element: userElement});
+			}
+		});
 
 		userCalendar.addEventListener("click", _event => {
 			window.location = `/attendance.html?id=${user.id}&username=${user.username}&role=${user.role}`;
@@ -189,6 +277,6 @@ function renderUserList(userList) {
 			userRole.textContent = user.role;
 		}
 
-		userListElement.appendChild(userElement);
+		userListElement.appendChild(userIndex > -1 ? selectedUsers[userIndex].element : userElement);
 	});
 }

@@ -47,14 +47,17 @@ app.get("/users", async (req, res) => {
 	const params = req.query;
 	const pageVisible = params.visible ? parseInt(params.visible) : 5;
 	const pageNumber = params.page ? parseInt(params.page) : 0;
+	const sort = params.sort;
+	const sortParam = new Object();
+	if(sort) sortParam[sort.toLowerCase()] = 1;
 
 	const userLength = await users.countDocuments(); 
 
-	const page = await users.find({}).skip(pageNumber * pageVisible).limit(pageVisible).sort({id: 1}).toArray();
+	const page = await users.find({}).skip(pageNumber * pageVisible).limit(pageVisible).sort(sort ? sortParam : {id: 1}).toArray();
 
-	const pageLength = Math.floor(userLength / pageVisible) + 1;
+	const pageLength = Math.round(userLength / pageVisible);
 
-	res.json({page, pageLength});
+	res.json({page, pageLength, userLength});
 });
 
 app.post("/register", async (req, res) => {
@@ -123,7 +126,6 @@ app.put("/attendance", async (req, res) => {
 	let updateAttendance = {};
 
 	if(req.query.id) {
-		console.log(req.query)
 		updateAttendance = await attendances.updateOne({user: req.query.id, date}, {$set: { status: req.query.status ? parseInt(req.query.status) : 2 }});
 	}else {
 		updateAttendance = await attendances.updateOne({user: session.id, date}, {$set: { status: req.query.status ? parseInt(req.query.status) : 2 }});

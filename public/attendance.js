@@ -17,9 +17,48 @@ const userAdminDropdowns = document.querySelectorAll(".dropdownAdmin");
 const logoutDropdownElement = document.querySelector(".logoutDropdown");
 const attendanceDropdownElement = document.querySelector(".attendanceDropdown");
 const usersDropdownElement = document.querySelector(".usersDropdown");
+const calendarDatePickerElement = document.querySelector(".calendarDatePickerIcon");
+const calendarYearDropdownElement = document.querySelector(".calendarYearDropdown");
 
 const token = localStorage.getItem("token");
 if(!token) window.location = "/login.html";
+
+calendarDatePickerElement.addEventListener("click", event => {
+	if(calendarDatePickerElement.classList.contains("rotate")) {
+		calendarYearDropdownElement.innerHTML = "";
+		calendarDatePickerElement.classList.remove("rotate");
+		calendarYearDropdownElement.style.display = "flex";
+		const currentYear = calendarDate.getFullYear();
+
+		const allYears = [];
+		let currentYearElement = null;
+
+		for(let index = currentYear; index >= currentYear - 10;index--) allYears.push(index);
+		allYears.reverse();
+		for(let index = currentYear + 1; index <= currentYear + 10;index++) allYears.push(index);
+
+		allYears.forEach(year => {
+			const yearElement = document.createElement("p");
+			if(year == currentYear) {
+				currentYearElement = yearElement;
+				yearElement.classList.add("currentYear");
+			}
+			yearElement.textContent = year;
+			yearElement.classList.add("yearText");
+			yearElement.addEventListener("click", _event => {
+				calendarDate.setFullYear(year);
+				calendarDates = generateCalendarDates();
+				calendarDatePickerElement.classList.add("rotate");
+				calendarYearDropdownElement.style.display = null;
+			});
+			calendarYearDropdownElement.appendChild(yearElement);
+		});
+		currentYearElement.scrollIntoView();
+	}else {
+		calendarDatePickerElement.classList.add("rotate");
+		calendarYearDropdownElement.style.display = null;
+	}
+});
 
 let userDropdown = false;
 let userDropdownLock = false;

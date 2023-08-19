@@ -92,6 +92,8 @@ html, body {
 }
 
 .authAction {
+	display: flex;
+	flex-direction: column;
 	margin-top: 18px;
 }
 
@@ -103,8 +105,8 @@ html, body {
 	align-items: center;
 	width: 100%;
 	height: 45px;
-	background-color: var(--text-color);
-	color: var(--back-color);
+	background-color: var(--main-color);
+	color: var(--text-color);
 	border-radius: 6px;
 	font-size: 14px;
 }
@@ -363,6 +365,65 @@ html, body {
 .calendarDatePicker {
 	display: flex;
 	align-items: center;
+	position: relative;
+}
+
+.calendarDatePickerIcon {
+	transition: 0.2s ease all;
+}
+
+.calendarYearDropdown {
+	overflow: auto;
+	height: 206px;
+	position: absolute;
+	display: none;
+	top: 25px;
+	left: -18px;
+	flex-direction: column;
+	z-index: 1000;
+	border-radius: 4px;
+	padding: 6px;
+	position: absolute;
+	background-color: var(--box-color);
+	box-shadow: 1px 0px 20px rgba(0, 0, 0, 0.4);
+}
+
+.calendarYearDropdown::-webkit-scrollbar-track {
+	background-color: var(--box-color);
+}
+
+.calendarYearDropdown::-webkit-scrollbar {
+	border-radius: 6px;
+	width: 3px; 
+}
+
+.calendarYearDropdown::-webkit-scrollbar-thumb {
+	height: 5px;
+	width: 5px;
+	background-color: var(--main-color);
+}
+
+.currentYear {
+	background-color: var(--main-color);
+}
+
+.yearText {
+	border-radius: 4px;
+	padding: 5px;
+	color: var(--text-color);
+	opacity: 0.85;
+	font-size: 15px;
+	user-select: none;
+	transition: 0.2s ease all;
+}
+
+.yearText:hover {
+	opacity: 1;
+	background-color: var(--back-color);
+}
+
+.rotate {
+ transform: rotate(180deg);
 }
 
 .calendarDateOptions {
@@ -417,18 +478,8 @@ html, body {
 	transition: 0.2s ease all;
 }
 
-.calendarDateDay {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-}
-
-.calendarDateDayDot {
-	top: 25px;
-	position: absolute;
-	width: 4px;
-	height: 4px;
-	border-radius: 50%;
+.calendarDate:hover {
+	background-color: var(--main-dark-color);
 }
 
 .savedDate {
@@ -445,6 +496,20 @@ html, body {
 
 .acceptedDate {
 	background-color: lime;
+}
+
+.calendarDateDay {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.calendarDateDayDot {
+	top: 25px;
+	position: absolute;
+	width: 4px;
+	height: 4px;
+	border-radius: 50%;
 }
 
 .calendarDateDayText {
@@ -475,7 +540,7 @@ html, body {
 }
 
 .calendarDaySelected {
-	background-color: var(--main-color);
+	background-color: var(--main-color) !important;
 }
 
 .multiSelect {
@@ -693,6 +758,8 @@ input:disabled {
 	display: flex;
 	flex-direction: column;
 	margin-top: 20px;
+	position: relative;
+	overflow: hidden;
 }
 
 .userListHeader {
@@ -713,10 +780,75 @@ input:disabled {
 	font-weight: 500;
 }
 
+.popup {
+	transition: 0.2s ease all;
+	opacity: 0;
+	display: flex;
+	visibility: hidden;
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0,0,0,0.2);
+	z-index: 1000;
+}
+
+.newUser {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	height: 100%;
+}
+
 .userAction {
+	cursor: pointer;
+	position: relative;
 	margin-left: 24px;
 	align-items: center;
 	display: flex;
+}
+
+.sortDropdown {
+	top: 35px;
+	position: absolute;
+	background-color: var(--box-color);
+	box-shadow: 1px 0px 20px rgba(0, 0, 0, 0.4);
+	position: absolute;
+	padding: 6px;
+	border-radius: 4px;
+	z-index: 1000;
+	left: -73px;
+	display: none;
+	flex-direction: column;
+}
+
+.sortDropdownItem {
+	padding: 2px;
+	display: flex;
+	justify-content: space-between;
+}
+
+.sortDropdownItem:hover {
+	cursor: pointer;
+}
+
+.sortDropdownItem:hover > .sortDropdownText {
+	color: var(--text-color);
+}
+
+.sortDropdownText {
+	color: var(--text-color-70);
+	font-size: 15px;
+	font-style: normal;
+	line-height: normal;
+	transition: 0.2s ease color;
+}
+
+.sortDropdownBox {
+	opacity: 0;
+	margin-left: 8px;
+	color: var(--main-color);
+	border-radius: 2px;
 }
 
 .userActionMore {
@@ -724,10 +856,20 @@ input:disabled {
 }
 
 .actionIcon {
+	transition: 0.2s ease all;
 	font-size: 20px !important;
 	fill: var(--text-color-70);
 	color: var(--text-color-70) !important;
 	margin-right: 4px;
+}
+
+.userSelectBox {
+	transition: 0.2s ease opacity;
+	width: 13px;
+	height: 13px;
+	background-color: var(--main-color);
+	border-radius: 2px;
+	opacity: 0;
 }
 
 .actionText {
@@ -761,6 +903,10 @@ input:disabled {
 
 .pagingPicker {
 	fill: var(--text-color-70);
+}
+
+.pagingPicker:hover {
+	fill: var(--text-color);
 }
 
 .pagingBack {
@@ -812,10 +958,11 @@ input:disabled {
 }
 
 .userSelect {
+	display: flex;
 	justify-content: center;
 	align-items: center;
-	width: 20px;
-	height: 20px;
+	width: 21px;
+	height: 21px;
 	border-radius: 2px;
 	background-color: var(--box-color);
 }
@@ -918,6 +1065,14 @@ input:disabled {
 	display: flex;
 	justify-content: center;
 	align-items: center;
+}
+
+.userAction:hover > .actionIcon {
+	fill: var(--text-color);
+}
+
+.userAction:hover > .actionText {
+	color: var(--text-color);
 }
 
 .userActionCalendar:hover > path {
@@ -1029,6 +1184,11 @@ input:disabled {
 }
 
 @media only screen and (max-width: 516px) {
+  .userAction {
+		margin-left: 10px;
+	}
+
+
 	.userInfoGroup {
 		margin-right: 0px;
 	}
@@ -1095,6 +1255,10 @@ input:disabled {
 }
 
 @media only screen and (max-width: 405px) {
+  .actionIcon {
+		display: none;
+	}
+
 	.attendance {
 		min-width: 286px;
 	}
