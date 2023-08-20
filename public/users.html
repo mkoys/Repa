@@ -1,242 +1,343 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="stylesheet" href="style.css">
-	<script src="users.js" type="module" defer></script>
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,0,0" />
-	<title>Users</title>
-</head>
-<body>
-	<div class="popup">
-   <div class="newUser">
-		 <div class="auth register">
-			 <div class="authBox">
-				 <div class="loading"></div>
-				 <div class="authContainer">
-					 <h3 class="authHeader">New user</h3>	
-					 <div class="authForm">
-						 <div class="authField">
-							 <label for="" class="authFieldLabel" id="usernameLabel">Username<span class="errorField usernameError"></span></label>
-							 <input type="text" class="authFieldInput usernameUser">
-						 </div>
-						 <div class="authField">
-							 <label for="" class="authFieldLabel" id="emailLabel">Email<span class="errorField emailError"></span></label>
-							 <input type="email" class="authFieldInput emailUser">
-						 </div>
-						 <div class="authField">
-							 <label for="" class="authFieldLabel" id="passwordLabel">Password<span class="errorField passwordError"></label>
-							 <input type="password" class="authFieldInput passwordUser">
-						 </div>
-						 <div class="authField">
-							 <label for="" class="authFieldLabel" id="rePasswordLabel">Re-Password<span class="errorField rePasswordError"></label>
-							 <input type="password" class="authFieldInput rePasswordUser">
-						 </div>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" href="style.css">
+		<script src="users.js" type="module" defer></script>
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,0,0" />
+		<title>Users</title>
+	</head>
+	<body>
+		<div class="popup">
+			<div class="exportUser">
+				<div class="authBox" style="padding: 15px">
+					<p class="userListHeaderText" style="margin-left: 20px">Export</p>
+					<div class="exportUserDateBox">
+					<div class="calendar" style="margin: 0px; width: 100%">
+						<div class="calendarHeader">
+							<div class="calendarTime">
+								<p class="calendarDateText">August 2023</p>
+								<div class="calendarDatePicker">
+									<svg class="icon calendarDatePickerIcon rotate" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+										<path d="M7 10L12 15L17 10H7Z"></path>
+									</svg>
+									<div class="calendarYearDropdown">
 
-							 <div style="margin-top: 8px" class="attendanceCheckbox" style="margin-right: 15px">
-								 <div class="boxcheck" style="margin-right: 5px">
-									 <svg class="check" width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-										 <path d="M5.11464 11.3035L0.717829 6.95065C0.322556 6.55933 0.322556 5.92067 0.71783 5.52935L1.23585 5.01651C1.62554 4.63071 2.25324 4.63071 2.64294 5.01651L5.11464 7.46349C5.50433 7.84929 6.13203 7.84929 6.52173 7.46349L13.3571 0.696509C13.7468 0.310711 14.3745 0.310711 14.7642 0.69651L15.2822 1.20935C15.6774 1.60067 15.6774 2.23933 15.2822 2.63065L6.52173 11.3035C6.13203 11.6893 5.50433 11.6893 5.11464 11.3035Z"></path>
-									 </svg>
-								 </div>
-								 <p style="margin: 0px" class="authActionText">Admin account</p>
-							 </div>
-						 <div class="authAction">
-							 <button class="authButton">Create</button>
-							 <button class="authButton cancelNewUser" style="margin-top: 10px;background-color: var(--text-color);color: var(--back-color)">Cancel</button>
-						 </div>
-					 </div>
-				 </div>
-			 </div>
-		 </div>
+									</div>
+								</div>
+							</div>
+							<div class="calendarDateOptions">
+								<div class="calendarDateAction calendarDatePrevious">
+									<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="7" height="10" viewBox="0 0 7 10" fill="none">
+										<path fill-rule="evenodd" clip-rule="evenodd" d="M6.82503 1.175L5.65003 0L0.650024 5L5.65003 10L6.82503 8.825L3.00836 5L6.82503 1.175Z"></path>
+									</svg>
+								</div>
+								<div class="calendarDateAction calendarDateNext">
+									<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="7" height="10" viewBox="0 0 7 10" fill="none">
+										<path fill-rule="evenodd" clip-rule="evenodd" d="M2.00007 0L0.825073 1.175L4.64174 5L0.825073 8.825L2.00007 10L7.00007 5L2.00007 0Z"></path>
+									</svg>
+								</div>
+							</div>
+						</div>
+						<div class="calendarContent">
+							<div class="calendarDays">
+								<p class="calendarDay">M</p>
+								<p class="calendarDay">T</p>
+								<p class="calendarDay">W</p>
+								<p class="calendarDay">T</p>
+								<p class="calendarDay">F</p>
+								<p class="calendarDay">S</p>
+								<p class="calendarDay">S</p>
+							</div>
+							<div class="calendarDates">
+							</div>
+						</div>		
+					</div>
+					<div class="userExportList">
+						<p class="selectedUsersText calendarDateText" style="margin-bottom: 10px">Exporting users:</p>
+						<div class="selectedUsers">
+						</div>
+					</div>
+					</div>
+					<div class="authAction">
+						<button class="authButton">Export</button>
+						<button class="authButton cancelExportUser" style="margin-top: 10px;background-color: var(--text-color);color: var(--back-color)">Cancel</button>
+					</div>
 
-	 </div>
-	</div>
-	<div class="content">
-		<div class="bar">
-			<div class="userBox">
-				<div class="userInfo">
-					<div class="avatar"></div>	
-					<div class="userDetails">
-						<p class="username"></p>		
-						<p class="role"></p>
+			</div>
+		</div>	
+			<div class="newUser" style="display: none">
+				<div class="authBox">
+					<div class="loadingBox">
+						<div class="loading"></div>
+					</div>
+					<div class="authContainer">
+						<h3 class="authHeader">New user</h3>	
+						<div class="authForm">
+							<div class="authField">
+								<label for="" class="authFieldLabel" id="usernameLabel">Username<span class="errorField usernameError"></span></label>
+								<input type="text" class="authFieldInput usernameUser">
+							</div>
+							<div class="authField">
+								<label for="" class="authFieldLabel" id="emailLabel">Email<span class="errorField emailError"></span></label>
+								<input type="email" class="authFieldInput emailUser">
+							</div>
+							<div class="authField">
+								<label for="" class="authFieldLabel" id="passwordLabel">Password<span class="errorField passwordError"></label>
+								<input type="password" class="authFieldInput passwordUser">
+							</div>
+							<div class="authField">
+								<label for="" class="authFieldLabel" id="rePasswordLabel">Re-Password<span class="errorField rePasswordError"></label>
+								<input type="password" class="authFieldInput rePasswordUser">
+							</div>
+
+							<div style="margin-top: 8px" class="attendanceCheckbox" style="margin-right: 15px">
+								<div class="boxcheck" style="margin-right: 5px">
+									<svg class="check" width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<path d="M5.11464 11.3035L0.717829 6.95065C0.322556 6.55933 0.322556 5.92067 0.71783 5.52935L1.23585 5.01651C1.62554 4.63071 2.25324 4.63071 2.64294 5.01651L5.11464 7.46349C5.50433 7.84929 6.13203 7.84929 6.52173 7.46349L13.3571 0.696509C13.7468 0.310711 14.3745 0.310711 14.7642 0.69651L15.2822 1.20935C15.6774 1.60067 15.6774 2.23933 15.2822 2.63065L6.52173 11.3035C6.13203 11.6893 5.50433 11.6893 5.11464 11.3035Z"></path>
+									</svg>
+								</div>
+								<p style="margin: 0px" class="authActionText">Admin account</p>
+							</div>
+							<div class="authAction">
+								<button class="authButton">Create</button>
+								<button class="authButton cancelNewUser" style="margin-top: 10px;background-color: var(--text-color);color: var(--back-color)">Cancel</button>
+							</div>
+						</div>
 					</div>
 				</div>
-				<div class="userOptions">
-					<div class="userBoxDropdown">
-						<svg class="dropdownKnob" xmlns="http://www.w3.org/2000/svg" width="15" height="12" viewBox="0 0 15 12" fill="none">
-							<path d="M6.63398 0.499999C7.01888 -0.166668 7.98112 -0.166667 8.36602 0.5L13.9952 10.25C14.3801 10.9167 13.899 11.75 13.1292 11.75H1.87083C1.10103 11.75 0.619909 10.9167 1.00481 10.25L6.63398 0.499999Z" fill="#151515"/>
+			</div>
+		</div>
+		<div class="content">
+			<div class="bar">
+				<div class="userBox">
+					<div class="userInfo">
+						<div class="avatar"></div>	
+						<div class="userDetails">
+							<p class="username"></p>		
+							<p class="role"></p>
+						</div>
+					</div>
+					<div class="userOptions">
+						<div class="userBoxDropdown">
+							<svg class="dropdownKnob" xmlns="http://www.w3.org/2000/svg" width="15" height="12" viewBox="0 0 15 12" fill="none">
+								<path d="M6.63398 0.499999C7.01888 -0.166668 7.98112 -0.166667 8.36602 0.5L13.9952 10.25C14.3801 10.9167 13.899 11.75 13.1292 11.75H1.87083C1.10103 11.75 0.619909 10.9167 1.00481 10.25L6.63398 0.499999Z" fill="#151515"/>
+							</svg>
+							<div class="userDropdownBox attendanceDropdown">
+								<div class="dropdownIconBox">
+									<svg xmlns="http://www.w3.org/2000/svg" class="dropdownIcon" width="22" height="22" viewBox="0 0 22 22">
+										<path d="M11.9075 10.67V5.9675C11.9075 5.72917 11.8296 5.53208 11.6738 5.37625C11.5179 5.22042 11.3208 5.1425 11.0825 5.1425C10.8442 5.1425 10.6471 5.22042 10.4913 5.37625C10.3354 5.53208 10.2575 5.72917 10.2575 5.9675V11C10.2575 11.11 10.2758 11.2108 10.3125 11.3025C10.3492 11.3942 10.4042 11.4858 10.4775 11.5775L14.4375 15.675C14.6025 15.8583 14.8088 15.9454 15.0563 15.9363C15.3038 15.9271 15.51 15.84 15.675 15.675C15.84 15.51 15.9225 15.3083 15.9225 15.07C15.9225 14.8317 15.84 14.63 15.675 14.465L11.9075 10.67ZM11 22C9.49667 22 8.07583 21.7113 6.7375 21.1338C5.39917 20.5563 4.23042 19.7679 3.23125 18.7688C2.23208 17.7696 1.44375 16.6008 0.86625 15.2625C0.28875 13.9242 0 12.5033 0 11C0 9.49667 0.28875 8.07583 0.86625 6.7375C1.44375 5.39917 2.23208 4.23042 3.23125 3.23125C4.23042 2.23208 5.39917 1.44375 6.7375 0.86625C8.07583 0.28875 9.49667 0 11 0C12.5033 0 13.9242 0.28875 15.2625 0.86625C16.6008 1.44375 17.7696 2.23208 18.7688 3.23125C19.7679 4.23042 20.5563 5.39917 21.1338 6.7375C21.7113 8.07583 22 9.49667 22 11C22 12.5033 21.7113 13.9242 21.1338 15.2625C20.5563 16.6008 19.7679 17.7696 18.7688 18.7688C17.7696 19.7679 16.6008 20.5563 15.2625 21.1338C13.9242 21.7113 12.5033 22 11 22Z" fill="#6200EE"/>
+									</svg>
+								</div>
+								<div class="dropdownTextBox">
+									<p class="dropdownTextHeader">Attendance</p>
+									<p class="dropdownTextFooter">Write down schedule</p>
+								</div>
+							</div>
+							<div class="userDropdownBox usersDropdown">
+								<div class="dropdownIconBox" style="background-color: var(--back-color)">
+									<svg class="dropdownIcon" xmlns="http://www.w3.org/2000/svg" width="24" height="23" viewBox="0 0 24 23" fill="none">
+										<path style="fill: var(--main-color)" d="M12 11.1111C10.35 11.1111 9 10.5926 7.95 9.55556C6.9 8.51852 6.375 7.18518 6.375 5.55556C6.375 3.92593 6.9 2.59259 7.95 1.55556C9 0.518519 10.35 0 12 0C13.65 0 15 0.518519 16.05 1.55556C17.1 2.59259 17.625 3.92593 17.625 5.55556C17.625 7.18518 17.1 8.51852 16.05 9.55556C15 10.5926 13.65 11.1111 12 11.1111ZM2.25 23C1.625 23 1.09375 22.784 0.65625 22.3519C0.21875 21.9198 0 21.3951 0 20.7778V19.5185C0 18.5802 0.2375 17.7778 0.7125 17.1111C1.1875 16.4444 1.8 15.9383 2.55 15.5926C4.225 14.8519 5.83125 14.2963 7.36875 13.9259C8.90625 13.5556 10.45 13.3704 12 13.3704C13.55 13.3704 15.0875 13.5617 16.6125 13.9444C18.1375 14.3272 19.7375 14.8765 21.4125 15.5926C22.1875 15.9383 22.8125 16.4444 23.2875 17.1111C23.7625 17.7778 24 18.5802 24 19.5185V20.7778C24 21.3951 23.7812 21.9198 23.3438 22.3519C22.9062 22.784 22.375 23 21.75 23H2.25Z" fill="#C8C8C8"/>
+									</svg>
+								</div>
+								<div class="dropdownTextBox">
+									<p class="dropdownTextHeader">Users</p>
+									<p class="dropdownTextFooter">Admin console</p>
+								</div>
+							</div>
+							<div class="userDropdownBox">
+								<div class="dropdownIconBox">
+									<svg xmlns="http://www.w3.org/2000/svg"  width="22" height="22" viewBox="0 0 22 22" fill="none" class="dropdownIcon">
+										<path d="M12.8529 22H9.14047C8.93423 22 8.75142 21.9358 8.59204 21.8075C8.43267 21.6792 8.33424 21.5142 8.29674 21.3125L7.84674 18.535C7.4905 18.4067 7.11551 18.2325 6.72176 18.0125C6.32802 17.7925 5.98115 17.5633 5.68116 17.325L3.06557 18.5075C2.85933 18.5992 2.65308 18.6129 2.44683 18.5487C2.24059 18.4846 2.08122 18.3517 1.96872 18.15L0.112498 14.9325C0 14.7492 -0.0281245 14.5567 0.0281245 14.355C0.0843736 14.1533 0.196872 13.9883 0.365619 13.86L2.78433 12.1275C2.74683 11.9625 2.72339 11.7746 2.71402 11.5638C2.70464 11.3529 2.69995 11.165 2.69995 11C2.69995 10.835 2.70464 10.6471 2.71402 10.4362C2.72339 10.2254 2.74683 10.0375 2.78433 9.8725L0.365619 8.14C0.196872 8.01167 0.0843736 7.84667 0.0281245 7.645C-0.0281245 7.44333 0 7.25083 0.112498 7.0675L1.96872 3.85C2.08122 3.64833 2.24059 3.51542 2.44683 3.45125C2.65308 3.38708 2.85933 3.40083 3.06557 3.4925L5.68116 4.675C5.98115 4.43667 6.32802 4.2075 6.72176 3.9875C7.11551 3.7675 7.4905 3.6025 7.84674 3.4925L8.29674 0.6875C8.33424 0.485833 8.43267 0.320833 8.59204 0.1925C8.75142 0.0641667 8.93423 0 9.14047 0H12.8529C13.0592 0 13.242 0.0641667 13.4013 0.1925C13.5607 0.320833 13.6591 0.485833 13.6966 0.6875L14.1466 3.465C14.5029 3.59333 14.8826 3.76292 15.2857 3.97375C15.6888 4.18458 16.031 4.41833 16.3122 4.675L18.9278 3.4925C19.1341 3.40083 19.3403 3.38708 19.5465 3.45125C19.7528 3.51542 19.9122 3.64833 20.0247 3.85L21.8809 7.04C21.9934 7.22333 22.0262 7.42042 21.9793 7.63125C21.9324 7.84208 21.8153 8.01167 21.6278 8.14L19.2091 9.8175C19.2466 10.0008 19.27 10.1979 19.2794 10.4087C19.2887 10.6196 19.2934 10.8167 19.2934 11C19.2934 11.1833 19.2887 11.3758 19.2794 11.5775C19.27 11.7792 19.2466 11.9717 19.2091 12.155L21.6278 13.86C21.7965 13.9883 21.909 14.1533 21.9653 14.355C22.0215 14.5567 21.9934 14.7492 21.8809 14.9325L20.0247 18.15C19.9122 18.3517 19.7528 18.4846 19.5465 18.5487C19.3403 18.6129 19.1341 18.5992 18.9278 18.5075L16.3122 17.325C16.0122 17.5633 15.6701 17.7971 15.2857 18.0263C14.9013 18.2554 14.5216 18.425 14.1466 18.535L13.6966 21.3125C13.6591 21.5142 13.5607 21.6792 13.4013 21.8075C13.242 21.9358 13.0592 22 12.8529 22ZM10.9967 14.575C12.0092 14.575 12.8717 14.2267 13.5841 13.53C14.2966 12.8333 14.6529 11.99 14.6529 11C14.6529 10.01 14.2966 9.16667 13.5841 8.47C12.8717 7.77333 12.0092 7.425 10.9967 7.425C9.98421 7.425 9.12172 7.77333 8.40923 8.47C7.69675 9.16667 7.3405 10.01 7.3405 11C7.3405 11.99 7.69675 12.8333 8.40923 13.53C9.12172 14.2267 9.98421 14.575 10.9967 14.575Z" fill="#C8C8C8"/>
+									</svg>
+								</div>
+								<div class="dropdownTextBox">
+									<p class="dropdownTextHeader">Settings</p>
+									<p class="dropdownTextFooter">Set up account</p>
+								</div>
+							</div>
+							<div class="userDropdownBox logoutDropdown">
+								<div class="dropdownIconBox">
+									<svg class="dropdownIcon" xmlns="http://www.w3.org/2000/svg" width="19" height="16" viewBox="0 0 19 16" fill="none">
+										<path class="logoutPath" d="M1 7C0.447715 7 4.82823e-08 7.44772 0 8C-4.82823e-08 8.55228 0.447715 9 1 9L1 7ZM18.7071 8.70711C19.0976 8.31658 19.0976 7.68342 18.7071 7.29289L12.3431 0.928933C11.9526 0.538409 11.3195 0.538409 10.9289 0.928933C10.5384 1.31946 10.5384 1.95262 10.9289 2.34315L16.5858 8L10.9289 13.6569C10.5384 14.0474 10.5384 14.6805 10.9289 15.0711C11.3195 15.4616 11.9526 15.4616 12.3431 15.0711L18.7071 8.70711ZM1 9L18 9L18 7L1 7L1 9Z" fill="#B84747"/>
+									</svg>
+								</div>
+								<div class="dropdownTextBox">
+									<p class="dropdownTextHeader">Logout</p>
+									<p class="dropdownTextFooter">Exit account</p>
+								</div>
+							</div>
+						</div>
+						<svg class="icon userMoreIcon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+							<path fill-rule="evenodd" clip-rule="evenodd" d="M7 12C7 10.8954 6.10457 10 5 10C3.89543 10 3 10.8954 3 12C3 13.1046 3.89543 14 5 14C6.10457 14 7 13.1046 7 12Z"></path>
+							<path fill-rule="evenodd" clip-rule="evenodd" d="M14 12C14 10.8954 13.1046 10 12 10C10.8954 10 10 10.8954 10 12C10 13.1046 10.8954 14 12 14C13.1046 14 14 13.1046 14 12Z"></path>
+							<path fill-rule="evenodd" clip-rule="evenodd" d="M21 12C21 10.8954 20.1046 10 19 10C17.8954 10 17 10.8954 17 12C17 13.1046 17.8954 14 19 14C20.1046 14 21 13.1046 21 12Z"></path>
 						</svg>
-						<div class="userDropdownBox attendanceDropdown">
-							<div class="dropdownIconBox">
-								<svg xmlns="http://www.w3.org/2000/svg" class="dropdownIcon" width="22" height="22" viewBox="0 0 22 22">
-									<path d="M11.9075 10.67V5.9675C11.9075 5.72917 11.8296 5.53208 11.6738 5.37625C11.5179 5.22042 11.3208 5.1425 11.0825 5.1425C10.8442 5.1425 10.6471 5.22042 10.4913 5.37625C10.3354 5.53208 10.2575 5.72917 10.2575 5.9675V11C10.2575 11.11 10.2758 11.2108 10.3125 11.3025C10.3492 11.3942 10.4042 11.4858 10.4775 11.5775L14.4375 15.675C14.6025 15.8583 14.8088 15.9454 15.0563 15.9363C15.3038 15.9271 15.51 15.84 15.675 15.675C15.84 15.51 15.9225 15.3083 15.9225 15.07C15.9225 14.8317 15.84 14.63 15.675 14.465L11.9075 10.67ZM11 22C9.49667 22 8.07583 21.7113 6.7375 21.1338C5.39917 20.5563 4.23042 19.7679 3.23125 18.7688C2.23208 17.7696 1.44375 16.6008 0.86625 15.2625C0.28875 13.9242 0 12.5033 0 11C0 9.49667 0.28875 8.07583 0.86625 6.7375C1.44375 5.39917 2.23208 4.23042 3.23125 3.23125C4.23042 2.23208 5.39917 1.44375 6.7375 0.86625C8.07583 0.28875 9.49667 0 11 0C12.5033 0 13.9242 0.28875 15.2625 0.86625C16.6008 1.44375 17.7696 2.23208 18.7688 3.23125C19.7679 4.23042 20.5563 5.39917 21.1338 6.7375C21.7113 8.07583 22 9.49667 22 11C22 12.5033 21.7113 13.9242 21.1338 15.2625C20.5563 16.6008 19.7679 17.7696 18.7688 18.7688C17.7696 19.7679 16.6008 20.5563 15.2625 21.1338C13.9242 21.7113 12.5033 22 11 22Z" fill="#6200EE"/>
-								</svg>
-							</div>
-							<div class="dropdownTextBox">
-								<p class="dropdownTextHeader">Attendance</p>
-								<p class="dropdownTextFooter">Write down schedule</p>
-							</div>
-						</div>
-						<div class="userDropdownBox usersDropdown">
-							<div class="dropdownIconBox" style="background-color: var(--back-color)">
-								<svg class="dropdownIcon" xmlns="http://www.w3.org/2000/svg" width="24" height="23" viewBox="0 0 24 23" fill="none">
-									<path style="fill: var(--main-color)" d="M12 11.1111C10.35 11.1111 9 10.5926 7.95 9.55556C6.9 8.51852 6.375 7.18518 6.375 5.55556C6.375 3.92593 6.9 2.59259 7.95 1.55556C9 0.518519 10.35 0 12 0C13.65 0 15 0.518519 16.05 1.55556C17.1 2.59259 17.625 3.92593 17.625 5.55556C17.625 7.18518 17.1 8.51852 16.05 9.55556C15 10.5926 13.65 11.1111 12 11.1111ZM2.25 23C1.625 23 1.09375 22.784 0.65625 22.3519C0.21875 21.9198 0 21.3951 0 20.7778V19.5185C0 18.5802 0.2375 17.7778 0.7125 17.1111C1.1875 16.4444 1.8 15.9383 2.55 15.5926C4.225 14.8519 5.83125 14.2963 7.36875 13.9259C8.90625 13.5556 10.45 13.3704 12 13.3704C13.55 13.3704 15.0875 13.5617 16.6125 13.9444C18.1375 14.3272 19.7375 14.8765 21.4125 15.5926C22.1875 15.9383 22.8125 16.4444 23.2875 17.1111C23.7625 17.7778 24 18.5802 24 19.5185V20.7778C24 21.3951 23.7812 21.9198 23.3438 22.3519C22.9062 22.784 22.375 23 21.75 23H2.25Z" fill="#C8C8C8"/>
-								</svg>
-							</div>
-							<div class="dropdownTextBox">
-								<p class="dropdownTextHeader">Users</p>
-								<p class="dropdownTextFooter">Admin console</p>
-							</div>
-						</div>
-						<div class="userDropdownBox">
-							<div class="dropdownIconBox">
-								<svg xmlns="http://www.w3.org/2000/svg"  width="22" height="22" viewBox="0 0 22 22" fill="none" class="dropdownIcon">
-									<path d="M12.8529 22H9.14047C8.93423 22 8.75142 21.9358 8.59204 21.8075C8.43267 21.6792 8.33424 21.5142 8.29674 21.3125L7.84674 18.535C7.4905 18.4067 7.11551 18.2325 6.72176 18.0125C6.32802 17.7925 5.98115 17.5633 5.68116 17.325L3.06557 18.5075C2.85933 18.5992 2.65308 18.6129 2.44683 18.5487C2.24059 18.4846 2.08122 18.3517 1.96872 18.15L0.112498 14.9325C0 14.7492 -0.0281245 14.5567 0.0281245 14.355C0.0843736 14.1533 0.196872 13.9883 0.365619 13.86L2.78433 12.1275C2.74683 11.9625 2.72339 11.7746 2.71402 11.5638C2.70464 11.3529 2.69995 11.165 2.69995 11C2.69995 10.835 2.70464 10.6471 2.71402 10.4362C2.72339 10.2254 2.74683 10.0375 2.78433 9.8725L0.365619 8.14C0.196872 8.01167 0.0843736 7.84667 0.0281245 7.645C-0.0281245 7.44333 0 7.25083 0.112498 7.0675L1.96872 3.85C2.08122 3.64833 2.24059 3.51542 2.44683 3.45125C2.65308 3.38708 2.85933 3.40083 3.06557 3.4925L5.68116 4.675C5.98115 4.43667 6.32802 4.2075 6.72176 3.9875C7.11551 3.7675 7.4905 3.6025 7.84674 3.4925L8.29674 0.6875C8.33424 0.485833 8.43267 0.320833 8.59204 0.1925C8.75142 0.0641667 8.93423 0 9.14047 0H12.8529C13.0592 0 13.242 0.0641667 13.4013 0.1925C13.5607 0.320833 13.6591 0.485833 13.6966 0.6875L14.1466 3.465C14.5029 3.59333 14.8826 3.76292 15.2857 3.97375C15.6888 4.18458 16.031 4.41833 16.3122 4.675L18.9278 3.4925C19.1341 3.40083 19.3403 3.38708 19.5465 3.45125C19.7528 3.51542 19.9122 3.64833 20.0247 3.85L21.8809 7.04C21.9934 7.22333 22.0262 7.42042 21.9793 7.63125C21.9324 7.84208 21.8153 8.01167 21.6278 8.14L19.2091 9.8175C19.2466 10.0008 19.27 10.1979 19.2794 10.4087C19.2887 10.6196 19.2934 10.8167 19.2934 11C19.2934 11.1833 19.2887 11.3758 19.2794 11.5775C19.27 11.7792 19.2466 11.9717 19.2091 12.155L21.6278 13.86C21.7965 13.9883 21.909 14.1533 21.9653 14.355C22.0215 14.5567 21.9934 14.7492 21.8809 14.9325L20.0247 18.15C19.9122 18.3517 19.7528 18.4846 19.5465 18.5487C19.3403 18.6129 19.1341 18.5992 18.9278 18.5075L16.3122 17.325C16.0122 17.5633 15.6701 17.7971 15.2857 18.0263C14.9013 18.2554 14.5216 18.425 14.1466 18.535L13.6966 21.3125C13.6591 21.5142 13.5607 21.6792 13.4013 21.8075C13.242 21.9358 13.0592 22 12.8529 22ZM10.9967 14.575C12.0092 14.575 12.8717 14.2267 13.5841 13.53C14.2966 12.8333 14.6529 11.99 14.6529 11C14.6529 10.01 14.2966 9.16667 13.5841 8.47C12.8717 7.77333 12.0092 7.425 10.9967 7.425C9.98421 7.425 9.12172 7.77333 8.40923 8.47C7.69675 9.16667 7.3405 10.01 7.3405 11C7.3405 11.99 7.69675 12.8333 8.40923 13.53C9.12172 14.2267 9.98421 14.575 10.9967 14.575Z" fill="#C8C8C8"/>
-								</svg>
-							</div>
-							<div class="dropdownTextBox">
-								<p class="dropdownTextHeader">Settings</p>
-								<p class="dropdownTextFooter">Set up account</p>
-							</div>
-						</div>
-						<div class="userDropdownBox logoutDropdown">
-							<div class="dropdownIconBox">
-								<svg class="dropdownIcon" xmlns="http://www.w3.org/2000/svg" width="19" height="16" viewBox="0 0 19 16" fill="none">
-									<path class="logoutPath" d="M1 7C0.447715 7 4.82823e-08 7.44772 0 8C-4.82823e-08 8.55228 0.447715 9 1 9L1 7ZM18.7071 8.70711C19.0976 8.31658 19.0976 7.68342 18.7071 7.29289L12.3431 0.928933C11.9526 0.538409 11.3195 0.538409 10.9289 0.928933C10.5384 1.31946 10.5384 1.95262 10.9289 2.34315L16.5858 8L10.9289 13.6569C10.5384 14.0474 10.5384 14.6805 10.9289 15.0711C11.3195 15.4616 11.9526 15.4616 12.3431 15.0711L18.7071 8.70711ZM1 9L18 9L18 7L1 7L1 9Z" fill="#B84747"/>
-								</svg>
-							</div>
-							<div class="dropdownTextBox">
-								<p class="dropdownTextHeader">Logout</p>
-								<p class="dropdownTextFooter">Exit account</p>
-							</div>
-						</div>
 					</div>
-					<svg class="icon userMoreIcon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-						<path fill-rule="evenodd" clip-rule="evenodd" d="M7 12C7 10.8954 6.10457 10 5 10C3.89543 10 3 10.8954 3 12C3 13.1046 3.89543 14 5 14C6.10457 14 7 13.1046 7 12Z"></path>
-						<path fill-rule="evenodd" clip-rule="evenodd" d="M14 12C14 10.8954 13.1046 10 12 10C10.8954 10 10 10.8954 10 12C10 13.1046 10.8954 14 12 14C13.1046 14 14 13.1046 14 12Z"></path>
-						<path fill-rule="evenodd" clip-rule="evenodd" d="M21 12C21 10.8954 20.1046 10 19 10C17.8954 10 17 10.8954 17 12C17 13.1046 17.8954 14 19 14C20.1046 14 21 13.1046 21 12Z"></path>
-					</svg>
 				</div>
 			</div>
-		</div>
-		<div class="main">
-			<div class="userList">
-				<div class="loading"></div>
-				<div class="userListHeader">
-					<p class="userListHeaderText"><span class="userListHeaderSpan"></span> Users</p>
-					<div class="userListActions">
-						<div class="actionSort userAction">
-							<svg class="actionSortIcon actionIcon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
-								<path d="M1.12857 4.26839L3.31563 2.12548C3.48647 1.95815 3.7636 1.9582 3.93434 2.12548L6.12132 4.26839C6.39667 4.53812 6.20059 5.00001 5.81195 5.00001H4.5V13.5714C4.5 13.8081 4.30414 14 4.0625 14H3.1875C2.94586 14 2.75 13.8081 2.75 13.5714V5.00001H1.43794C1.04853 5.00001 0.853791 4.53758 1.12857 4.26839ZM7.5625 3.7143H14.5625C14.8041 3.7143 15 3.52243 15 3.28573V2.42858C15 2.19188 14.8041 2.00001 14.5625 2.00001H7.5625C7.32086 2.00001 7.125 2.19188 7.125 2.42858V3.28573C7.125 3.52243 7.32086 3.7143 7.5625 3.7143ZM7.125 6.71429V5.85715C7.125 5.62045 7.32086 5.42858 7.5625 5.42858H12.8125C13.0541 5.42858 13.25 5.62045 13.25 5.85715V6.71429C13.25 6.951 13.0541 7.14287 12.8125 7.14287H7.5625C7.32086 7.14287 7.125 6.951 7.125 6.71429ZM7.125 13.5714V12.7143C7.125 12.4776 7.32086 12.2857 7.5625 12.2857H9.3125C9.55414 12.2857 9.75 12.4776 9.75 12.7143V13.5714C9.75 13.8081 9.55414 14 9.3125 14H7.5625C7.32086 14 7.125 13.8081 7.125 13.5714ZM7.125 10.1429V9.28572C7.125 9.04901 7.32086 8.85715 7.5625 8.85715H11.0625C11.3041 8.85715 11.5 9.04901 11.5 9.28572V10.1429C11.5 10.3796 11.3041 10.5714 11.0625 10.5714H7.5625C7.32086 10.5714 7.125 10.3796 7.125 10.1429Z"></path>
-							</svg>
-							<p class="actionSortText actionText">Sort</p>
-							<div class="sortDropdown">
-								<svg class="dropdownKnob" xmlns="http://www.w3.org/2000/svg" width="15" height="12" viewBox="0 0 15 12" fill="none">
-									<path d="M6.63398 0.499999C7.01888 -0.166668 7.98112 -0.166667 8.36602 0.5L13.9952 10.25C14.3801 10.9167 13.899 11.75 13.1292 11.75H1.87083C1.10103 11.75 0.619909 10.9167 1.00481 10.25L6.63398 0.499999Z" fill="#151515"></path>
+			<div class="main">
+				<div class="userList">
+					<div class="loading"></div>
+					<div class="userListHeader">
+						<p class="userListHeaderText"><span class="userListHeaderSpan"></span> Users</p>
+						<div class="userListActions">
+							<div class="actionSort userAction">
+								<svg class="actionSortIcon actionIcon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+									<path d="M1.12857 4.26839L3.31563 2.12548C3.48647 1.95815 3.7636 1.9582 3.93434 2.12548L6.12132 4.26839C6.39667 4.53812 6.20059 5.00001 5.81195 5.00001H4.5V13.5714C4.5 13.8081 4.30414 14 4.0625 14H3.1875C2.94586 14 2.75 13.8081 2.75 13.5714V5.00001H1.43794C1.04853 5.00001 0.853791 4.53758 1.12857 4.26839ZM7.5625 3.7143H14.5625C14.8041 3.7143 15 3.52243 15 3.28573V2.42858C15 2.19188 14.8041 2.00001 14.5625 2.00001H7.5625C7.32086 2.00001 7.125 2.19188 7.125 2.42858V3.28573C7.125 3.52243 7.32086 3.7143 7.5625 3.7143ZM7.125 6.71429V5.85715C7.125 5.62045 7.32086 5.42858 7.5625 5.42858H12.8125C13.0541 5.42858 13.25 5.62045 13.25 5.85715V6.71429C13.25 6.951 13.0541 7.14287 12.8125 7.14287H7.5625C7.32086 7.14287 7.125 6.951 7.125 6.71429ZM7.125 13.5714V12.7143C7.125 12.4776 7.32086 12.2857 7.5625 12.2857H9.3125C9.55414 12.2857 9.75 12.4776 9.75 12.7143V13.5714C9.75 13.8081 9.55414 14 9.3125 14H7.5625C7.32086 14 7.125 13.8081 7.125 13.5714ZM7.125 10.1429V9.28572C7.125 9.04901 7.32086 8.85715 7.5625 8.85715H11.0625C11.3041 8.85715 11.5 9.04901 11.5 9.28572V10.1429C11.5 10.3796 11.3041 10.5714 11.0625 10.5714H7.5625C7.32086 10.5714 7.125 10.3796 7.125 10.1429Z"></path>
 								</svg>
-								<div class="sortDropdownItem">
-									<p class="sortDropdownText">Username</p>
-									<p class="sortDropdownBox">✔</p>
-								</div>
-								<div class="sortDropdownItem">
-									<p class="sortDropdownText">Email</p>
-									<p class="sortDropdownBox">✔</p>
-								</div>
-								<div class="sortDropdownItem">
-									<p class="sortDropdownText">Class</p>
-									<p class="sortDropdownBox">✔</p>
-								</div>
-								<div class="sortDropdownItem">
-									<p class="sortDropdownText">Role</p>
-									<p class="sortDropdownBox">✔</p>
-								</div>
-							</div>
-						</div>
-						<div class="actionFilter userAction">
-							<svg class="actionFilterIcon actionIcon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12">
-								<path d="M11.4369 0H0.563154C0.0635131 0 -0.188604 0.606234 0.165419 0.960258L4.5 5.29549V10.125C4.5 10.3085 4.58955 10.4805 4.73993 10.5858L6.61493 11.8979C6.98484 12.1568 7.5 11.8944 7.5 11.437V5.29549L11.8347 0.960258C12.188 0.606937 11.9376 0 11.4369 0Z"></path>
-							</svg>
-							<p class="actionFilterText actionText">Filter</p>
-						</div>
-						<div class="actionExportUser userAction">
-							<svg xmlns="http://www.w3.org/2000/svg" class="actionIcon" viewBox="0 -960 960 960" width="20"><path d="M310-280h340q13 0 21.5-8.5T680-310q0-13-8.5-21.5T650-340H310q-13 0-21.5 8.5T280-310q0 13 8.5 21.5T310-280Zm138-241-64-63q-9-8-21-8.5t-21 8.5q-9 9-9 21t9 21l114 115q9 9 21 9t21-9l116-115q9-9 9-21t-9-21q-9-9-21-8.5t-21 8.5l-64 63v-169q0-13-8.5-21.5T478-720q-13 0-21.5 8.5T448-690v169Zm32 441q-82 0-155-31.5t-127.5-86Q143-252 111.5-325T80-480q0-83 31.5-156t86-127Q252-817 325-848.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 82-31.5 155T763-197.5q-54 54.5-127 86T480-80Z"/></svg>
-							<p class="actionAddUserText actionText">Export</p>
-						</div>
-						<div class="actionAddUser userAction">
-							<svg class="actionIcon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
-								<path d="M8.06 12C8.23333 12 8.37667 11.9433 8.49 11.83C8.60333 11.7167 8.66 11.5733 8.66 11.4V8.68H11.42C11.58 8.68 11.7167 8.62333 11.83 8.51C11.9433 8.39667 12 8.25333 12 8.08C12 7.90667 11.9433 7.76333 11.83 7.65C11.7167 7.53667 11.5733 7.48 11.4 7.48H8.66V4.58C8.66 4.42 8.60333 4.28333 8.49 4.17C8.37667 4.05667 8.23333 4 8.06 4C7.88667 4 7.74333 4.05667 7.63 4.17C7.51667 4.28333 7.46 4.42667 7.46 4.6V7.48H4.58C4.42 7.48 4.28333 7.53667 4.17 7.65C4.05667 7.76333 4 7.90667 4 8.08C4 8.25333 4.05667 8.39667 4.17 8.51C4.28333 8.62333 4.42667 8.68 4.6 8.68H7.46V11.42C7.46 11.58 7.51667 11.7167 7.63 11.83C7.74333 11.9433 7.88667 12 8.06 12ZM8 16C6.86667 16 5.81333 15.7967 4.84 15.39C3.86667 14.9833 3.02 14.42 2.3 13.7C1.58 12.98 1.01667 12.1333 0.61 11.16C0.203333 10.1867 0 9.13333 0 8C0 6.88 0.203333 5.83333 0.61 4.86C1.01667 3.88667 1.58 3.04 2.3 2.32C3.02 1.6 3.86667 1.03333 4.84 0.62C5.81333 0.206667 6.86667 0 8 0C9.12 0 10.1667 0.206667 11.14 0.62C12.1133 1.03333 12.96 1.6 13.68 2.32C14.4 3.04 14.9667 3.88667 15.38 4.86C15.7933 5.83333 16 6.88 16 8C16 9.13333 15.7933 10.1867 15.38 11.16C14.9667 12.1333 14.4 12.98 13.68 13.7C12.96 14.42 12.1133 14.9833 11.14 15.39C10.1667 15.7967 9.12 16 8 16Z"></path>
-							</svg>
-							<p class="actionAddUserText actionText">New</p>
-						</div>
-					</div>
-				</div>
-				<div class="userListContent">
-					<div class="userListContentHeader">
-					</div>
-					<div class="userListContentList">
-						<template class="user">
-							<div class="userContainer">
-								<div class="userSelect">
-									<div class="userSelectBox"></div>
-								</div>
-								<div class="userAvatarUsername">
-									<div class="userAvatar"></div>
-									<div class="userUsernameText">Mkoys</div>
-								</div>
-								<div class="userEmail">
-									<svg class="userEmailIcon" xmlns="http://www.w3.org/2000/svg" width="16" height="14" viewBox="0 0 16 14" fill="none">
-										<path fill-rule="evenodd" clip-rule="evenodd" d="M11.6192 0C12.6622 0 13.6656 0.412222 14.4037 1.15189C15.1426 1.89 15.5556 2.88556 15.5556 3.92778V10.0722C15.5556 12.2422 13.79 14 11.6192 14H3.93556C1.76478 14 0 12.2422 0 10.0722V3.92778C0 1.75778 1.757 0 3.93556 0H11.6192ZM12.8567 5.08673L12.9189 5.0245C13.1048 4.79895 13.1048 4.47228 12.9104 4.24673C12.8022 4.13084 12.6537 4.06006 12.4989 4.0445C12.3356 4.03595 12.18 4.09117 12.0626 4.20006L8.55558 7.00006C8.10447 7.37417 7.45814 7.37417 7.00003 7.00006L3.50003 4.20006C3.25814 4.02117 2.92369 4.0445 2.72225 4.2545C2.51225 4.4645 2.48892 4.79895 2.66703 5.03228L2.76892 5.13339L6.3078 7.8945C6.74336 8.23673 7.27147 8.42339 7.82447 8.42339C8.37592 8.42339 8.91336 8.23673 9.34814 7.8945L12.8567 5.08673Z" fill="#6200EE"/>
+								<p class="actionSortText actionText">Sort</p>
+								<div class="sortDropdown">
+									<svg class="dropdownKnob" xmlns="http://www.w3.org/2000/svg" width="15" height="12" viewBox="0 0 15 12" fill="none">
+										<path d="M6.63398 0.499999C7.01888 -0.166668 7.98112 -0.166667 8.36602 0.5L13.9952 10.25C14.3801 10.9167 13.899 11.75 13.1292 11.75H1.87083C1.10103 11.75 0.619909 10.9167 1.00481 10.25L6.63398 0.499999Z" fill="#151515"></path>
 									</svg>
-									<p class="userEmailText">mkoys@protonmail.com</p>
-								</div>
-								<div class="tags">
-									<div class="userClass">
-										<svg xmlns="http://www.w3.org/2000/svg" class="userClassIcon" width="18" height="14" viewBox="0 0 18 14" fill="none">
-											<path d="M17.3625 10.9331C17.1783 10.9331 17.026 10.8767 16.9055 10.7639C16.7851 10.651 16.7249 10.5083 16.7249 10.3357V5.31721L9.24439 9.101C9.14522 9.1541 9.04604 9.19061 8.94687 9.21053C8.8477 9.23044 8.74144 9.2404 8.6281 9.2404C8.51476 9.2404 8.41204 9.23044 8.31995 9.21053C8.22786 9.19061 8.13223 9.1541 8.03306 9.101L0.318772 5.13798C0.205431 5.08487 0.123967 5.01185 0.0743802 4.91892C0.0247934 4.82598 0 4.72641 0 4.6202C0 4.51399 0.0247934 4.41441 0.0743802 4.32148C0.123967 4.22854 0.205431 4.15552 0.318772 4.10242L8.01181 0.159317C8.11098 0.106211 8.21015 0.0663822 8.30933 0.0398293C8.4085 0.0132764 8.51476 0 8.6281 0C8.74144 0 8.8477 0.0132764 8.94687 0.0398293C9.04604 0.0663822 9.14522 0.106211 9.24439 0.159317L17.66 4.44097C17.7733 4.50735 17.8583 4.58701 17.915 4.67994C17.9717 4.77288 18 4.87245 18 4.97866V10.3357C18 10.5083 17.9398 10.651 17.8194 10.7639C17.6989 10.8767 17.5466 10.9331 17.3625 10.9331ZM8.6281 14C8.51476 14 8.4085 13.99 8.30933 13.9701C8.21015 13.9502 8.11098 13.9137 8.01181 13.8606L3.12397 11.3514C2.92562 11.2451 2.76623 11.0991 2.64581 10.9132C2.52538 10.7274 2.46517 10.5216 2.46517 10.2959V6.83073L7.75679 9.53912L8.18182 9.73826C8.32349 9.80465 8.47225 9.83784 8.6281 9.83784C8.78394 9.83784 8.93624 9.80465 9.08501 9.73826C9.23377 9.67188 9.37898 9.6055 9.52066 9.53912L14.791 6.83073V10.2959C14.791 10.5216 14.7308 10.7274 14.6104 10.9132C14.49 11.0991 14.3306 11.2451 14.1322 11.3514L9.24439 13.8606C9.14522 13.9137 9.04604 13.9502 8.94687 13.9701C8.8477 13.99 8.74144 14 8.6281 14Z" fill="#6200EE"/>
-										</svg>
-										<p class="userClassText">III</p>
+									<div class="sortDropdownItem">
+										<p class="sortDropdownText">Username</p>
+										<p class="sortDropdownBox">✔</p>
 									</div>
-									<div class="userRole">
-										<svg class="userRoleIcon" xmlns="http://www.w3.org/2000/svg" width="13" height="16" viewBox="0 0 13 16" fill="none">
-											<path d="M6.5 16C6.43229 16 6.36797 15.9933 6.30703 15.9798C6.24609 15.9664 6.18177 15.9462 6.11406 15.9193C4.23177 15.2871 2.74219 14.1538 1.64531 12.5195C0.548437 10.8852 0 9.0929 0 7.1425V3.18789C0 2.93232 0.0744792 2.70029 0.223437 2.4918C0.372396 2.28331 0.561979 2.13199 0.792187 2.03783L6.07344 0.0807062C6.2224 0.0269021 6.36458 0 6.5 0C6.63542 0 6.7776 0.0269021 6.92656 0.0807062L12.2078 2.03783C12.438 2.13199 12.6276 2.28331 12.7766 2.4918C12.9255 2.70029 13 2.93232 13 3.18789V7.1425C13 9.0929 12.4516 10.8852 11.3547 12.5195C10.2578 14.1538 8.76823 15.2871 6.88594 15.9193C6.81823 15.9462 6.75391 15.9664 6.69297 15.9798C6.63203 15.9933 6.56771 16 6.5 16Z"/>
-										</svg>
-										<p class="userRoleText">Student</p>
+									<div class="sortDropdownItem">
+										<p class="sortDropdownText">Email</p>
+										<p class="sortDropdownBox">✔</p>
+									</div>
+									<div class="sortDropdownItem">
+										<p class="sortDropdownText">Class</p>
+										<p class="sortDropdownBox">✔</p>
+									</div>
+									<div class="sortDropdownItem">
+										<p class="sortDropdownText">Role</p>
+										<p class="sortDropdownBox">✔</p>
 									</div>
 								</div>
-								<div class="userActions">
-									<svg class="userActionCalendar" xmlns="http://www.w3.org/2000/svg" width="17" height="18" viewBox="0 0 17 18" fill="none">
-										<path d="M1.41667 18C1.03889 18 0.708333 17.865 0.425 17.595C0.141667 17.325 0 17.01 0 16.65V2.7C0 2.34 0.141667 2.025 0.425 1.755C0.708333 1.485 1.03889 1.35 1.41667 1.35H2.95139V0.72C2.95139 0.516 3.0238 0.345 3.16861 0.207C3.31343 0.0690003 3.49287 0 3.70694 0C3.92771 0 4.11276 0.0690003 4.26211 0.207C4.41145 0.345 4.48611 0.516 4.48611 0.72V1.35H12.5139V0.72C12.5139 0.516 12.5863 0.345 12.7311 0.207C12.8759 0.0690003 13.0554 0 13.2694 0C13.4902 0 13.6753 0.0690003 13.8246 0.207C13.9739 0.345 14.0486 0.516 14.0486 0.72V1.35H15.5833C15.9611 1.35 16.2917 1.485 16.575 1.755C16.8583 2.025 17 2.34 17 2.7V16.65C17 17.01 16.8583 17.325 16.575 17.595C16.2917 17.865 15.9611 18 15.5833 18H1.41667ZM1.41667 16.65H15.5833V6.975H1.41667V16.65ZM8.5 10.8C8.23241 10.8 8.0081 10.7138 7.82708 10.5413C7.64606 10.3688 7.55556 10.155 7.55556 9.9C7.55556 9.645 7.64606 9.43125 7.82708 9.25875C8.0081 9.08625 8.23241 9 8.5 9C8.76759 9 8.9919 9.08625 9.17292 9.25875C9.35394 9.43125 9.44444 9.645 9.44444 9.9C9.44444 10.155 9.35394 10.3688 9.17292 10.5413C8.9919 10.7138 8.76759 10.8 8.5 10.8ZM4.72222 10.8C4.45463 10.8 4.23032 10.7138 4.04931 10.5413C3.86829 10.3688 3.77778 10.155 3.77778 9.9C3.77778 9.645 3.86829 9.43125 4.04931 9.25875C4.23032 9.08625 4.45463 9 4.72222 9C4.98981 9 5.21412 9.08625 5.39514 9.25875C5.57616 9.43125 5.66667 9.645 5.66667 9.9C5.66667 10.155 5.57616 10.3688 5.39514 10.5413C5.21412 10.7138 4.98981 10.8 4.72222 10.8ZM12.2778 10.8C12.0102 10.8 11.7859 10.7138 11.6049 10.5413C11.4238 10.3688 11.3333 10.155 11.3333 9.9C11.3333 9.645 11.4238 9.43125 11.6049 9.25875C11.7859 9.08625 12.0102 9 12.2778 9C12.5454 9 12.7697 9.08625 12.9507 9.25875C13.1317 9.43125 13.2222 9.645 13.2222 9.9C13.2222 10.155 13.1317 10.3688 12.9507 10.5413C12.7697 10.7138 12.5454 10.8 12.2778 10.8ZM8.5 14.4C8.23241 14.4 8.0081 14.3138 7.82708 14.1413C7.64606 13.9688 7.55556 13.755 7.55556 13.5C7.55556 13.245 7.64606 13.0313 7.82708 12.8588C8.0081 12.6863 8.23241 12.6 8.5 12.6C8.76759 12.6 8.9919 12.6863 9.17292 12.8588C9.35394 13.0313 9.44444 13.245 9.44444 13.5C9.44444 13.755 9.35394 13.9688 9.17292 14.1413C8.9919 14.3138 8.76759 14.4 8.5 14.4ZM4.72222 14.4C4.45463 14.4 4.23032 14.3138 4.04931 14.1413C3.86829 13.9688 3.77778 13.755 3.77778 13.5C3.77778 13.245 3.86829 13.0313 4.04931 12.8588C4.23032 12.6863 4.45463 12.6 4.72222 12.6C4.98981 12.6 5.21412 12.6863 5.39514 12.8588C5.57616 13.0313 5.66667 13.245 5.66667 13.5C5.66667 13.755 5.57616 13.9688 5.39514 14.1413C5.21412 14.3138 4.98981 14.4 4.72222 14.4ZM12.2778 14.4C12.0102 14.4 11.7859 14.3138 11.6049 14.1413C11.4238 13.9688 11.3333 13.755 11.3333 13.5C11.3333 13.245 11.4238 13.0313 11.6049 12.8588C11.7859 12.6863 12.0102 12.6 12.2778 12.6C12.5454 12.6 12.7697 12.6863 12.9507 12.8588C13.1317 13.0313 13.2222 13.245 13.2222 13.5C13.2222 13.755 13.1317 13.9688 12.9507 14.1413C12.7697 14.3138 12.5454 14.4 12.2778 14.4Z" fill="#565656"/>
-									</svg>
-									<svg xmlns="http://www.w3.org/2000/svg" class="userActionMore" width="14" height="4" viewBox="0 0 14 4" fill="none">
-										<g opacity="0.3">
-										<path d="M13.4874 0.512567C12.804 -0.170848 11.696 -0.170848 11.0126 0.512567C10.3291 1.19598 10.3291 2.30402 11.0126 2.98744C11.696 3.67085 12.804 3.67085 13.4874 2.98744C14.1709 2.30405 14.1709 1.19601 13.4874 0.512567Z" fill="white"/>
-										<path d="M8.23744 0.512567C7.55402 -0.170848 6.44598 -0.170848 5.76257 0.512567C5.07915 1.19598 5.07915 2.30402 5.76257 2.98744C6.44598 3.67085 7.55402 3.67085 8.23744 2.98744C8.92085 2.30405 8.92085 1.19601 8.23744 0.512567Z" fill="white"/>
-										<path d="M2.98744 0.512567C2.30402 -0.170848 1.19598 -0.170848 0.512564 0.512567C-0.170852 1.19598 -0.170852 2.30402 0.512564 2.98744C1.19598 3.67085 2.30402 3.67085 2.98744 2.98744C3.67085 2.30405 3.67085 1.19601 2.98744 0.512567Z" fill="white"/>
-										</g>
-									</svg>
-								</div>
 							</div>
-						</template>
-					</div>
-				</div>
-				<div class="userListFooter">
-					<div class="paging">
-						<p class="pagingText">Page <span class="pageNumber">#</span> of <span class="pageLength">#</span></p>
-						<div class="pagingActions">
-							<svg class="pagingPicker pagingBack" xmlns="http://www.w3.org/2000/svg" width="7" height="10" viewBox="0 0 7 10" fill="none">
-								<path fill-rule="evenodd" clip-rule="evenodd" d="M6.82503 1.175L5.65003 0L0.650024 5L5.65003 10L6.82503 8.825L3.00836 5L6.82503 1.175Z"></path>
-							</svg>
-							<svg class="pagingPicker pagingForward" xmlns="http://www.w3.org/2000/svg" width="7" height="10" viewBox="0 0 7 10" fill="none">
-								<path fill-rule="evenodd" clip-rule="evenodd" d="M2.00007 0L0.825073 1.175L4.64174 5L0.825073 8.825L2.00007 10L7.00007 5L2.00007 0Z"></path>
-							</svg>
+							<div class="actionFilter userAction">
+								<svg class="actionFilterIcon actionIcon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12">
+									<path d="M11.4369 0H0.563154C0.0635131 0 -0.188604 0.606234 0.165419 0.960258L4.5 5.29549V10.125C4.5 10.3085 4.58955 10.4805 4.73993 10.5858L6.61493 11.8979C6.98484 12.1568 7.5 11.8944 7.5 11.437V5.29549L11.8347 0.960258C12.188 0.606937 11.9376 0 11.4369 0Z"></path>
+								</svg>
+								<p class="actionFilterText actionText">Filter</p>
+							</div>
+							<div class="actionExportUser userAction">
+								<svg xmlns="http://www.w3.org/2000/svg" class="actionIcon" viewBox="0 -960 960 960" width="20"><path d="M310-280h340q13 0 21.5-8.5T680-310q0-13-8.5-21.5T650-340H310q-13 0-21.5 8.5T280-310q0 13 8.5 21.5T310-280Zm138-241-64-63q-9-8-21-8.5t-21 8.5q-9 9-9 21t9 21l114 115q9 9 21 9t21-9l116-115q9-9 9-21t-9-21q-9-9-21-8.5t-21 8.5l-64 63v-169q0-13-8.5-21.5T478-720q-13 0-21.5 8.5T448-690v169Zm32 441q-82 0-155-31.5t-127.5-86Q143-252 111.5-325T80-480q0-83 31.5-156t86-127Q252-817 325-848.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 82-31.5 155T763-197.5q-54 54.5-127 86T480-80Z"/></svg>
+								<p class="actionAddUserText actionText">Export</p>
+							</div>
+							<div class="actionAddUser userAction">
+								<svg class="actionIcon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+									<path d="M8.06 12C8.23333 12 8.37667 11.9433 8.49 11.83C8.60333 11.7167 8.66 11.5733 8.66 11.4V8.68H11.42C11.58 8.68 11.7167 8.62333 11.83 8.51C11.9433 8.39667 12 8.25333 12 8.08C12 7.90667 11.9433 7.76333 11.83 7.65C11.7167 7.53667 11.5733 7.48 11.4 7.48H8.66V4.58C8.66 4.42 8.60333 4.28333 8.49 4.17C8.37667 4.05667 8.23333 4 8.06 4C7.88667 4 7.74333 4.05667 7.63 4.17C7.51667 4.28333 7.46 4.42667 7.46 4.6V7.48H4.58C4.42 7.48 4.28333 7.53667 4.17 7.65C4.05667 7.76333 4 7.90667 4 8.08C4 8.25333 4.05667 8.39667 4.17 8.51C4.28333 8.62333 4.42667 8.68 4.6 8.68H7.46V11.42C7.46 11.58 7.51667 11.7167 7.63 11.83C7.74333 11.9433 7.88667 12 8.06 12ZM8 16C6.86667 16 5.81333 15.7967 4.84 15.39C3.86667 14.9833 3.02 14.42 2.3 13.7C1.58 12.98 1.01667 12.1333 0.61 11.16C0.203333 10.1867 0 9.13333 0 8C0 6.88 0.203333 5.83333 0.61 4.86C1.01667 3.88667 1.58 3.04 2.3 2.32C3.02 1.6 3.86667 1.03333 4.84 0.62C5.81333 0.206667 6.86667 0 8 0C9.12 0 10.1667 0.206667 11.14 0.62C12.1133 1.03333 12.96 1.6 13.68 2.32C14.4 3.04 14.9667 3.88667 15.38 4.86C15.7933 5.83333 16 6.88 16 8C16 9.13333 15.7933 10.1867 15.38 11.16C14.9667 12.1333 14.4 12.98 13.68 13.7C12.96 14.42 12.1133 14.9833 11.14 15.39C10.1667 15.7967 9.12 16 8 16Z"></path>
+								</svg>
+								<p class="actionAddUserText actionText">New</p>
+							</div>
 						</div>
-						<p class="pagingTextVisible"><span class="pagesVisible" contenteditable="true">#</span> user(s) visible per page</p>
+					</div>
+					<div class="userListContent">
+						<div class="userListContentHeader">
+						</div>
+						<div class="userListContentList">
+							<template class="user">
+								<div class="userContainer">
+									<div class="userSelect">
+										<div class="userSelectBox"></div>
+									</div>
+									<div class="userAvatarUsername">
+										<div class="userAvatar"></div>
+										<div class="userUsernameText">Mkoys</div>
+									</div>
+									<div class="userEmail">
+										<svg class="userEmailIcon" xmlns="http://www.w3.org/2000/svg" width="16" height="14" viewBox="0 0 16 14" fill="none">
+											<path fill-rule="evenodd" clip-rule="evenodd" d="M11.6192 0C12.6622 0 13.6656 0.412222 14.4037 1.15189C15.1426 1.89 15.5556 2.88556 15.5556 3.92778V10.0722C15.5556 12.2422 13.79 14 11.6192 14H3.93556C1.76478 14 0 12.2422 0 10.0722V3.92778C0 1.75778 1.757 0 3.93556 0H11.6192ZM12.8567 5.08673L12.9189 5.0245C13.1048 4.79895 13.1048 4.47228 12.9104 4.24673C12.8022 4.13084 12.6537 4.06006 12.4989 4.0445C12.3356 4.03595 12.18 4.09117 12.0626 4.20006L8.55558 7.00006C8.10447 7.37417 7.45814 7.37417 7.00003 7.00006L3.50003 4.20006C3.25814 4.02117 2.92369 4.0445 2.72225 4.2545C2.51225 4.4645 2.48892 4.79895 2.66703 5.03228L2.76892 5.13339L6.3078 7.8945C6.74336 8.23673 7.27147 8.42339 7.82447 8.42339C8.37592 8.42339 8.91336 8.23673 9.34814 7.8945L12.8567 5.08673Z" fill="#6200EE"/>
+										</svg>
+										<p class="userEmailText">mkoys@protonmail.com</p>
+									</div>
+									<div class="tags">
+										<div class="userClass">
+											<svg xmlns="http://www.w3.org/2000/svg" class="userClassIcon" width="18" height="14" viewBox="0 0 18 14" fill="none">
+												<path d="M17.3625 10.9331C17.1783 10.9331 17.026 10.8767 16.9055 10.7639C16.7851 10.651 16.7249 10.5083 16.7249 10.3357V5.31721L9.24439 9.101C9.14522 9.1541 9.04604 9.19061 8.94687 9.21053C8.8477 9.23044 8.74144 9.2404 8.6281 9.2404C8.51476 9.2404 8.41204 9.23044 8.31995 9.21053C8.22786 9.19061 8.13223 9.1541 8.03306 9.101L0.318772 5.13798C0.205431 5.08487 0.123967 5.01185 0.0743802 4.91892C0.0247934 4.82598 0 4.72641 0 4.6202C0 4.51399 0.0247934 4.41441 0.0743802 4.32148C0.123967 4.22854 0.205431 4.15552 0.318772 4.10242L8.01181 0.159317C8.11098 0.106211 8.21015 0.0663822 8.30933 0.0398293C8.4085 0.0132764 8.51476 0 8.6281 0C8.74144 0 8.8477 0.0132764 8.94687 0.0398293C9.04604 0.0663822 9.14522 0.106211 9.24439 0.159317L17.66 4.44097C17.7733 4.50735 17.8583 4.58701 17.915 4.67994C17.9717 4.77288 18 4.87245 18 4.97866V10.3357C18 10.5083 17.9398 10.651 17.8194 10.7639C17.6989 10.8767 17.5466 10.9331 17.3625 10.9331ZM8.6281 14C8.51476 14 8.4085 13.99 8.30933 13.9701C8.21015 13.9502 8.11098 13.9137 8.01181 13.8606L3.12397 11.3514C2.92562 11.2451 2.76623 11.0991 2.64581 10.9132C2.52538 10.7274 2.46517 10.5216 2.46517 10.2959V6.83073L7.75679 9.53912L8.18182 9.73826C8.32349 9.80465 8.47225 9.83784 8.6281 9.83784C8.78394 9.83784 8.93624 9.80465 9.08501 9.73826C9.23377 9.67188 9.37898 9.6055 9.52066 9.53912L14.791 6.83073V10.2959C14.791 10.5216 14.7308 10.7274 14.6104 10.9132C14.49 11.0991 14.3306 11.2451 14.1322 11.3514L9.24439 13.8606C9.14522 13.9137 9.04604 13.9502 8.94687 13.9701C8.8477 13.99 8.74144 14 8.6281 14Z" fill="#6200EE"/>
+											</svg>
+											<p class="userClassText">III</p>
+										</div>
+										<div class="userRole">
+											<svg class="userRoleIcon" xmlns="http://www.w3.org/2000/svg" width="13" height="16" viewBox="0 0 13 16" fill="none">
+												<path d="M6.5 16C6.43229 16 6.36797 15.9933 6.30703 15.9798C6.24609 15.9664 6.18177 15.9462 6.11406 15.9193C4.23177 15.2871 2.74219 14.1538 1.64531 12.5195C0.548437 10.8852 0 9.0929 0 7.1425V3.18789C0 2.93232 0.0744792 2.70029 0.223437 2.4918C0.372396 2.28331 0.561979 2.13199 0.792187 2.03783L6.07344 0.0807062C6.2224 0.0269021 6.36458 0 6.5 0C6.63542 0 6.7776 0.0269021 6.92656 0.0807062L12.2078 2.03783C12.438 2.13199 12.6276 2.28331 12.7766 2.4918C12.9255 2.70029 13 2.93232 13 3.18789V7.1425C13 9.0929 12.4516 10.8852 11.3547 12.5195C10.2578 14.1538 8.76823 15.2871 6.88594 15.9193C6.81823 15.9462 6.75391 15.9664 6.69297 15.9798C6.63203 15.9933 6.56771 16 6.5 16Z"/>
+											</svg>
+											<p class="userRoleText">Student</p>
+										</div>
+									</div>
+									<div class="userActions">
+										<svg class="userActionCalendar" xmlns="http://www.w3.org/2000/svg" width="17" height="18" viewBox="0 0 17 18" fill="none">
+											<path d="M1.41667 18C1.03889 18 0.708333 17.865 0.425 17.595C0.141667 17.325 0 17.01 0 16.65V2.7C0 2.34 0.141667 2.025 0.425 1.755C0.708333 1.485 1.03889 1.35 1.41667 1.35H2.95139V0.72C2.95139 0.516 3.0238 0.345 3.16861 0.207C3.31343 0.0690003 3.49287 0 3.70694 0C3.92771 0 4.11276 0.0690003 4.26211 0.207C4.41145 0.345 4.48611 0.516 4.48611 0.72V1.35H12.5139V0.72C12.5139 0.516 12.5863 0.345 12.7311 0.207C12.8759 0.0690003 13.0554 0 13.2694 0C13.4902 0 13.6753 0.0690003 13.8246 0.207C13.9739 0.345 14.0486 0.516 14.0486 0.72V1.35H15.5833C15.9611 1.35 16.2917 1.485 16.575 1.755C16.8583 2.025 17 2.34 17 2.7V16.65C17 17.01 16.8583 17.325 16.575 17.595C16.2917 17.865 15.9611 18 15.5833 18H1.41667ZM1.41667 16.65H15.5833V6.975H1.41667V16.65ZM8.5 10.8C8.23241 10.8 8.0081 10.7138 7.82708 10.5413C7.64606 10.3688 7.55556 10.155 7.55556 9.9C7.55556 9.645 7.64606 9.43125 7.82708 9.25875C8.0081 9.08625 8.23241 9 8.5 9C8.76759 9 8.9919 9.08625 9.17292 9.25875C9.35394 9.43125 9.44444 9.645 9.44444 9.9C9.44444 10.155 9.35394 10.3688 9.17292 10.5413C8.9919 10.7138 8.76759 10.8 8.5 10.8ZM4.72222 10.8C4.45463 10.8 4.23032 10.7138 4.04931 10.5413C3.86829 10.3688 3.77778 10.155 3.77778 9.9C3.77778 9.645 3.86829 9.43125 4.04931 9.25875C4.23032 9.08625 4.45463 9 4.72222 9C4.98981 9 5.21412 9.08625 5.39514 9.25875C5.57616 9.43125 5.66667 9.645 5.66667 9.9C5.66667 10.155 5.57616 10.3688 5.39514 10.5413C5.21412 10.7138 4.98981 10.8 4.72222 10.8ZM12.2778 10.8C12.0102 10.8 11.7859 10.7138 11.6049 10.5413C11.4238 10.3688 11.3333 10.155 11.3333 9.9C11.3333 9.645 11.4238 9.43125 11.6049 9.25875C11.7859 9.08625 12.0102 9 12.2778 9C12.5454 9 12.7697 9.08625 12.9507 9.25875C13.1317 9.43125 13.2222 9.645 13.2222 9.9C13.2222 10.155 13.1317 10.3688 12.9507 10.5413C12.7697 10.7138 12.5454 10.8 12.2778 10.8ZM8.5 14.4C8.23241 14.4 8.0081 14.3138 7.82708 14.1413C7.64606 13.9688 7.55556 13.755 7.55556 13.5C7.55556 13.245 7.64606 13.0313 7.82708 12.8588C8.0081 12.6863 8.23241 12.6 8.5 12.6C8.76759 12.6 8.9919 12.6863 9.17292 12.8588C9.35394 13.0313 9.44444 13.245 9.44444 13.5C9.44444 13.755 9.35394 13.9688 9.17292 14.1413C8.9919 14.3138 8.76759 14.4 8.5 14.4ZM4.72222 14.4C4.45463 14.4 4.23032 14.3138 4.04931 14.1413C3.86829 13.9688 3.77778 13.755 3.77778 13.5C3.77778 13.245 3.86829 13.0313 4.04931 12.8588C4.23032 12.6863 4.45463 12.6 4.72222 12.6C4.98981 12.6 5.21412 12.6863 5.39514 12.8588C5.57616 13.0313 5.66667 13.245 5.66667 13.5C5.66667 13.755 5.57616 13.9688 5.39514 14.1413C5.21412 14.3138 4.98981 14.4 4.72222 14.4ZM12.2778 14.4C12.0102 14.4 11.7859 14.3138 11.6049 14.1413C11.4238 13.9688 11.3333 13.755 11.3333 13.5C11.3333 13.245 11.4238 13.0313 11.6049 12.8588C11.7859 12.6863 12.0102 12.6 12.2778 12.6C12.5454 12.6 12.7697 12.6863 12.9507 12.8588C13.1317 13.0313 13.2222 13.245 13.2222 13.5C13.2222 13.755 13.1317 13.9688 12.9507 14.1413C12.7697 14.3138 12.5454 14.4 12.2778 14.4Z" fill="#565656"/>
+										</svg>
+										<div class="userActionMoreBox">
+											<svg xmlns="http://www.w3.org/2000/svg" class="userActionMore" width="14" height="4" viewBox="0 0 14 4" fill="none">
+												<g opacity="0.3">
+												<path d="M13.4874 0.512567C12.804 -0.170848 11.696 -0.170848 11.0126 0.512567C10.3291 1.19598 10.3291 2.30402 11.0126 2.98744C11.696 3.67085 12.804 3.67085 13.4874 2.98744C14.1709 2.30405 14.1709 1.19601 13.4874 0.512567Z" fill="white"/>
+												<path d="M8.23744 0.512567C7.55402 -0.170848 6.44598 -0.170848 5.76257 0.512567C5.07915 1.19598 5.07915 2.30402 5.76257 2.98744C6.44598 3.67085 7.55402 3.67085 8.23744 2.98744C8.92085 2.30405 8.92085 1.19601 8.23744 0.512567Z" fill="white"/>
+												<path d="M2.98744 0.512567C2.30402 -0.170848 1.19598 -0.170848 0.512564 0.512567C-0.170852 1.19598 -0.170852 2.30402 0.512564 2.98744C1.19598 3.67085 2.30402 3.67085 2.98744 2.98744C3.67085 2.30405 3.67085 1.19601 2.98744 0.512567Z" fill="white"/>
+												</g>
+											</svg>
+											<div class="userBoxDropdown" style="top: 28px; right: -15px">
+												<svg class="dropdownKnob"  xmlns="http://www.w3.org/2000/svg" width="15" height="12" viewBox="0 0 15 12" fill="none">
+													<path d="M6.63398 0.499999C7.01888 -0.166668 7.98112 -0.166667 8.36602 0.5L13.9952 10.25C14.3801 10.9167 13.899 11.75 13.1292 11.75H1.87083C1.10103 11.75 0.619909 10.9167 1.00481 10.25L6.63398 0.499999Z" fill="#151515"/>
+												</svg>
+
+													<div class="userDropdownBox attendanceDropdown">
+														<div class="dropdownIconBox">
+															<svg xmlns="http://www.w3.org/2000/svg" class="dropdownIcon" height="48" viewBox="0 -960 960 960" width="48"><path d="M400-485q-66 0-108-42t-42-108q0-66 42-108t108-42q66 0 108 42t42 108q0 66-42 108t-108 42ZM110-164q-13 0-21.5-8.5T80-194v-64q0-35 17.5-63t50.5-43q72-32 133.5-46T400-424h23q-7 14-12.5 32t-9.5 37q-5 27-3.5 64.5T408-224q5 18 12.5 32.5T438-164H110Zm584-77q36 0 58-22t22-58q0-36-22-58t-58-22q-36 0-58 22t-22 58q0 36 22 58t58 22Zm-37 55q-17-5-34.5-14.5T593-222l-44 10q-5 2-10 0t-7-7l-13-23q-3-4-2-9t5-9l38-36q-2-9-2-25t2-25l-38-36q-4-4-5-9t2-9l13-23q2-5 7-7t10 0l44 10q12-12 29.5-21.5T657-456l8-53q1-6 5-9.5t10-3.5h28q6 0 10 3.5t5 9.5l8 53q17 5 34.5 14.5T795-420l44-10q5-2 10 0t7 7l13 23q3 4 2 9t-5 9l-38 36q2 9 2 25t-2 25l38 36q4 4 5 9t-2 9l-13 23q-2 5-7 7t-10 0l-44-10q-12 12-29.5 21.5T731-186l-8 53q-1 6-5 9.5t-10 3.5h-28q-6 0-10-3.5t-5-9.5l-8-53Z"/></svg>														
+														</div>
+														<div class="dropdownTextBox">
+															<p class="dropdownTextHeader">Settings</p>
+															<p class="dropdownTextFooter">Edit user</p>
+														</div>
+													</div>
+													<div class="userDropdownBox usersDropdown">
+														<div class="dropdownIconBox">
+															<svg class="dropdownIcon" xmlns="http://www.w3.org/2000/svg" height="27" viewBox="0 -960 960 960" width="27"><path d="M310-280h340q13 0 21.5-8.5T680-310q0-13-8.5-21.5T650-340H310q-13 0-21.5 8.5T280-310q0 13 8.5 21.5T310-280Zm138-241-64-63q-9-8-21-8.5t-21 8.5q-9 9-9 21t9 21l114 115q9 9 21 9t21-9l116-115q9-9 9-21t-9-21q-9-9-21-8.5t-21 8.5l-64 63v-169q0-13-8.5-21.5T478-720q-13 0-21.5 8.5T448-690v169Zm32 441q-82 0-155-31.5t-127.5-86Q143-252 111.5-325T80-480q0-83 31.5-156t86-127Q252-817 325-848.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 82-31.5 155T763-197.5q-54 54.5-127 86T480-80Z"/></svg>				
+														</div>
+														<div class="dropdownTextBox">
+															<p class="dropdownTextHeader">Export</p>
+															<p class="dropdownTextFooter">Download user data</p>
+														</div>
+													</div>
+													<div class="userDropdownBox logoutDropdown">
+														<div class="dropdownIconBox">
+														<svg class="dropdownIcon" xmlns="http://www.w3.org/2000/svg" height="25" viewBox="0 -960 960 960"><path d="M220-80q-24.75 0-42.375-17.625T160-140v-434q0-24.75 17.625-42.375T220-634h70v-96q0-78.85 55.606-134.425Q401.212-920 480.106-920T614.5-864.425Q670-808.85 670-730v96h70q24.75 0 42.375 17.625T800-574v434q0 24.75-17.625 42.375T740-80H220Zm260.168-200Q512-280 534.5-302.031T557-355q0-30-22.668-54.5t-54.5-24.5Q448-434 425.5-409.5t-22.5 55q0 30.5 22.668 52.5t54.5 22ZM350-634h260v-96q0-54.167-37.882-92.083-37.883-37.917-92-37.917Q426-860 388-822.083 350-784.167 350-730v96Z"/></svg>
+														</div>
+														<div class="dropdownTextBox">
+															<p class="dropdownTextHeader">Lock</p>
+															<p class="dropdownTextFooter">Disable account</p>
+														</div>
+													</div>
+													<div class="userDropdownBox">
+														<div class="dropdownIconBox">
+															<svg class="dropdownIcon" xmlns="http://www.w3.org/2000/svg" height="27" viewBox="0 -960 960 960"><path d="M261-120q-24.75 0-42.375-17.625T201-180v-570h-11q-12.75 0-21.375-8.675-8.625-8.676-8.625-21.5 0-12.825 8.625-21.325T190-810h158q0-13 8.625-21.5T378-840h204q12.75 0 21.375 8.625T612-810h158q12.75 0 21.375 8.675 8.625 8.676 8.625 21.5 0 12.825-8.625 21.325T770-750h-11v570q0 24.75-17.625 42.375T699-120H261Zm106-146h60v-399h-60v399Zm166 0h60v-399h-60v399Z"/></svg>
+															</svg>
+														</div>
+														<div class="dropdownTextBox">
+															<p class="dropdownTextHeader">Delete</p>
+															<p class="dropdownTextFooter">Remove account</p>
+														</div>
+													</div>
+												</div>
+											</div>
+									</div>
+								</div>
+							</template>
+						</div>
+					</div>
+					<div class="userListFooter">
+						<div class="paging">
+							<p class="pagingText">Page <span class="pageNumber">#</span> of <span class="pageLength">#</span></p>
+							<div class="pagingActions">
+								<svg class="pagingPicker pagingBack" xmlns="http://www.w3.org/2000/svg" width="7" height="10" viewBox="0 0 7 10" fill="none">
+									<path fill-rule="evenodd" clip-rule="evenodd" d="M6.82503 1.175L5.65003 0L0.650024 5L5.65003 10L6.82503 8.825L3.00836 5L6.82503 1.175Z"></path>
+								</svg>
+								<svg class="pagingPicker pagingForward" xmlns="http://www.w3.org/2000/svg" width="7" height="10" viewBox="0 0 7 10" fill="none">
+									<path fill-rule="evenodd" clip-rule="evenodd" d="M2.00007 0L0.825073 1.175L4.64174 5L0.825073 8.825L2.00007 10L7.00007 5L2.00007 0Z"></path>
+								</svg>
+							</div>
+							<p class="pagingTextVisible"><span class="pagesVisible" contenteditable="true">#</span> user(s) visible per page</p>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-</body>
+	</body>
 </html>

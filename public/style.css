@@ -26,6 +26,10 @@ html, body {
 	height: 100%;
 }
 
+.userActionMoreBox {
+	position: relative;
+}
+
 .auth {
 	width: 100%;
 	height: 100%;
@@ -120,6 +124,12 @@ html, body {
 .authActionText > a {
 	color: var(--main-color);
 	text-decoration: none;
+}
+
+.loadingBox {
+	width: 100%;
+	overflow: hidden;
+	position: relative;
 }
 
 .loading {
@@ -759,7 +769,11 @@ input:disabled {
 	flex-direction: column;
 	margin-top: 20px;
 	position: relative;
-	overflow: hidden;
+}
+
+.userDropdownSection {
+	display: flex;
+
 }
 
 .userListHeader {
@@ -793,7 +807,7 @@ input:disabled {
 }
 
 .newUser {
-	display: flex;
+	display: none;
 	justify-content: center;
 	align-items: center;
 	width: 100%;
@@ -851,8 +865,68 @@ input:disabled {
 	border-radius: 2px;
 }
 
+.exportUser {
+	display: none;
+	width: 100%;
+	height: 100%;
+	justify-content: center;
+	align-items: center;
+}
+
+.exportUserDateBox {
+	display: flex;
+}
+
+.selectedStartDate {
+	padding: 8px;
+	border-radius: 4px;
+	border: 1px solid var(--text-color-70);
+	font-weight: 600;
+	font-size: 18px;
+	color: var(--text-color);
+	transition: 0.2s ease color;
+}
+
+.selectedEndDate {
+	margin-top: 20px;
+	padding: 8px;
+	border-radius: 4px;
+	border: 1px solid var(--text-color-70);
+	font-weight: 600;
+	font-size: 18px;
+	color: var(--text-color);
+	transition: 0.2s ease color;
+}
+
+.selectedUsers {
+	column-gap: 10px;
+	row-gap: 10px;
+	display: grid;
+	grid-template-columns: auto auto auto;
+}
+
+.userExportList {
+ margin-top: 20px;
+}
+
+.selectedUser {
+	width: fit-content;
+	height: fit-content;
+	background-color: var(--back-color);
+	border-radius: 3px;
+	padding: 10px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
 .userActionMore {
 	margin-left: 48px;
+	transition: 0.2s ease all;
+}
+
+.userActionMore:hover > g{
+	opacity: 1;
 }
 
 .actionIcon {
@@ -1173,6 +1247,10 @@ input:disabled {
 }
 
 @media only screen and (max-width: 560px) {
+  .exportUserDateBox {
+		flex-direction: column;
+	}
+
 	.authBox {
 		width: 100%;
 		height: 100%;

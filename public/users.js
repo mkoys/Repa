@@ -28,13 +28,69 @@ const userCountElement = document.querySelector(".userListHeaderSpan");
 const loadingElement = document.querySelector(".loading");
 const popupElement = document.querySelector(".popup");
 const popupNewUser = document.querySelector(".newUser");
+const popupExport = document.querySelector(".exportUser");
+const exportUserElement = document.querySelector(".actionExportUser");
 const cancelNewUser = document.querySelector(".cancelNewUser");
+const cancelExportUser = document.querySelector(".cancelExportUser");
+const calendarDatesElement = document.querySelector(".calendarDates");
+const calendarDateTextElement = document.querySelector(".calendarDateText");
+const calendarDateNextElement = document.querySelector(".calendarDateNext");
+const calendarDatePreviousElement = document.querySelector(".calendarDatePrevious");
+const selectedUsersElement = document.querySelector(".selectedUsers");
 
+const MonthsOfYear = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+let calendarDates = [];
+const calendarState = [];
+const calendarEvents = [];
+const contentState = [];
+
+const calendarDate = new Date();
+
+let calendarDays = generateCalendarDates();
+
+popupElement.addEventListener("click", event => {
+	if(event.srcElement === popupExport || event.srcElement === popupNewUser) {
+		popupElement.style.opacity = null;
+		popupElement.style.visibility = null; 
+		popupNewUser.style.display = "none";
+		popupExport.style.display = "none";
+	}
+});
+
+exportUserElement.addEventListener("click", _event => {
+	if(selectedUsers.length > 0) {
+		selectedUsersElement.innerHTML = "";
+		popupElement.style.opacity = 1;
+		popupElement.style.visibility = "visible";
+		popupExport.style.display = "flex";
+		selectedUsers.forEach(item => {
+			const userElement = document.createElement("div");
+			const userAvatarElement = document.createElement("div");
+			const userUsernameElement = document.createElement("p");
+			userUsernameElement.classList.add("username");
+			userAvatarElement.classList.add("avatar");
+			userUsernameElement.style.marginLeft = "10px";
+			userAvatarElement.style.width = "20px";
+			userAvatarElement.style.height= "20px";
+			userElement.classList.add("selectedUser");
+			userUsernameElement.textContent = item.user.username;
+			userElement.appendChild(userAvatarElement);
+			userElement.appendChild(userUsernameElement);
+			selectedUsersElement.appendChild(userElement);
+		});
+	}
+});
 
 cancelNewUser.addEventListener("click", _event => {
 	popupElement.style.opacity = null;
 	popupElement.style.visibility = null; 
 	popupNewUser.style.display = null;
+}); 
+
+cancelExportUser.addEventListener("click", _event => {
+	popupElement.style.opacity = null;
+	popupElement.style.visibility = null; 
+	popupExport.style.display = null;
 }); 
 
 addUserElement.addEventListener("click", _event => {
@@ -58,6 +114,37 @@ pagingForward.addEventListener("click", async () => {
 	}
 	loadingElement.classList.remove("load");
 });
+
+function calendarSetDate(date, action) {
+	const index = calendarDates.findIndex(dateItem => compareDates(dateItem, date));
+	if(action) {
+		if(index > -1) calendarDatesElement.children[index].classList.add("calendarDaySelected");	
+		calendarState.push({day: date, element: calendarDatesElement.children[index]})	
+	}else {
+		if(index > -1) calendarDatesElement.children[index].classList.remove("calendarDaySelected");
+		const stateIndex = calendarState.findIndex(state => compareDates(state.day, date));
+		calendarState.splice(stateIndex, 1);	
+	}
+}
+
+function daysInMonth(year, month) {
+	const date = new Date(year, month, 1);
+	const days = new Array();
+
+	while(date.getMonth() === month) {
+		days.push(new Date(date));
+		date.setDate(date.getDate() + 1);
+	}
+
+	return days;
+}
+
+function compareDates(date1, date2) {
+	date1.setHours(0, 0, 0, 0);
+	date2.setHours(0, 0, 0, 0);
+
+	return date1.getTime() === date2.getTime();
+}
 
 let sortItem = null;
 let sort = false;
@@ -88,16 +175,25 @@ sortActionItems.forEach(element => {
 	});
 });
 
-sortActionElement.addEventListener("click", _event => {
-	if(sortActionDropdown.style.display) {
-		sortActionDropdown.style.display = null;
-		sortActionText.style.color = null;
-		sortActionIcon.style.fill = null;
-	}else {
+let sortLock = false;
+
+sortActionElement.addEventListener("mouseenter", _event => {
+		sortLock = true;
 		sortActionDropdown.style.display = "flex";
 		sortActionText.style.color = "var(--text-color)";
 		sortActionIcon.style.fill = "var(--text-color)";
-	}
+});
+
+
+sortActionElement.addEventListener("mouseleave", _event => {
+	sortLock = false;
+	setTimeout(() => {
+		if(!sortLock) {
+			sortActionDropdown.style.display = null;
+			sortActionText.style.color = null;
+			sortActionIcon.style.fill = null;
+		}
+		}, 200);
 });
 
 pagingBackward.addEventListener("click", async () => {
@@ -115,6 +211,101 @@ pagingBackward.addEventListener("click", async () => {
 	loadingElement.classList.remove("load");
 	}
 });
+
+function generateCalendarDates() {
+	calendarDatesElement.innerHTML = "";
+	calendarDateTextElement.textContent = `${MonthsOfYear[calendarDate.getMonth()]} ${calendarDate.getFullYear()}`;
+
+	const previousMonthDate = new Date(calendarDate); 
+	previousMonthDate.setMonth(calendarDate.getMonth() - 1);
+	const nextMonthDate = new Date(calendarDate); 
+	nextMonthDate.setMonth(calendarDate.getMonth() + 1);
+
+	const previousDays = daysInMonth(previousMonthDate.getFullYear(), previousMonthDate.getMonth());
+	const currentDays = daysInMonth(calendarDate.getFullYear(), calendarDate.getMonth());
+	const nextDays = daysInMonth(nextMonthDate.getFullYear(), nextMonthDate.getMonth());
+
+	let calendarDays = [];
+
+	if(currentDays[0].getDay() != 1) {
+		while(calendarDays.length < currentDays[0].getDay() - 1) {
+			calendarDays.push(previousDays[previousDays.length - 1 - calendarDays.length]);
+		}
+
+		calendarDays.reverse();
+	}
+
+	calendarDays = calendarDays.concat(currentDays);
+
+	for(let index = 0; calendarDays.length < 42; index++) {
+		calendarDays.push(nextDays[index]);
+	}
+
+	const todayDate = new Date();
+
+	calendarDays.forEach(day => {
+		const calendarDateElement = document.createElement("div");
+		const calendarDateDayElement = document.createElement("div");
+		const calendarDateDayTextElement = document.createElement("p");
+		const calendarDateDayDotElement = document.createElement("div");
+
+		calendarDateElement.classList.add("calendarDate");
+		calendarDateDayElement.classList.add("calendarDateDay");
+		calendarDateDayTextElement.classList.add("calendarDateDayText");
+		calendarDateDayDotElement.classList.add("calendarDateDayDot");
+
+		if(day.getMonth() !== calendarDate.getMonth()) {
+			calendarDateDayTextElement.classList.add("disabledDate");
+			calendarDateElement.classList.add("disabledDateBox");
+		}
+
+		if(compareDates(todayDate, day)) {
+			calendarDateElement.classList.add("todayDate");
+		}
+
+		calendarDateDayTextElement.textContent = day.getDate();
+
+		calendarDateDayElement.appendChild(calendarDateDayTextElement);
+		calendarDateDayElement.appendChild(calendarDateDayDotElement);
+		calendarDateElement.appendChild(calendarDateDayElement);
+		calendarDatesElement.appendChild(calendarDateElement);
+
+		const foundIndex = calendarState.findIndex(state => compareDates(state.day, day));
+		if(foundIndex > -1) {
+			calendarState[foundIndex].element = calendarDateElement;
+			calendarDateElement.classList.add("calendarDaySelected");
+		}
+
+		calendarDateElement.addEventListener("click", (event) => {
+			if(event.shiftKey) {
+				return;
+			}else {
+				const stateIndex = calendarState.findIndex(state => compareDates(state.day, day));
+				if(stateIndex > -1) {
+					calendarDateElement.classList.remove("calendarDaySelected");
+					calendarState.splice(stateIndex, 1);	
+					calendarEvent(day, false);
+				}else {
+					if(!event.ctrlKey) {
+						while(calendarState.length != 0) {
+							const element = calendarState[calendarState.length - 1].element;
+							element.classList.remove("calendarDaySelected");
+							calendarEvent(calendarState[calendarState.length - 1].day, false);
+							calendarState.pop(stateIndex, 1);
+						}
+					}
+
+					calendarDateElement.classList.add("calendarDaySelected");
+					calendarState.push({day, element: calendarDateElement})	
+					calendarEvent(day, true);
+				}
+			}
+		});
+	});
+
+	return calendarDays;
+}
+
 
 pageVisibleElement.addEventListener("keydown", async event => {
 	if(event.key === "Escape") {
@@ -246,6 +437,18 @@ function renderUserList(userList) {
 		const userCalendar = userElement.querySelector(".userActionCalendar");
 		const userSelect = userElement.querySelector(".userSelect");
 		const userBox = userElement.querySelector(".userSelectBox");
+		const moreAction = userElement.querySelector(".userActionMoreBox");
+		const moreDropdown = userElement.querySelector(".userBoxDropdown");
+
+		moreAction.addEventListener("mouseenter", _event => {
+			moreDropdown.style.opacity = 1;
+			moreDropdown.style.visibility = "visible";
+		});
+
+		moreAction.addEventListener("mouseleave", _event => {
+			moreDropdown.style.opacity = null;
+			moreDropdown.style.visibility = null;
+		});
 
 		userSelect.addEventListener("click", _event => {
 			const selectFound = selectedUsers.findIndex(item => item.user.id === user.id);
