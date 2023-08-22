@@ -55,10 +55,29 @@ app.get("/users", async (req, res) => {
 
 	const page = await users.find({}).skip(pageNumber * pageVisible).limit(pageVisible).sort(sort ? sortParam : {id: 1}).toArray();
 
-	const pageLength = Math.round(userLength / pageVisible);
+	const pageLength = Math.floor(userLength / pageVisible) + (userLength % pageVisible != 0 ? 1 : 0);
 
 	res.json({page, pageLength, userLength});
 });
+
+app.post("/user", async (req, res) => {
+	const data = req.body;
+	if(typeof data !== "object" || data.username === undefined || data.email === undefined || data.password === undefined) return res.json({ error: { id: 0, message: "Invalid request" }});
+	if(typeof data.username !== "string" || typeof data.email !== "string" || typeof data.password !== "string") return res.json({error: {id: 1, message: "Invalid type"}});
+	if(data.username.length == 0 || data.email.length == 0 || data.password.length == 0) return res.json({error: {id: 2, message: "Empty values"}});
+
+	const user = await users.findOne({ $or: [{ username: data.username }, {email: data.email}] });
+	if(user) return res.json({ error: { id: 3, message: "User already exists" }});
+
+	const passcode = bcrypt.hashSync(data.password, 10);
+
+	const body = {id: nanoid(), username: data.username, email: data.email, password: passcode};
+	if(data.class) body.class = data.class;
+	if(data.role) body.role = data.role;
+	users.insertOne(body); 
+	res.json({ message: "ok" });
+});
+
 
 app.post("/register", async (req, res) => {
 	const data = req.body;

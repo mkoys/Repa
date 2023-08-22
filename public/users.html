@@ -88,12 +88,11 @@
 								<input type="password" class="authFieldInput passwordUser">
 							</div>
 							<div class="authField">
-								<label for="" class="authFieldLabel" id="rePasswordLabel">Re-Password<span class="errorField rePasswordError"></label>
-								<input type="password" class="authFieldInput rePasswordUser">
+								<label for="" class="authFieldLabel" id="classLabel">Class<span class="errorField rePasswordError"></label>
+								<input type="text" class="authFieldInput classUser">
 							</div>
-
 							<div style="margin-top: 8px" class="attendanceCheckbox" style="margin-right: 15px">
-								<div class="boxcheck" style="margin-right: 5px">
+								<div class="boxcheck" id="isAdmin" style="margin-right: 5px">
 									<svg class="check" width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
 										<path d="M5.11464 11.3035L0.717829 6.95065C0.322556 6.55933 0.322556 5.92067 0.71783 5.52935L1.23585 5.01651C1.62554 4.63071 2.25324 4.63071 2.64294 5.01651L5.11464 7.46349C5.50433 7.84929 6.13203 7.84929 6.52173 7.46349L13.3571 0.696509C13.7468 0.310711 14.3745 0.310711 14.7642 0.69651L15.2822 1.20935C15.6774 1.60067 15.6774 2.23933 15.2822 2.63065L6.52173 11.3035C6.13203 11.6893 5.50433 11.6893 5.11464 11.3035Z"></path>
 									</svg>
@@ -101,7 +100,7 @@
 								<p style="margin: 0px" class="authActionText">Admin account</p>
 							</div>
 							<div class="authAction">
-								<button class="authButton">Create</button>
+								<button class="authButton addUserActionButton">Create</button>
 								<button class="authButton cancelNewUser" style="margin-top: 10px;background-color: var(--text-color);color: var(--back-color)">Cancel</button>
 							</div>
 						</div>

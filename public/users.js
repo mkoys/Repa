@@ -37,6 +37,14 @@ const calendarDateTextElement = document.querySelector(".calendarDateText");
 const calendarDateNextElement = document.querySelector(".calendarDateNext");
 const calendarDatePreviousElement = document.querySelector(".calendarDatePrevious");
 const selectedUsersElement = document.querySelector(".selectedUsers");
+const newUserUsername = document.querySelector(".usernameUser");
+const newUserEmail = document.querySelector(".emailUser");
+const newUserPassword = document.querySelector(".passwordUser");
+const newUserClass = document.querySelector(".classUser");
+const newUserRole = document.querySelector(".roleUser");
+const newUserAction = document.querySelector(".addUserActionButton");
+const isAdminCheckbox = document.querySelector("#isAdmin");
+const isAdminCheck = isAdminCheckbox.querySelector(".check");
 
 const MonthsOfYear = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 let calendarDates = [];
@@ -85,6 +93,11 @@ cancelNewUser.addEventListener("click", _event => {
 	popupElement.style.opacity = null;
 	popupElement.style.visibility = null; 
 	popupNewUser.style.display = null;
+	isAdminCheck.style.display = "none";
+	newUserUsername.value = "";
+	newUserPassword.value = "";
+	newUserEmail.value = "";
+	newUserClass.value = "";
 }); 
 
 cancelExportUser.addEventListener("click", _event => {
@@ -97,6 +110,40 @@ addUserElement.addEventListener("click", _event => {
 	popupElement.style.opacity = 1;
 	popupElement.style.visibility = "visible";
 	popupNewUser.style.display = "flex";
+});
+
+isAdminCheck.style.display = "none";
+isAdminCheckbox.addEventListener("click", _event => {
+	if(isAdminCheck.style.display) {
+		isAdminCheck.style.display = null;
+	}else {
+		isAdminCheck.style.display = "none";
+	}
+});
+
+newUserAction.addEventListener("click", async _event => {
+  const username = newUserUsername.value;
+	const email = newUserEmail.value;
+	const password = newUserPassword.value;
+	const clas = newUserClass.value;
+	const isAdmin = isAdminCheck.display ? false : true;
+	
+	await fetch("/user", {
+		method: "POST",
+		headers: {"Content-type": "application/json"},
+		body: JSON.stringify({email, username, password, class: clas, role: isAdmin ? "admin" : null })
+	});
+
+	const userList = await getUsers(pageVisible, pageNumber);
+	renderUserList(userList);
+	popupElement.style.opacity = null;
+	popupElement.style.visibility = null; 
+	popupNewUser.style.display = null;
+	isAdminCheck.style.display = "none";
+	newUserUsername.value = "";
+	newUserPassword.value = "";
+	newUserEmail.value = "";
+	newUserClass.value = "";
 });
 
 pagingForward.addEventListener("click", async () => {
