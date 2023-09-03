@@ -14,7 +14,7 @@ app.use(morgan("tiny"));
 app.use(express.json());
 app.use(express.static("public"));
 
-const mongoClient = new MongoClient("mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000");
+const mongoClient = new MongoClient("mongodb://mongodb:27017/?directConnection=true&serverSelectionTimeoutMS=2000");
 const database = mongoClient.db("repa");
 const users = database.collection("users");
 const sessions = database.collection("sessions");

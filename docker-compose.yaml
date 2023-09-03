@@ -1,0 +1,25 @@
+version: "3"
+services:
+  server:
+    container_name: repa 
+    image: repa:latest
+    restart: always
+    links:
+      - mongodb
+    depends_on: 
+      mongodb:
+        condition: service_started
+    ports:
+      - "3000:3000"
+    networks:
+      - mainNet
+  mongodb:
+    container_name: mongodb
+    image: mongo
+    restart: always
+    networks:
+      - mainNet
+    ports:
+      - 27017:27017
+networks:
+    mainNet:
