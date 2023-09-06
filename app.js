@@ -44,6 +44,12 @@ app.get("/user", async (req, res) => {
 });
 
 app.get("/users", async (req, res) => {
+	const token = req.headers.authorization.split(" ")[1];
+	if(!token) return res.json({error: {id: 5, message: "User not authorized"}});
+	const session = await sessions.findOne({ token });
+	if(!session) return res.json({error: {id: 5, message: "User not authorized"}});
+	const userRequest = await users.findOne({ id: session.id });
+	if(userRequest.role !== "admin")return res.json({error: {id: 5, message: "User not authorized"}});
 	const params = req.query;
 	const pageVisible = params.visible ? parseInt(params.visible) : 5;
 	const pageNumber = params.page ? parseInt(params.page) : 0;
@@ -60,8 +66,28 @@ app.get("/users", async (req, res) => {
 	res.json({page, pageLength, userLength});
 });
 
+app.delete("/user", async (req, res) => {
+	const data = req.query;
+	const token = req.headers.authorization.split(" ")[1];
+	if(!token) return res.json({error: {id: 5, message: "User not authorized"}});
+	const session = await sessions.findOne({ token });
+	if(!session) return res.json({error: {id: 5, message: "User not authorized"}});
+	const userRequest = await users.findOne({ id: session.id });
+	if(userRequest.role !== "admin")return res.json({error: {id: 5, message: "User not authorized"}});
+	if(typeof data !== "object" || data.id === undefined) return res.json({ error: { id: 0, message: "Invalid request" }});
+	await sessions.deleteMany({id: data.id});
+	await users.deleteOne({id: data.id});
+	res.json({message: "ok"});
+});
+
 app.post("/user", async (req, res) => {
 	const data = req.body;
+	const token = req.headers.authorization.split(" ")[1];
+	if(!token) return res.json({error: {id: 5, message: "User not authorized"}});
+	const session = await sessions.findOne({ token });
+	if(!session) return res.json({error: {id: 5, message: "User not authorized"}});
+	const userRequest = await users.findOne({ id: session.id });
+	if(userRequest.role !== "admin")return res.json({error: {id: 5, message: "User not authorized"}});
 	if(typeof data !== "object" || data.username === undefined || data.email === undefined || data.password === undefined) return res.json({ error: { id: 0, message: "Invalid request" }});
 	if(typeof data.username !== "string" || typeof data.email !== "string" || typeof data.password !== "string") return res.json({error: {id: 1, message: "Invalid type"}});
 	if(data.username.length == 0 || data.email.length == 0 || data.password.length == 0) return res.json({error: {id: 2, message: "Empty values"}});

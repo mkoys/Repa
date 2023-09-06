@@ -130,7 +130,7 @@ newUserAction.addEventListener("click", async _event => {
 	
 	await fetch("/user", {
 		method: "POST",
-		headers: {"Content-type": "application/json"},
+		headers: {"Content-type": "application/json", Authorization: `token ${token}`},
 		body: JSON.stringify({email, username, password, class: clas, role: isAdmin ? "admin" : null })
 	});
 
@@ -452,13 +452,15 @@ if(userDataJson.role) roleElement.textContent = userDataJson.role;
 if(userDataJson.avatar) avatarElement.style.backgroudImage = `url(${userDataJson.avatar})`;
 
 async function getUsers(pageVisible, pageNumber) {
-	const request = await fetch(`/users?visible=${pageVisible}&page=${pageNumber}${sort ? `&sort=${sort}` : ""}`);
+	const request = await fetch(`/users?visible=${pageVisible}&page=${pageNumber}${sort ? `&sort=${sort}` : ""}`, {
+		headers: {Authorization: `token ${token}`}
+	});
 	const requestJson = await request.json();
 	return requestJson;
 }
 
 loadingElement.classList.add("load");
-const userList = await getUsers(pageVisible, pageNumber);
+let userList = await getUsers(pageVisible, pageNumber);
 
 pageNumberElement.textContent = pageNumber + 1;
 pageVisibleElement.textContent = pageVisible;
@@ -486,6 +488,17 @@ function renderUserList(userList) {
 		const userBox = userElement.querySelector(".userSelectBox");
 		const moreAction = userElement.querySelector(".userActionMoreBox");
 		const moreDropdown = userElement.querySelector(".userBoxDropdown");
+		const deleteUserAction = userElement.querySelector(".deleteUserAction");
+
+		deleteUserAction.addEventListener("click", async () => {
+			const request = await fetch(`/user?id=${user.id}`, {
+				method: "DELETE",
+				headers: {Authorization: `token ${token}`}
+			});
+			const jsonData = await request.json();
+			userList = await getUsers(pageVisible, pageNumber);
+			renderUserList(userList);
+		});
 
 		moreAction.addEventListener("mouseenter", _event => {
 			moreDropdown.style.opacity = 1;
