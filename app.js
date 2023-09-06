@@ -14,7 +14,7 @@ app.use(morgan("tiny"));
 app.use(express.json());
 app.use(express.static("public"));
 
-const mongoClient = new MongoClient("mongodb://mongodb:27017/?directConnection=true&serverSelectionTimeoutMS=2000");
+const mongoClient = new MongoClient("mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000");
 const database = mongoClient.db("repa");
 const users = database.collection("users");
 const sessions = database.collection("sessions");
@@ -95,11 +95,11 @@ app.post("/register", async (req, res) => {
 
 app.post("/login", async (req, res) => {
 	const data = req.body;
-	if(data.username === undefined || data.password === undefined) return res.json({error: { id: 0, message: "Invalid request" }});
-	if(typeof data.username !== "string" || typeof data.password !== "string") return res.json({error: {id: 1, message: "Invalid type"}});
-	if(data.username.length == 0 || data.password.length == 0) return res.json({error: {id: 2, message: "Empty values"}});
+	if(data.email === undefined || data.password === undefined) return res.json({error: { id: 0, message: "Invalid request" }});
+	if(typeof data.email !== "string" || typeof data.password !== "string") return res.json({error: {id: 1, message: "Invalid type"}});
+	if(data.email.length == 0 || data.password.length == 0) return res.json({error: {id: 2, message: "Empty values"}});
 
-	const user = await users.findOne({username: data.username});
+	const user = await users.findOne({email: data.email.toLowerCase()});
 	if(!user) return res.json({error: { id: 4, message: "Invalid credentials" }});
 
 	const match = bcrypt.compareSync(data.password, user.password);

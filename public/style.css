@@ -317,7 +317,6 @@ html, body {
 	color: var(--text-color);
 	font-weight: 500;
 	font-size: 15px;
-	text-transform: capitalize;
 }
 
 .role {
@@ -1048,6 +1047,7 @@ input:disabled {
 }
 
 .userAvatar {
+	min-width: 30px;
 	margin-right: 10px;
 	width: 30px;
 	height: 30px;

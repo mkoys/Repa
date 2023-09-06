@@ -514,8 +514,8 @@ function renderUserList(userList) {
 
 		if(user.avatar) userAvatar.style.backgroundImage = `url(${user.avatar})`;
 
-		userName.textContent = user.username;
-		userEmail.textContent = user.email;
+		userName.textContent = user.username.length > 8 ? user.username.substring(0, 6) + "..." : user.username;
+		userEmail.textContent = user.email.length > 20 ? user.email.substring(0, 17) + "..." : user.email;
 
 		if(user.class) {
 			userClassElement.style.display = "flex";

@@ -18,7 +18,7 @@ loginButton.addEventListener("click", async () => {
 	loadingElement.classList.add("load");
 
 	const body = JSON.stringify({
-		username: usernameElement.value,
+		email: usernameElement.value,
 		password: passwordElement.value
 	});
 	
