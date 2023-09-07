@@ -642,12 +642,12 @@ html, body {
 .attendanceInputTime {
 	text-align: center;
 	width: 77px;
-	margin-right: 10px;
 }
 
 .attendanceInputClass {
 	text-align: center;
 	width: 77px;
+	margin-right: 10px;
 }
 
 .attendanceFooter {
