@@ -689,6 +689,11 @@ html, body {
  fill: var(--main-color);
 }
 
+.checkEdit {
+	display: none;
+ fill: var(--main-color);
+}
+
 .attendanceButtons {
  display: flex;
 }
@@ -805,7 +810,7 @@ input:disabled {
 	z-index: 1000;
 }
 
-.newUser {
+.newUser, .editUser {
 	display: none;
 	justify-content: center;
 	align-items: center;

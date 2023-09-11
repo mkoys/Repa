@@ -28,10 +28,12 @@ const userCountElement = document.querySelector(".userListHeaderSpan");
 const loadingElement = document.querySelector(".loading");
 const popupElement = document.querySelector(".popup");
 const popupNewUser = document.querySelector(".newUser");
+const popupEditUser = document.querySelector(".editUser");
 const popupExport = document.querySelector(".exportUser");
 const exportUserElement = document.querySelector(".actionExportUser");
 const cancelNewUser = document.querySelector(".cancelNewUser");
 const cancelExportUser = document.querySelector(".cancelExportUser");
+const cancelEditUser = document.querySelector(".cancelEditUser");
 const calendarDatesElement = document.querySelector(".calendarDates");
 const calendarDateTextElement = document.querySelector(".calendarDateText");
 const calendarDateNextElement = document.querySelector(".calendarDateNext");
@@ -43,8 +45,16 @@ const newUserPassword = document.querySelector(".passwordUser");
 const newUserClass = document.querySelector(".classUser");
 const newUserRole = document.querySelector(".roleUser");
 const newUserAction = document.querySelector(".addUserActionButton");
-const isAdminCheckbox = document.querySelector("#isAdmin");
-const isAdminCheck = isAdminCheckbox.querySelector(".check");
+const isAdminCheckbox = document.querySelector("#isAdminAdd");
+const isAdminCheck = isAdminCheckbox.querySelector(".checkAdd");
+const editUserUsername = document.querySelector(".usernameUserEdit");
+const editUserEmail = document.querySelector(".emailUserEdit");
+const editUserPassword = document.querySelector(".passwordUserEdit");
+const editUserActionButton = document.querySelector(".editUserActionButton");
+const editUserClass = document.querySelector(".classUserEdit");
+const editUserRole = document.querySelector(".roleUserEdit");
+const isAdminCheckboxEdit = document.querySelector("#isAdminEdit");
+const isAdminCheckEdit = isAdminCheckboxEdit.querySelector(".checkEdit");
 
 const MonthsOfYear = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 let calendarDates = [];
@@ -57,12 +67,46 @@ const calendarDate = new Date();
 let calendarDays = generateCalendarDates();
 
 popupElement.addEventListener("click", event => {
-	if(event.srcElement === popupExport || event.srcElement === popupNewUser) {
+	if(event.srcElement === popupExport || event.srcElement === popupNewUser || event.srcElement === popupEditUser) {
 		popupElement.style.opacity = null;
 		popupElement.style.visibility = null; 
 		popupNewUser.style.display = "none";
 		popupExport.style.display = "none";
+		popupEditUser.style.display = "none";
 	}
+});
+
+let editUserInfo = null;
+
+editUserActionButton.addEventListener("click", async _event => {
+	let body = { id: editUserInfo.id };
+	const username = editUserUsername.value;
+	const email = editUserEmail.value;
+	const className = editUserClass.value;
+
+	if(username.length > 0) body.username = username;
+	if(email.length > 0) body.email = email;
+	if(className.length > 0) body.class = className;
+	if(isAdminCheckEdit.style.display) body.role = "admin";
+
+	const response = await fetch("/user", {
+		method: "PUT",
+		body: JSON.stringify(body),
+		headers: {
+			"Content-type": "application/json",
+			Authorization: `token ${token}`
+		}
+	});
+
+	const responseJson = await response.json();
+
+	popupElement.style.opacity = null;
+	popupElement.style.visibility = null; 
+	popupNewUser.style.display = "none";
+	popupExport.style.display = "none";
+	popupEditUser.style.display = "none";
+	const userList = await getUsers(pageVisible, pageNumber);
+	renderUserList(userList);
 });
 
 exportUserElement.addEventListener("click", _event => {
@@ -100,6 +144,17 @@ cancelNewUser.addEventListener("click", _event => {
 	newUserClass.value = "";
 }); 
 
+cancelEditUser.addEventListener("click", _event => {
+	popupElement.style.opacity = null;
+	popupElement.style.visibility = null; 
+	popupEditUser.style.display = null;
+	isAdminCheckEdit.style.display = null;
+	editUserUsername.value = "";
+	editUserPassword.value = "";
+	editUserEmail.value = "";
+	editUserClass.value = "";
+}); 
+
 cancelExportUser.addEventListener("click", _event => {
 	popupElement.style.opacity = null;
 	popupElement.style.visibility = null; 
@@ -118,6 +173,15 @@ isAdminCheckbox.addEventListener("click", _event => {
 		isAdminCheck.style.display = null;
 	}else {
 		isAdminCheck.style.display = "none";
+	}
+	console.log(isAdminCheck.style.display)
+});
+
+isAdminCheckboxEdit.addEventListener("click", _event => {
+	if(isAdminCheckEdit.style.display) {
+		isAdminCheckEdit.style.display = null;
+	}else {
+		isAdminCheckEdit.style.display = "flex";
 	}
 });
 
@@ -489,6 +553,18 @@ function renderUserList(userList) {
 		const moreAction = userElement.querySelector(".userActionMoreBox");
 		const moreDropdown = userElement.querySelector(".userBoxDropdown");
 		const deleteUserAction = userElement.querySelector(".deleteUserAction");
+		const editUserAction = userElement.querySelector(".editUserAction");
+
+		editUserAction.addEventListener("click", _event => {
+			editUserInfo = user;
+			popupElement.style.opacity = 1;
+			popupElement.style.visibility = "visible";
+			popupEditUser.style.display = "flex";
+			editUserUsername.value = user.username;
+			editUserEmail.value = user.email;
+			editUserClass.value = user.class ? user.class : "";
+			isAdminCheckEdit.style.display = user.role === "admin" ? "flex" : null;
+		});
 
 		deleteUserAction.addEventListener("click", async () => {
 			const request = await fetch(`/user?id=${user.id}`, {

@@ -47,9 +47,9 @@ app.get("/users", async (req, res) => {
 	const token = req.headers.authorization.split(" ")[1];
 	if(!token) return res.json({error: {id: 5, message: "User not authorized"}});
 	const session = await sessions.findOne({ token });
-	if(!session) return res.json({error: {id: 5, message: "User not authorized"}});
+	if(!session) return res.json({error: {id: 6, message: "User not authorized"}});
 	const userRequest = await users.findOne({ id: session.id });
-	if(userRequest.role !== "admin")return res.json({error: {id: 5, message: "User not authorized"}});
+	if(userRequest.role !== "admin")return res.json({error: {id: 7, message: "User not authorized"}});
 	const params = req.query;
 	const pageVisible = params.visible ? parseInt(params.visible) : 5;
 	const pageNumber = params.page ? parseInt(params.page) : 0;
@@ -101,6 +101,30 @@ app.post("/user", async (req, res) => {
 	if(data.class) body.class = data.class;
 	if(data.role) body.role = data.role;
 	users.insertOne(body); 
+	res.json({ message: "ok" });
+});
+
+app.put("/user", async (req, res) => {
+	const data = req.body;
+	const token = req.headers.authorization.split(" ")[1];
+	if(!token) return res.json({error: {id: 5, message: "User not authorized"}});
+	const session = await sessions.findOne({ token });
+	if(!session) return res.json({error: {id: 5, message: "User not authorized"}});
+	const userRequest = await users.findOne({ id: session.id });
+	if(userRequest.role !== "admin")return res.json({error: {id: 5, message: "User not authorized"}});
+	if(typeof data !== "object") return res.json({ error: { id: 0, message: "Invalid request" }});
+
+	let edit = {};
+	let unset = {};
+	if(data.username) edit.username = data.username;
+	if(data.email) edit.email = data.email;
+	if(data.class) edit.class = data.class;
+	if(!data.class) unset.class = "";
+	if(data.role) edit.role = "admin";
+	if(!data.role) unset.role = "";
+
+	users.updateOne({ id: data.id }, { $set: edit, $unset: unset });
+
 	res.json({ message: "ok" });
 });
 
