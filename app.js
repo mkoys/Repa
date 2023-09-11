@@ -5,12 +5,18 @@ import express, { query } from "express";
 import helmet from "helmet";
 import cors from "cors";
 import morgan from "morgan";
+import fs from "fs";
+import path from "path";
 
 const app = express();
 
+const rootFolder = new URL("./", import.meta.url).pathname;
+
+const accessLogStream = fs.createWriteStream(path.join(rootFolder ,'access.log'), { flags: 'a' });
+
 app.use(cors());
 app.use(helmet());
-app.use(morgan("tiny"));
+app.use(morgan("combined", { stream: accessLogStream }));
 app.use(express.json());
 app.use(express.static("public"));
 
