@@ -141,21 +141,25 @@ app.post("/register", async (req, res) => {
 	if(typeof data.username !== "string" || typeof data.email !== "string" || typeof data.password !== "string") return res.json({error: {id: 1, message: "Invalid type"}});
 	if(data.username.length == 0 || data.email.length == 0 || data.password.length == 0) return res.json({error: {id: 2, message: "Empty values"}});
 
-	const user = await users.findOne({ $or: [{ username: data.username }, {email: data.email}] });
+	const user = await users.findOne({ $or: [{ username: { $regex: new RegExp("^" + data.username.toLowerCase() + "$", "i") } }, {email: data.email.toLowerCase()}] });
 	if(user) return res.json({ error: { id: 3, message: "User already exists" }});
 
 	const passcode = bcrypt.hashSync(data.password, 10);
-	users.insertOne({id: nanoid(), username: data.username, email: data.email, password: passcode, created: new Date()}); 
+	users.insertOne({id: nanoid(), username: data.username, email: data.email.toLowerCase(), password: passcode, created: new Date()}); 
 	res.json({ message: "ok" });
 });
 
 app.post("/login", async (req, res) => {
 	const data = req.body;
-	if(data.email === undefined || data.password === undefined) return res.json({error: { id: 0, message: "Invalid request" }});
-	if(typeof data.email !== "string" || typeof data.password !== "string") return res.json({error: {id: 1, message: "Invalid type"}});
-	if(data.email.length == 0 || data.password.length == 0) return res.json({error: {id: 2, message: "Empty values"}});
+	if(data.password === undefined || !data.username && !data.email) return res.json({error: { id: 0, message: "Invalid request" }});
+	if(typeof data.email !== "string" && typeof data.username !== "string" || typeof data.password !== "string") return res.json({error: {id: 1, message: "Invalid type"}});
+	if(data.email?.length == 0 && data.username?.length == 0 || data.password.length == 0) return res.json({error: {id: 2, message: "Empty values"}});
 
-	const user = await users.findOne({email: data.email.toLowerCase()});
+	const credentails = new Object();
+	if(data.email) credentails.email = data.email.toLowerCase();
+	if(data.username) credentails.username = {$regex: new RegExp("^" + data.username.toLowerCase() + "$","i")}
+
+	const user = await users.findOne(credentails);
 	if(!user) return res.json({error: { id: 4, message: "Invalid credentials" }});
 
 	const match = bcrypt.compareSync(data.password, user.password);

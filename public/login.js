@@ -17,10 +17,11 @@ loginButton.addEventListener("click", async () => {
 	setError();
 	loadingElement.classList.add("load");
 
-	const body = JSON.stringify({
-		email: usernameElement.value,
-		password: passwordElement.value
-	});
+	const bodyContent = { password: passwordElement.value };
+
+	usernameElement.value.includes("@") ? bodyContent.email = usernameElement.value : bodyContent.username = usernameElement.value;
+
+	const body = JSON.stringify(bodyContent);
 	
 	// Login API request
 	const response = await fetch("/login", {
