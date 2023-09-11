@@ -139,7 +139,7 @@ app.post("/register", async (req, res) => {
 	if(user) return res.json({ error: { id: 3, message: "User already exists" }});
 
 	const passcode = bcrypt.hashSync(data.password, 10);
-	users.insertOne({id: nanoid(), username: data.username, email: data.email, password: passcode}); 
+	users.insertOne({id: nanoid(), username: data.username, email: data.email, password: passcode, created: new Date()}); 
 	res.json({ message: "ok" });
 });
 
