@@ -70,7 +70,7 @@ app.get("/users", async (req, res) => {
 		filterParam[param] = params[param];
 	});
 
-	const userLength = await users.countDocuments(); 
+	const userLength = await users.countDocuments(filterParam); 
 
 	const page = await users.find(filterParam).skip(pageNumber * pageVisible).limit(pageVisible).sort(sort ? sortParam : {id: 1}).toArray();
 
