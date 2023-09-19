@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="/style.css">
+	<script src="./settings.js" type="module" defer></script>
+	<title>Settings</title>
+</head>
+<body>
+	<div class="shape">
+		<div class="box">
+			<div class="boxHeader">
+				<h1>Settings</h1>
+				<svg class="close" tabindex="0" xmlns="http://www.w3.org/2000/svg" width="11" height="11"	viewBox="0 0 11 11">
+					<path
+							d="M5.5 6.77536L1.55435 10.721C1.36836 10.907 1.15248 11 0.906703 11C0.66093 11 0.451691 10.907 0.278985 10.721C0.0929951 10.5483 0 10.3391 0 10.0933C0 9.84752 0.0929951 9.63829 0.278985 9.46558L4.22464 5.5L0.278985 1.55435C0.10628 1.38164 0.0199276 1.16908 0.0199276 0.916667C0.0199276 0.664251 0.10628 0.451691 0.278985 0.278985C0.438406 0.10628 0.644324 0.0199276 0.896739 0.0199276C1.14915 0.0199276 1.36836 0.10628 1.55435 0.278985L5.5 4.24457L9.46558 0.259058C9.63829 0.0863529 9.84752 0 10.0933 0C10.3391 0 10.555 0.0863529 10.7409 0.259058C10.9136 0.445049 11 0.66093 11 0.906703C11 1.15248 10.9136 1.36172 10.7409 1.53442L6.77536 5.48007L10.721 9.44565C10.907 9.63164 11 9.84752 11 10.0933C11 10.3391 10.907 10.5483 10.721 10.721C10.5483 10.907 10.3357 11 10.0833 11C9.83092 11 9.625 10.907 9.46558 10.721L5.5 6.77536Z" />
+				</svg>
+			</div>
+			<div class="section">
+				<div class="about">
+					<p class="header">Theme</p>
+					<p class="text">Customize your application theme.</p>
+				</div>
+				<div class="content">
+					<div class="picker" style="margin-right: 40px;margin-bottom: 20px">
+						<p class="themeText">Background</p>
+						<p class="themeName">Black</p>
+						<div class="options theme">
+							<div class="option system">
+								<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M80-120q-17 0-28.5-11.5T40-160q0-17 11.5-28.5T80-200h800q17 0 28.5 11.5T920-160q0 17-11.5 28.5T880-120H80Zm80-120q-33 0-56.5-23.5T80-320v-440q0-33 23.5-56.5T160-840h640q33 0 56.5 23.5T880-760v440q0 33-23.5 56.5T800-240H160Zm0-80h640v-440H160v440Zm0 0v-440 440Z"/></svg>
+							</div>
+							<div class="option light">
+								<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M480-280q-83 0-141.5-58.5T280-480q0-83 58.5-141.5T480-680q83 0 141.5 58.5T680-480q0 83-58.5 141.5T480-280ZM80-440q-17 0-28.5-11.5T40-480q0-17 11.5-28.5T80-520h80q17 0 28.5 11.5T200-480q0 17-11.5 28.5T160-440H80Zm720 0q-17 0-28.5-11.5T760-480q0-17 11.5-28.5T800-520h80q17 0 28.5 11.5T920-480q0 17-11.5 28.5T880-440h-80ZM480-760q-17 0-28.5-11.5T440-800v-80q0-17 11.5-28.5T480-920q17 0 28.5 11.5T520-880v80q0 17-11.5 28.5T480-760Zm0 720q-17 0-28.5-11.5T440-80v-80q0-17 11.5-28.5T480-200q17 0 28.5 11.5T520-160v80q0 17-11.5 28.5T480-40ZM226-678l-43-42q-12-11-11.5-28t11.5-29q12-12 29-12t28 12l42 43q11 12 11 28t-11 28q-11 12-27.5 11.5T226-678Zm494 495-42-43q-11-12-11-28.5t11-27.5q11-12 27.5-11.5T734-282l43 42q12 11 11.5 28T777-183q-12 12-29 12t-28-12Zm-42-495q-12-11-11.5-27.5T678-734l42-43q11-12 28-11.5t29 11.5q12 12 12 29t-12 28l-43 42q-12 11-28 11t-28-11ZM183-183q-12-12-12-29t12-28l43-42q12-11 28.5-11t27.5 11q12 11 11.5 27.5T282-226l-42 43q-11 12-28 11.5T183-183Z"/></svg>
+							</div>
+							<div class="option dark">
+								<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M480-120q-151 0-255.5-104.5T120-480q0-138 90-239.5T440-838q25-3 39 18t-1 44q-17 26-25.5 55t-8.5 61q0 90 63 153t153 63q31 0 61.5-9t54.5-25q21-14 43-1.5t19 39.5q-14 138-117.5 229T480-120Z"/></svg>
+							</div>
+							<div class="option night">
+								<svg xmlns="http://www.w3.org/2000/svg" height="24" fill="var(--main-color)" viewBox="0 -960 960 960" width="24"><path d="M260-160q-91 0-155.5-63T40-377q0-78 47-139t123-78q25-92 100-149t170-57q117 0 198.5 81.5T760-520q69 8 114.5 59.5T920-340q0 75-52.5 127.5T740-160H260Z"/></svg>
+							</div>
+						</div>
+					</div>
+					<div class="picker">
+						<p class="themeText">AccentColor</p>
+						<p class="themeName">Purple</p>
+						<div class="options accent">
+							<div class="option pink">
+								<div class="ball"></div>
+							</div>
+							<div class="option purple active">
+								<div class="ball"></div>
+							</div>
+							<div class="option blue">
+								<div class="ball"></div>
+							</div>
+							<div class="option aqua">
+								<div class="ball"></div>
+							</div>
+							<div class="option green">
+								<div class="ball"></div>
+							</div>
+							<div class="option yellow">
+								<div class="ball"></div>
+							</div>
+							<div class="option orange">
+								<div class="ball"></div>
+							</div>
+							<div class="option red">
+								<div class="ball"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="section">
+				<div class="about">
+					<p class="header">Account</p>
+					<p class="text">Personal account settings</p>
+				</div>
+				<div class="content">
+					<div class="picker" >
+						<div class="optionsText userDetails">
+							<div class="textOption">
+								<div class="userInfo">
+									<div class="avatar"></div>	
+									<div class="userDetails">
+										<p class="username">Mkoys</p>		
+										<p class="role">student</p>
+									</div>
+								</div>
+								</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

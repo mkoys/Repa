@@ -49,12 +49,14 @@ const isAdminCheckbox = document.querySelector("#isAdminAdd");
 const isAdminCheck = isAdminCheckbox.querySelector(".checkAdd");
 const editUserUsername = document.querySelector(".usernameUserEdit");
 const editUserEmail = document.querySelector(".emailUserEdit");
-const editUserPassword = document.querySelector(".passwordUserEdit");
 const editUserActionButton = document.querySelector(".editUserActionButton");
 const editUserClass = document.querySelector(".classUserEdit");
 const editUserRole = document.querySelector(".roleUserEdit");
 const isAdminCheckboxEdit = document.querySelector("#isAdminEdit");
 const isAdminCheckEdit = isAdminCheckboxEdit.querySelector(".checkEdit");
+const settingsAction = document.querySelector(".settingsDropdown");
+const sortBy = document.querySelector("#sortby");
+const filterBy = document.querySelector("#filterby");
 
 const MonthsOfYear = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 let calendarDates = [];
@@ -65,6 +67,91 @@ const contentState = [];
 const calendarDate = new Date();
 
 let calendarDays = generateCalendarDates();
+
+settingsAction.addEventListener("click", _event => window.location = "/settings.html?back=users.html")
+
+let sortValues = ["username", "email", "class", "role"];
+let sort = false;
+
+sortBy.addEventListener("blur", async event => {
+	const value = event.srcElement.value;
+	let match = false;
+	for(let sortIndex = 0; sortIndex < sortValues.length; sortIndex++) {
+		if(sortValues[sortIndex] === value.toLowerCase()) {
+			match = sortValues[sortIndex];
+		}
+	}
+	if(match) {
+		sort = match;
+		sortBy.style.color = "lime";
+	}else {
+		sort = false;
+		sortBy.style.color = null;
+	}
+	const userList = await getUsers(pageVisible, pageNumber);
+	renderUserList(userList);
+	console.log(userList)
+}); 
+
+sortBy.addEventListener("keyup", async event => {
+	if(event.key === "Enter") {setTimeout(() => { sortBy.blur()}, 0); return;};
+	sortBy.style.color = null;
+	if(event.key === "Backspace") return;
+	if(event.key === "Control") return;
+	if(event.ctrlKey) return;
+	if(event.shiftKey) return;
+	const value = event.srcElement.value;
+	let match = false;
+	for(let sortIndex = 0; sortIndex < sortValues.length; sortIndex++) {
+		if(sortValues[sortIndex].startsWith(value.toLowerCase())) {
+			match = sortValues[sortIndex];
+		}
+	}
+
+	if(match) {
+		const selectionEnd = sortBy.selectionEnd;
+		const restOfMatch = match.slice(selectionEnd);
+		sortBy.value += restOfMatch;
+		sortBy.focus();
+		sortBy.setSelectionRange(selectionEnd, sortBy.value.length);
+	}
+})
+
+
+let filterValues = ["username:", "email:", "class:", "role:"];
+let filter = {};
+
+filterBy.addEventListener("keyup", async event => {
+	const value = event.srcElement.value;
+	filterBy.style.color = null;
+	if(event.key === "Enter") {
+		filterBy.style.color = "lime";
+		if(value.length == 0) filter = {};
+		const splitParam = value.split(":");
+		filter[splitParam[0]] = splitParam[1];
+		const userList = await getUsers(pageVisible, pageNumber);
+		renderUserList(userList);
+		return;
+	};
+	if(event.key === "Backspace") return;
+	if(event.key === "Control") return;
+	if(event.ctrlKey) return;
+	if(event.shiftKey) return;
+	let match = false;
+	for(let filterIndex = 0; filterIndex < filterValues.length; filterIndex++) {
+		if(filterValues[filterIndex].startsWith(value.toLowerCase())) {
+			match = filterValues[filterIndex];
+		}
+	}
+
+	if(match) {
+		const selectionEnd = filterBy.selectionEnd;
+		const restOfMatch = match.slice(selectionEnd);
+		filterBy.value += restOfMatch;
+		filterBy.focus();
+		filterBy.setSelectionRange(selectionEnd, filterBy.value.length);
+	}
+})
 
 popupElement.addEventListener("click", event => {
 	if(event.srcElement === popupExport || event.srcElement === popupNewUser || event.srcElement === popupEditUser) {
@@ -109,7 +196,7 @@ editUserActionButton.addEventListener("click", async _event => {
 	renderUserList(userList);
 });
 
-exportUserElement.addEventListener("click", _event => {
+exportUserElement.addEventListener("click", async _event => {
 	if(selectedUsers.length > 0) {
 		selectedUsersElement.innerHTML = "";
 		popupElement.style.opacity = 1;
@@ -126,6 +213,27 @@ exportUserElement.addEventListener("click", _event => {
 			userAvatarElement.style.height= "20px";
 			userElement.classList.add("selectedUser");
 			userUsernameElement.textContent = item.user.username;
+			userElement.appendChild(userAvatarElement);
+			userElement.appendChild(userUsernameElement);
+			selectedUsersElement.appendChild(userElement);
+		});
+	}else {
+		let userList = await getUsers();
+		selectedUsersElement.innerHTML = "";
+		popupElement.style.opacity = 1;
+		popupElement.style.visibility = "visible";
+		popupExport.style.display = "flex";
+		userList.page.forEach(item => {
+			const userElement = document.createElement("div");
+			const userAvatarElement = document.createElement("div");
+			const userUsernameElement = document.createElement("p");
+			userUsernameElement.classList.add("username");
+			userAvatarElement.classList.add("avatar");
+			userUsernameElement.style.marginLeft = "10px";
+			userAvatarElement.style.width = "20px";
+			userAvatarElement.style.height= "20px";
+			userElement.classList.add("selectedUser");
+			userUsernameElement.textContent = item.username;
 			userElement.appendChild(userAvatarElement);
 			userElement.appendChild(userUsernameElement);
 			selectedUsersElement.appendChild(userElement);
@@ -150,7 +258,6 @@ cancelEditUser.addEventListener("click", _event => {
 	popupEditUser.style.display = null;
 	isAdminCheckEdit.style.display = null;
 	editUserUsername.value = "";
-	editUserPassword.value = "";
 	editUserEmail.value = "";
 	editUserClass.value = "";
 }); 
@@ -174,7 +281,6 @@ isAdminCheckbox.addEventListener("click", _event => {
 	}else {
 		isAdminCheck.style.display = "none";
 	}
-	console.log(isAdminCheck.style.display)
 });
 
 isAdminCheckboxEdit.addEventListener("click", _event => {
@@ -226,18 +332,6 @@ pagingForward.addEventListener("click", async () => {
 	loadingElement.classList.remove("load");
 });
 
-function calendarSetDate(date, action) {
-	const index = calendarDates.findIndex(dateItem => compareDates(dateItem, date));
-	if(action) {
-		if(index > -1) calendarDatesElement.children[index].classList.add("calendarDaySelected");	
-		calendarState.push({day: date, element: calendarDatesElement.children[index]})	
-	}else {
-		if(index > -1) calendarDatesElement.children[index].classList.remove("calendarDaySelected");
-		const stateIndex = calendarState.findIndex(state => compareDates(state.day, date));
-		calendarState.splice(stateIndex, 1);	
-	}
-}
-
 function daysInMonth(year, month) {
 	const date = new Date(year, month, 1);
 	const days = new Array();
@@ -258,7 +352,6 @@ function compareDates(date1, date2) {
 }
 
 let sortItem = null;
-let sort = false;
 
 sortActionItems.forEach(element => {
 	element.addEventListener("click", async _event => {
@@ -370,10 +463,6 @@ function generateCalendarDates() {
 			calendarDateElement.classList.add("disabledDateBox");
 		}
 
-		if(compareDates(todayDate, day)) {
-			calendarDateElement.classList.add("todayDate");
-		}
-
 		calendarDateDayTextElement.textContent = day.getDate();
 
 		calendarDateDayElement.appendChild(calendarDateDayTextElement);
@@ -384,31 +473,50 @@ function generateCalendarDates() {
 		const foundIndex = calendarState.findIndex(state => compareDates(state.day, day));
 		if(foundIndex > -1) {
 			calendarState[foundIndex].element = calendarDateElement;
-			calendarDateElement.classList.add("calendarDaySelected");
+			if(calendarState[foundIndex].multyselect) {
+				if(calendarState[foundIndex].multyselect == 2) {
+					calendarDateElement.classList.add("rangeSelectStart");
+				}else if(calendarState[foundIndex].multyselect == 3) {
+					calendarDateElement.classList.add("rangeSelectEnd");
+				}else {
+					calendarDateElement.classList.add("rangeSelect");
+				}
+			}
+
+			calendarDateElement.classList.add("multiSelect");
 		}
 
 		calendarDateElement.addEventListener("click", (event) => {
 			if(event.shiftKey) {
 				return;
 			}else {
-				const stateIndex = calendarState.findIndex(state => compareDates(state.day, day));
-				if(stateIndex > -1) {
-					calendarDateElement.classList.remove("calendarDaySelected");
-					calendarState.splice(stateIndex, 1);	
-					calendarEvent(day, false);
+				if(calendarState.length >= 2) {
+					while(calendarState.length > 0) calendarState.pop();
+					calendarDays = generateCalendarDates();
+					calendarDateElement.classList.add("multiSelect");
+					calendarState.push({day, element: calendarDateElement})
+					calendarDays = generateCalendarDates();
 				}else {
-					if(!event.ctrlKey) {
-						while(calendarState.length != 0) {
-							const element = calendarState[calendarState.length - 1].element;
-							element.classList.remove("calendarDaySelected");
-							calendarEvent(calendarState[calendarState.length - 1].day, false);
-							calendarState.pop(stateIndex, 1);
-						}
-					}
-
-					calendarDateElement.classList.add("calendarDaySelected");
+					calendarDateElement.classList.add("multiSelect");
 					calendarState.push({day, element: calendarDateElement})	
-					calendarEvent(day, true);
+					if(calendarState.length == 2) {
+						const check = calendarState[0].day.getTime() > calendarState[1].day.getTime();
+						const lower = check ? calendarState[1] : calendarState[0];
+						const higher = check ? calendarState[0] : calendarState[1];
+						const lowerState = calendarState[calendarState.findIndex(item => compareDates(item.day, lower.day))];
+						const higherState = calendarState[calendarState.findIndex(item => compareDates(item.day, higher.day))];
+						lowerState.multyselect = 2;
+						higherState.multyselect = 3;
+						let current = new Date(lower.day);
+						while(!compareDates(current, higher.day)) {
+							current.setDate(current.getDate() + 1);
+							if(!compareDates(current, higher.day)) {
+								calendarState.push({day: new Date(current), multyselect: true})	
+							}
+						}
+
+						calendarDays = generateCalendarDates();
+					}
 				}
 			}
 		});
@@ -516,7 +624,11 @@ if(userDataJson.role) roleElement.textContent = userDataJson.role;
 if(userDataJson.avatar) avatarElement.style.backgroudImage = `url(${userDataJson.avatar})`;
 
 async function getUsers(pageVisible, pageNumber) {
-	const request = await fetch(`/users?visible=${pageVisible}&page=${pageNumber}${sort ? `&sort=${sort}` : ""}`, {
+	let url = pageVisible ? `/users?visible=${pageVisible}&page=${pageNumber}${sort ? `&sort=${sort}` : ""}` : "/users";
+	Object.keys(filter).forEach(key => {
+		url += `&${key}=${filter[key]}`
+	});
+	const request = await fetch(url, {
 		headers: {Authorization: `token ${token}`}
 	});
 	const requestJson = await request.json();

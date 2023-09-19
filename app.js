@@ -1,7 +1,7 @@
 import { MongoClient } from "mongodb";
 import { nanoid } from "nanoid";
 import bcrypt from "bcrypt";
-import express, { query } from "express";
+import express from "express";
 import helmet from "helmet";
 import cors from "cors";
 import morgan from "morgan";
@@ -60,12 +60,19 @@ app.get("/users", async (req, res) => {
 	const pageVisible = params.visible ? parseInt(params.visible) : 5;
 	const pageNumber = params.page ? parseInt(params.page) : 0;
 	const sort = params.sort;
+	const filterParam = new Object();
 	const sortParam = new Object();
 	if(sort) sortParam[sort.toLowerCase()] = 1;
+	Object.keys(params).forEach(param => {
+		if(param === "visible") return;
+		if(param === "page") return;
+		if(param === "sort") return;
+		filterParam[param] = params[param];
+	});
 
 	const userLength = await users.countDocuments(); 
 
-	const page = await users.find({}).skip(pageNumber * pageVisible).limit(pageVisible).sort(sort ? sortParam : {id: 1}).toArray();
+	const page = await users.find(filterParam).skip(pageNumber * pageVisible).limit(pageVisible).sort(sort ? sortParam : {id: 1}).toArray();
 
 	const pageLength = Math.floor(userLength / pageVisible) + (userLength % pageVisible != 0 ? 1 : 0);
 

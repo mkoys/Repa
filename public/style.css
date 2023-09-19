@@ -207,6 +207,178 @@ html, body {
 	justify-content: space-between;
 }
 
+.filterSort {
+	position: relative;
+	min-width: 180px;
+	padding: 22px 20px;
+	background-color: var(--box-color);
+	border-radius: 5px;
+	display: grid;
+	grid-template-columns: 100%;
+	row-gap: 15px;
+	width: calc(100% - 40px);
+	margin: 20px;
+	margin-top: 0px;
+	justify-content: space-between;
+}
+
+.filterSortHeader {
+	color: white;
+	margin-left: 5px;
+}
+
+.formInput {
+	display: grid;
+	row-gap: 20px;
+	width: 100%;
+}
+
+.inputField {
+	width: 100%;
+	position: relative;
+	display: flex;
+}
+
+.inputFieldExtra {
+	position: relative;
+	display: flex;
+}
+
+.inputLabel {
+	position: absolute;
+	font-family: 'IBM Plex Sans', sans-serif;
+	font-size: 14px;
+	font-weight: 400;
+	top: 10px;
+	left: 5px;
+	margin-left: 5px;
+	color: white;
+	filter: brightness(70%);
+	border-radius: 5px;
+	padding: 2px;
+	transition: 0.2s ease all;
+}
+
+.inputIcon {
+	cursor: pointer;
+	height: 40px;
+	width: 40px;
+	background-color: #242424;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border-radius: 0px 5px 5px 0px;
+}
+
+.inputIcon > svg {
+	height: 20px;
+}
+
+.inputIcon > svg > path {
+	fill: white;
+	filter: brightness(70%);
+	transition: 0.2s ease all;
+}
+
+.inputIcon:hover > svg > path {
+	filter: brightness(100%);
+}
+
+.iconVisible {
+	display: none;
+}
+
+
+.inputFieldExtra:focus-within .inputLabel {
+	font-weight: 500;
+	font-size: 13px;
+	top: -11px;
+	left: 0px;
+	filter: brightness(100%);
+}
+
+.inputField:focus-within .inputLabel {
+	font-weight: 500;
+	font-size: 13px;
+	top: -11px;
+	left: 0px;
+	filter: brightness(100%);
+}
+
+.inputArea:not(:placeholder-shown) ~ .inputLabel {
+	font-weight: 500;
+	font-size: 13px;
+	top: -11px;
+	left: 0px;
+}
+
+.inputAreaExtra:not(:placeholder-shown) ~ .inputLabel {
+	font-weight: 500;
+	font-size: 13px;
+	top: -11px;
+	left: 0px;
+}
+
+.inputArea {
+	outline: none;
+	font-family: 'IBM Plex Sans', sans-serif;
+	font-size: 16px;
+	border: none;
+	height: 40px;
+	color: rgb(200, 200, 200);
+	background-color: #242424;
+	padding: 8px 10px;
+	width: 100%;
+	border-radius: 5px;
+	transition: 0.2s ease all;
+}
+
+.inputAreaExtra {
+	outline: none;
+	font-family: 'IBM Plex Sans', sans-serif;
+	font-size: 16px;
+	border: none;
+	height: 40px;
+	color: rgb(200, 200, 200);
+	background-color: #242424;
+	padding: 8px 10px;
+	width: calc(100% - 40px);
+	border-radius: 5px 0px 0px 5px;
+	transition: 0.2s ease all;
+}
+
+.inputArea:-webkit-autofill {
+	background-color: transparent !important;
+	-webkit-box-shadow: 0 0 0 50px rgba(75, 0, 130, 1) inset;
+	-webkit-text-fill-color: white;
+}
+
+
+.inputAreaExtra:-webkit-autofill {
+	background-color: transparent !important;
+	-webkit-box-shadow: 0 0 0 50px rgba(75, 0, 130, 1) inset;
+	-webkit-text-fill-color: white;
+}
+
+.inputArea:focus-within {
+	border-color: white;
+	color: white;
+}
+
+.inputArea:hover ~ .inputLabel {
+	filter: brightness(100%);
+}
+
+
+.inputAreaExtra:focus-within {
+	border-color: white;
+	color: white;
+}
+
+.inputAreaExtra:hover ~ .inputLabel {
+	filter: brightness(100%);
+}
+
 .dropdownKnob {
 	top: -9px;
 	left: 85%;
@@ -1172,6 +1344,189 @@ input:disabled {
 }
 
 
+.shape {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.box {
+    margin-top: 20px;
+    background-color: var(--box-color);
+    max-width: 1000px;
+    width: 100%;
+		margin: 20px;
+    padding: 15px 30px 30px 30px;
+    border-radius: 6px;
+}
+
+h1 {
+    font-size: 30px;
+    color: var(--text-color);
+}
+
+.section {
+    margin-top: 30px;
+    display: grid;
+    grid-template-columns: 40% 60%;
+}
+
+.header {
+    font-weight: 500;
+    font-size: 26px;
+    color: var(--text-color);
+}
+
+.text {
+    font-size: 15px;
+    font-style: italic;
+    color: var(--text-color-70);
+}
+
+.boxHeader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.close>path {
+    fill: var(--text-color-70);
+}
+
+.close {
+	cursor: pointer;
+}
+
+.themeText {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text-color);
+}
+
+.themeName {
+    font-size: 14px;
+    color: var(--text-color-70);
+}
+
+.userDetails {
+    flex-direction: column;
+}
+
+.optionsText {
+    margin-top: 8px;
+    display: flex;
+}
+
+.textOption {
+    margin-bottom: 7px;
+    font-size: 14px;
+    color: var(--text-color-70);
+    display: flex;
+    align-items: center;
+}
+
+.textOption > svg {
+    margin-right: 8px;
+}
+
+.textOption > svg > path {
+    fill: var(--main-color);
+}
+
+.options {
+    margin-top: 10px;
+    display: flex;
+}
+
+.option {
+    width: 32px;
+    height: 32px;
+    border-radius: 3px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ball {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+}
+
+.active.pink {
+    background-color: hsl(299, 98%, 20%);
+}
+
+.active.purple {
+    background-color: #2e016c;
+}
+
+.active.blue {
+    background-color: hsl(252, 93%, 23%);
+}
+
+.active.aqua {
+    background-color: hsl(191, 64%, 25%);
+}
+
+.active.green {
+    background-color: hsl(125, 69%, 19%);
+}
+
+.active.yellow {
+    background-color: hsl(58, 57%, 19%);
+}
+
+.active.orange {
+    background-color: hsl(29, 82%, 23%);
+}
+
+.active.red {
+    background-color: hsl(0, 81%, 22%);
+}
+
+.pink>.ball {
+    background-color: hsl(299, 100%, 47%);
+}
+
+.purple>.ball {
+    background-color: hsl(265, 100%, 47%);
+}
+
+.blue>.ball {
+    background-color: hsl(252, 92%, 44%);
+}
+
+.aqua>.ball {
+    background-color: hsl(191, 82%, 56%);
+}
+
+.green>.ball {
+    background-color: hsl(126, 75%, 53%);
+}
+
+.yellow>.ball {
+    background-color: hsl(58, 88%, 60%);
+}
+
+.orange>.ball {
+    background-color: hsl(29, 87%, 52%);
+}
+
+.red>.ball {
+    background-color: hsl(0, 88%, 52%);
+}
+
+.about {
+ margin-right: 20px;
+}
+
+
 @media only screen and (max-width: 1070px) {
 	.userAvatar {
 		display: none;
@@ -1199,6 +1554,11 @@ input:disabled {
 }
 
 @media only screen and (max-width: 712px) {
+   .filterSort {
+     margin-left: 0px;
+	 }
+
+
 	.userInfoGroup {
 		width: 100%;
 		margin-right: 20px;
@@ -1267,10 +1627,22 @@ input:disabled {
 }
 
 @media only screen and (max-width: 516px) {
+  .filterSort {
+		margin-left: 20px;
+	}
+
+  .about {
+		display: none;
+	}
+
+	.section {
+    grid-template-columns: auto;
+	}
+
+
   .userAction {
 		margin-left: 10px;
 	}
-
 
 	.userInfoGroup {
 		margin-right: 0px;

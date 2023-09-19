@@ -19,9 +19,12 @@ const attendanceDropdownElement = document.querySelector(".attendanceDropdown");
 const usersDropdownElement = document.querySelector(".usersDropdown");
 const calendarDatePickerElement = document.querySelector(".calendarDatePickerIcon");
 const calendarYearDropdownElement = document.querySelector(".calendarYearDropdown");
+const settingsAction = document.querySelector(".settingsDropdown");
 
 const token = localStorage.getItem("token");
 if(!token) window.location = "/login.html";
+
+settingsAction.addEventListener("click", _event => window.location = "/settings.html?back=attendance.html")
 
 calendarDatePickerElement.addEventListener("click", event => {
 	if(calendarDatePickerElement.classList.contains("rotate")) {
