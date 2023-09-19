@@ -516,7 +516,7 @@ pageVisibleElement.addEventListener("keydown", async event => {
 	}else if(event.key === "Backspace" || event.key === "Delete") {
 	}else if(event.keyCode > 36 && event.keyCode < 41) {
 	}else if(event.keyCode > 47 && event.keyCode < 58) {
-
+	}else if(event.keyCode > 95 && event.keyCode < 106) {
 	}else {
 		event.preventDefault();
 		if(event.key === "Enter") {
