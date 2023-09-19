@@ -131,6 +131,7 @@ filterBy.addEventListener("keyup", async event => {
 		filter[splitParam[0]] = splitParam[1];
 		const userList = await getUsers(pageVisible, pageNumber);
 		pageLengthElement.textContent = userList.pageLength;
+		userCountElement.textContent = userList.userLength;
 		renderUserList(userList);
 		return;
 	};
