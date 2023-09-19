@@ -379,27 +379,6 @@ sortActionItems.forEach(element => {
 	});
 });
 
-let sortLock = false;
-
-sortActionElement.addEventListener("mouseenter", _event => {
-		sortLock = true;
-		sortActionDropdown.style.display = "flex";
-		sortActionText.style.color = "var(--text-color)";
-		sortActionIcon.style.fill = "var(--text-color)";
-});
-
-
-sortActionElement.addEventListener("mouseleave", _event => {
-	sortLock = false;
-	setTimeout(() => {
-		if(!sortLock) {
-			sortActionDropdown.style.display = null;
-			sortActionText.style.color = null;
-			sortActionIcon.style.fill = null;
-		}
-		}, 200);
-});
-
 pagingBackward.addEventListener("click", async () => {
 	loadingElement.classList.add("load");
 	const userList = await getUsers(pageVisible, pageNumber);
