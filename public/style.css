@@ -9,7 +9,7 @@
 
 :root {
 	--back-color: rgb(14, 14, 14);
-	--front-color: #212121;
+	--front-color: #181818;
 	--box-color: #151515;
 	--text-color: white;
 	--text-color-70: rgba(255, 255, 255, 0.7); 
@@ -706,6 +706,11 @@ html, body {
 	border-color: grey !important;
 }
 
+.disallowedDateBox { 
+	color: var(--text-color);
+	opacity: 0.a;
+}
+
 .disabledDate {
 	color: var(--text-color);
 	opacity: 0.7;
@@ -725,12 +730,16 @@ html, body {
 }
 
 .multiSelect {
-	background-color: var(--secondary-color);
+	background-color: var(--secondary-color) !important;
 }
 
 .rangeSelect {
 	background-color: var(--secondary-color);
 	border-radius: 0px;
+}
+
+.rangeSelectUser {
+	background-color: var(--secondary-color);
 }
 
 .rangeSelectStart {
@@ -754,6 +763,28 @@ html, body {
 	background-color: var(--box-color);
 	border-radius: 6px;
 	margin-top: 20px;
+box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(53, 53, 53, 0.15) 0px 0px 0px 2px;
+}
+
+.multiButtons {
+	margin-top: 20px;
+	display: flex;
+	justify-content: flex-end;
+}
+
+.attendanceMulti {
+	overflow: hidden;
+	position: relative;
+	min-width: 377px;
+	width: 100%;
+	position: relative;
+	padding: 15px;
+	max-width: 846px;
+	background-color: var(--box-color);
+	border-radius: 6px;
+	margin: 20px;
+	display: grid;
+	grid-template-rows: auto;
 }
 
 .attendanceHeader {
@@ -1558,6 +1589,9 @@ h1 {
      margin-left: 0px;
 	 }
 
+	 .attendanceMultiContent > .attendance {
+		 width: 100%;
+	 }
 
 	.userInfoGroup {
 		width: 100%;
@@ -1741,5 +1775,7 @@ h1 {
 		height: 38px;
 	}
 }
+
+
 
 

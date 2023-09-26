@@ -110,9 +110,12 @@ app.post("/user", async (req, res) => {
 
 	const passcode = bcrypt.hashSync(data.password, 10);
 
-	const body = {id: nanoid(), username: data.username, email: data.email, password: passcode};
+	const body = {id: nanoid(), firstname: data.firstname, surname: data.surname, username: data.username, email: data.email, password: passcode};
 	if(data.class) body.class = data.class;
+	if(data.firstname) body.firstname = data.firstname;
+	if(data.surname) body.surname = data.surname;
 	if(data.role) body.role = data.role;
+
 	users.insertOne(body); 
 	res.json({ message: "ok" });
 });
@@ -130,11 +133,16 @@ app.put("/user", async (req, res) => {
 	let edit = {};
 	let unset = {};
 	if(data.username) edit.username = data.username;
+	if(data.surname) edit.surname = data.surname;
+	if(!data.surname) unset.surname = "";
+	if(data.firstname) edit.firstname = data.firstname;
+	if(!data.firstname) unset.firstname = "";
 	if(data.email) edit.email = data.email;
 	if(data.class) edit.class = data.class;
 	if(!data.class) unset.class = "";
 	if(data.role) edit.role = "admin";
 	if(!data.role) unset.role = "";
+	console.log(edit, unset)
 
 	users.updateOne({ id: data.id }, { $set: edit, $unset: unset });
 

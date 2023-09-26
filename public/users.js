@@ -41,6 +41,8 @@ const calendarDatePreviousElement = document.querySelector(".calendarDatePreviou
 const selectedUsersElement = document.querySelector(".selectedUsers");
 const newUserUsername = document.querySelector(".usernameUser");
 const newUserEmail = document.querySelector(".emailUser");
+const newUserFirstname = document.querySelector(".firstnameUser");
+const newUserSurname = document.querySelector(".surnameUser");
 const newUserPassword = document.querySelector(".passwordUser");
 const newUserClass = document.querySelector(".classUser");
 const newUserRole = document.querySelector(".roleUser");
@@ -48,6 +50,8 @@ const newUserAction = document.querySelector(".addUserActionButton");
 const isAdminCheckbox = document.querySelector("#isAdminAdd");
 const isAdminCheck = isAdminCheckbox.querySelector(".checkAdd");
 const editUserUsername = document.querySelector(".usernameUserEdit");
+const editUserFirstname = document.querySelector(".firstnameUserEdit");
+const editUserSurname = document.querySelector(".surnameUserEdit");
 const editUserEmail = document.querySelector(".emailUserEdit");
 const editUserActionButton = document.querySelector(".editUserActionButton");
 const editUserClass = document.querySelector(".classUserEdit");
@@ -61,6 +65,7 @@ const filterBy = document.querySelector("#filterby");
 const MonthsOfYear = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 let calendarDates = [];
 const calendarState = [];
+const rangeSelect = [];
 const calendarEvents = [];
 const contentState = [];
 
@@ -70,7 +75,7 @@ let calendarDays = generateCalendarDates();
 
 settingsAction.addEventListener("click", _event => window.location = "/settings.html?back=users.html")
 
-let sortValues = ["username", "email", "class", "role"];
+let sortValues = ["username", "email", "class", "role", "firstname", "surname"];
 let sort = false;
 
 sortBy.addEventListener("blur", async event => {
@@ -118,7 +123,7 @@ sortBy.addEventListener("keyup", async event => {
 })
 
 
-let filterValues = ["username:", "email:", "class:", "role:"];
+let filterValues = ["username:", "email:", "class:", "role:", "firstname:", "surname:"];
 let filter = {};
 
 filterBy.addEventListener("keyup", async event => {
@@ -172,8 +177,12 @@ editUserActionButton.addEventListener("click", async _event => {
 	const username = editUserUsername.value;
 	const email = editUserEmail.value;
 	const className = editUserClass.value;
+	const surname = editUserSurname.value;
+	const firstname = editUserFirstname.value;
 
 	if(username.length > 0) body.username = username;
+	if(firstname.length > 0) body.firstname = firstname;
+	if(surname.length > 0) body.surname = surname;
 	if(email.length > 0) body.email = email;
 	if(className.length > 0) body.class = className;
 	if(isAdminCheckEdit.style.display) body.role = "admin";
@@ -251,6 +260,8 @@ cancelNewUser.addEventListener("click", _event => {
 	newUserUsername.value = "";
 	newUserPassword.value = "";
 	newUserEmail.value = "";
+	newUserSurname.value = "";
+	newUserFirstname.value = "";
 	newUserClass.value = "";
 }); 
 
@@ -262,6 +273,8 @@ cancelEditUser.addEventListener("click", _event => {
 	editUserUsername.value = "";
 	editUserEmail.value = "";
 	editUserClass.value = "";
+	editUserFirstname.value = "";
+	editUserSurname.value = "";
 }); 
 
 cancelExportUser.addEventListener("click", _event => {
@@ -296,6 +309,8 @@ isAdminCheckboxEdit.addEventListener("click", _event => {
 newUserAction.addEventListener("click", async _event => {
   const username = newUserUsername.value;
 	const email = newUserEmail.value;
+	const firstname = newUserFirstname.value;
+	const surname = newUserSurname.value;
 	const password = newUserPassword.value;
 	const clas = newUserClass.value;
 	const isAdmin = isAdminCheck.display ? false : true;
@@ -303,7 +318,7 @@ newUserAction.addEventListener("click", async _event => {
 	await fetch("/user", {
 		method: "POST",
 		headers: {"Content-type": "application/json", Authorization: `token ${token}`},
-		body: JSON.stringify({email, username, password, class: clas, role: isAdmin ? "admin" : null })
+		body: JSON.stringify({firstname, surname, email, username, password, class: clas, role: isAdmin ? "admin" : null })
 	});
 
 	const userList = await getUsers(pageVisible, pageNumber);
@@ -656,6 +671,8 @@ function renderUserList(userList) {
 			editUserUsername.value = user.username;
 			editUserEmail.value = user.email;
 			editUserClass.value = user.class ? user.class : "";
+			editUserSurname.value = user.surname ? user.surname : "";
+			editUserFirstname.value = user.firstname ? user.firstname : "";
 			isAdminCheckEdit.style.display = user.role === "admin" ? "flex" : null;
 		});
 
@@ -696,8 +713,20 @@ function renderUserList(userList) {
 
 		if(user.avatar) userAvatar.style.backgroundImage = `url(${user.avatar})`;
 
-		userName.textContent = user.username.length > 8 ? user.username.substring(0, 6) + "..." : user.username;
-		userEmail.textContent = user.email.length > 20 ? user.email.substring(0, 17) + "..." : user.email;
+		if(user.surname || user.firstname) { 
+			if(user.firstname && user.surname) {
+				const nameString = `${user.firstname.slice(0, 1).toUpperCase()}. ${capitalize(user.surname)}`;
+				userName.textContent = nameString.length > 10 ? nameString.substring(0, 8) + "..." : nameString;
+
+			}else if(user.surname) {
+				userName.textContent = user.surname.length > 10 ? user.surname.substring(0, 8) + "..." : user.surname;
+			}else {
+				userName.textContent = user.firstname.length > 10 ? user.firstname.substring(0, 8) + "..." : user.firstname;
+			}
+		}else {
+			userName.textContent = user.username.length > 10 ? user.username.substring(0, 8) + "..." : user.username;
+		}
+		userEmail.textContent = user.email.length > 18 ? user.email.substring(0, 16) + "..." : user.email;
 
 		if(user.class) {
 			userClassElement.style.display = "flex";
@@ -712,3 +741,5 @@ function renderUserList(userList) {
 		userListElement.appendChild(userIndex > -1 ? selectedUsers[userIndex].element : userElement);
 	});
 }
+
+const capitalize = (str, lower = false) => (lower ? str.toLowerCase() : str).replace(/(?:^|\s|["'([{])+\S/g, match => match.toUpperCase());

@@ -128,6 +128,8 @@ if(userDataJson.avatar) avatarElement.style.backgroudImage = `url(${userDataJson
 let userIdentifier = false;
 let userUsername = false;
 let userRole = false;
+let rangeSelect = [];
+let rangeCount = 0;
 
 userBack.addEventListener("click", () => window.location.href = "/users.html");
 
@@ -181,35 +183,201 @@ calendarDatePreviousElement.addEventListener("click", () => {
 });
 
 function calendarEvent(date, action) {
-	if(action) {
-		const foundAttendanceIndex = attendances.findIndex(attendance => compareDates(attendance.date, date));
-		let attendance;
-		if(foundAttendanceIndex > -1) {
-			const attendanceData = attendances[foundAttendanceIndex];
-			attendance = createAttendance({date: date, status: attendanceData.status, checkbox: attendanceData.place, content: attendanceData.content});
+	if(typeof date.multi === "number") {
+		const multiElement = document.querySelector("#attendanceMultiTemplate").content.cloneNode(true);
+		const multiAttendanceElement = multiElement.querySelector(".attendanceMulti");
+		const multiContentElement = multiElement.querySelector(".attendanceMultiContent");
+		const multiSubmit = multiElement.querySelector(".multiSubmit");
+		const multiSubmitIcon = multiSubmit.querySelector(".attendanceSubmitIcon");
+		const multiAcceptIcon = multiSubmit.querySelector(".attendanceAccept");
+		const multiSave = multiElement.querySelector(".multiSave");
+		const multiSaveIcon = multiSave.querySelector(".attendanceSaveIcon");
+		const multiDeclineIcon = multiSave.querySelector(".attendanceDecline");
+		const multiMore = multiElement.querySelector(".multiMore");
+		const multiHeader = multiElement.querySelector(".rangeDate");
+		const multiClose = multiElement.querySelector(".multiClose");
+		multiHeader.textContent = `${date.days[0].getDate()}. ${MonthsOfYear[date.days[0].getMonth()]} ${date.days[0].getFullYear()} - ${date.days[date.days.length - 1].getDate()}. ${MonthsOfYear[date.days[date.days.length - 1].getMonth()]} ${date.days[date.days.length - 1].getFullYear()}`
+		const attendancesRange = [];
+
+		if(userMode) {
+			multiSaveIcon.style.display = "none";
+			multiAcceptIcon.style.display = "flex";
+			multiSubmitIcon.style.display = "none";
+			multiDeclineIcon.style.display = "flex";
 		}else {
-			if(!userMode) {
-				attendance = createAttendance({date: date, status: 0 });
-			}else {
-				calendarSetDate(date, false);
+			multiSaveIcon.style.display = "flex";
+			multiAcceptIcon.style.display = "none";
+			multiSubmitIcon.style.display = "flex";
+			multiDeclineIcon.style.display = "none";
+		}
+
+		let highestStatus = 0;
+
+		date.days.forEach(date => {
+			const stateIndex = attendances.findIndex(item => compareDates(date, item.date));
+			if(stateIndex > -1) {
+				if(attendances[stateIndex].status > highestStatus) {
+					highestStatus = attendances[stateIndex].status;
+				}
+			}
+		})
+
+		multiSave.addEventListener("click", () => {
+			console.log(attendancesRange)
+			attendancesRange.forEach(item => item.saveAttendance());
+			highestStatus = 1;
+			setStatus(highestStatus);
+		});
+
+		multiSubmit.addEventListener("click", () => {
+			console.log(attendancesRange)
+			attendancesRange.forEach(item => item.submitAttendance());
+			highestStatus = 2;
+			setStatus(highestStatus);
+		});
+
+		setStatus(highestStatus);
+
+		function setStatus(newStatus) {
+			status = newStatus;
+			if(status == 0) {
+				if(!userMode) {
+					multiSubmit.disabled = true;
+					multiMore.disabled = false;
+					multiSave.disabled = false;
+				}else {
+					multiSubmit.disabled = true;
+					multiMore.disabled = true;
+					multiSave.disabled = true;
+				}
+			}else if(status == 1) {
+				if(!userMode) {
+					multiSubmit.disabled = false;
+					multiMore.disabled = false;
+					multiSave.disabled = false;
+				}else {
+					multiSubmit.disabled = true;
+					multiMore.disabled = true;
+					multiSave.disabled = true;
+				}
+			}else if(status == 2) {
+				if(!userMode) {
+					multiSubmit.disabled = true;
+					multiMore.disabled = false;
+					multiSave.disabled = true;
+				}else {
+					multiSubmit.disabled = false;
+					multiMore.disabled = false;
+					multiSave.disabled = false;
+				}
+			}else if(status == 3) {
+				if(!userMode) {
+					multiSubmit.disabled = true;
+					multiMore.disabled = false;
+					multiSave.disabled = true;
+				}else {
+					multiSubmit.disabled = true;
+					multiMore.disabled = false;
+					multiSave.disabled = true;
+				}
+			}else if(status == 4) {
+				if(!userMode) {
+					multiSubmit.disabled = true;
+					multiMore.disabled = false;
+					multiSave.disabled = true;
+				}else {
+					multiSubmit.disabled = true;
+					multiMore.disabled = false;
+					multiSave.disabled = true;
+				}
 			}
 		}
-		const element = mainElement.children[attendance.index];
-		contentState.push({date, attendance, element});
-		attendance.close(() => {
-			const contentIndex = contentState.findIndex(state => compareDates(date, state.date));
-			mainElement.removeChild(contentState[contentIndex].element);
-			contentState.splice(contentIndex, 1);
-			calendarSetDate(date, false);
+
+		date.days.forEach(date => {
+			if(action) {
+				const foundAttendanceIndex = attendances.findIndex(attendance => compareDates(attendance.date, date));
+				let attendance;
+				if(foundAttendanceIndex > -1) {
+					if(date.getDay() != 0 && date.getDay() != 6) {
+						const attendanceData = attendances[foundAttendanceIndex];
+						attendance = createAttendance({date: date, status: attendanceData.status, checkbox: attendanceData.place, content: attendanceData.content, multi: true});
+						attendancesRange.push(attendance);
+					}
+				}else {
+					if(!userMode) {
+						if(date.getDay() != 0 && date.getDay() != 6) {
+							attendance = createAttendance({date: date, status: 0, multi: true });
+							attendancesRange.push(attendance);
+						}
+					}else {
+						calendarSetDate(date, false);
+					}
+				}
+				if(attendance) {
+					const element = mainElement.children[attendance.index];
+					contentState.push({date, attendance, element: multiAttendanceElement});
+					multiClose.addEventListener("click", () => {
+						const contentIndex = contentState.findIndex(state => compareDates(date, state.date));
+						if(mainElement.contains(contentState[contentIndex].element)) {
+							mainElement.removeChild(contentState[contentIndex].element);
+						}
+						calendarSetDate(date, false);
+						contentState.splice(contentIndex, 1);
+					})
+				}
+			}else {
+				const index = contentState.findIndex(state => compareDates(date, state.date));
+				if(index > -1) {
+					mainElement.removeChild(contentState[index].element);
+					contentState.splice(index, 1);
+				}
+			}
 		});
+
+		attendancesRange.forEach(attendance => {
+			multiContentElement.appendChild(attendance.element);
+		});
+
+		if(multiContentElement.children.length > 0) {
+			mainElement.appendChild(multiElement);
+		}
 	}else {
-		const index = contentState.findIndex(state => compareDates(date, state.date));
-		mainElement.removeChild(contentState[index].element);
-		contentState.splice(index, 1);
+		if(action) {
+			const foundAttendanceIndex = attendances.findIndex(attendance => compareDates(attendance.date, date));
+			let attendance;
+			if(foundAttendanceIndex > -1) {
+				const attendanceData = attendances[foundAttendanceIndex];
+				attendance = createAttendance({date: date, status: attendanceData.status, checkbox: attendanceData.place, content: attendanceData.content});
+			}else {
+				if(!userMode) {
+					attendance = createAttendance({date: date, status: 0 });
+				}else {
+					calendarSetDate(date, false);
+				}
+			}
+			const element = mainElement.children[attendance.index];
+			contentState.push({date, attendance, element});
+			attendance.close(() => {
+				const contentIndex = contentState.findIndex(state => compareDates(date, state.date));
+				mainElement.removeChild(contentState[contentIndex].element);
+				contentState.splice(contentIndex, 1);
+				calendarSetDate(date, false);
+			});
+		}else {
+			const index = contentState.findIndex(state => compareDates(date, state.date));
+
+			if(index > -1) {
+				if(mainElement.contains(contentState[index].element)) {
+					mainElement.removeChild(contentState[index].element);
+				}
+
+				contentState.splice(index, 1);
+			}
+		}
 	}
 }
 
-function createAttendance({ date, status, checkbox, onClose, content } = {}) {
+function createAttendance({ date, status, checkbox, onClose, content, multi } = {}) {
 	const attendanceElementCopy = attendanceElementTemplate.content.cloneNode(true);
 	const attendanceDateElement = attendanceElementCopy.querySelector(".attendanceDate");
 	const attendanceStatusElement = attendanceElementCopy.querySelector(".attendanceStatus");
@@ -228,18 +396,28 @@ function createAttendance({ date, status, checkbox, onClose, content } = {}) {
 	const attendanceDecline = attendanceElementCopy.querySelector(".attendanceDecline");
 	const attendanceSaveIcon = attendanceElementCopy.querySelector(".attendanceSaveIcon");
 	const attendanceSubmitIcon = attendanceElementCopy.querySelector(".attendanceSubmitIcon");
+	const attendanceHeader = attendanceElementCopy.querySelector(".attendanceHeader");
 	const index = mainElement.children.length;
 
-	if(userMode) {
-		attendanceSaveIcon.style.display = "none";
-		attendanceAccept.style.display = "flex";
-		attendanceSubmitIcon.style.display = "none";
-		attendanceDecline.style.display = "flex";
+	if(multi) {			
+		attendanceMoreElement.style.display = "none";
+		attendanceCloseElement.style.display = "none";
+		attendanceSaveElement.style.display = "none";
+		attendanceSubmitElement.style.display = "none";
+		attendanceHeader.style.gridTemplateColumns = "auto auto";
+		attendanceDateElement.style.margin = "0px";
 	}else {
-		attendanceSaveIcon.style.display = "flex";
-		attendanceAccept.style.display = "none";
-		attendanceSubmitIcon.style.display = "flex";
-		attendanceDecline.style.display = "none";
+		if(userMode) {
+			attendanceSaveIcon.style.display = "none";
+			attendanceAccept.style.display = "flex";
+			attendanceSubmitIcon.style.display = "none";
+			attendanceDecline.style.display = "flex";
+		}else {
+			attendanceSaveIcon.style.display = "flex";
+			attendanceAccept.style.display = "none";
+			attendanceSubmitIcon.style.display = "flex";
+			attendanceDecline.style.display = "none";
+		}
 	}
 
 	let lastInput = attendanceElementCopy.querySelector(".attendanceInput");
@@ -328,7 +506,11 @@ function createAttendance({ date, status, checkbox, onClose, content } = {}) {
 	}
 
 	attendanceSubmitElement.addEventListener("click", async event => {
-		if(!event.srcElement.disabled) {
+		submitAttendance(event);
+	});
+
+	async function submitAttendance(event) {
+		if(!attendanceContentElement.parentNode.disabled) {
 			const response = await fetch(`/attendance${userIdentifier ? `?id=${userIdentifier}${userMode ? `&status=4` : ""}` : ""}`, {
 				method: "PUT",
 				headers: { "Content-type": "application/json", Authorization: `token ${token}` },
@@ -341,10 +523,14 @@ function createAttendance({ date, status, checkbox, onClose, content } = {}) {
 			setStatus(userMode ? 4 : 2);
 			setContent(attendances[attendanceIndex].content);
 		}
-	});
+	}
 
 	attendanceSaveElement.addEventListener("click", async event => {
-		if(!event.srcElement.disabled) {
+		saveAttendance(event)
+	});
+
+	async function saveAttendance(event) {
+		if(!attendanceContentElement.parentNode.disabled) {
 			let content = [];
 
 			Array.from(attendanceContentElement.children).forEach(child => {
@@ -388,7 +574,8 @@ function createAttendance({ date, status, checkbox, onClose, content } = {}) {
 				setContent(content);
 			}
 		}
-	});
+
+	}
 
 	attendanceCloseElement.addEventListener("click", event => {
 		if(onClose) onClose({ date });
@@ -490,7 +677,7 @@ function createAttendance({ date, status, checkbox, onClose, content } = {}) {
 	setDate(date);
 	if(checkbox !== undefined) checkABox(checkbox); 
 
-	mainElement.appendChild(attendanceElementCopy);
+	if(!multi) mainElement.appendChild(attendanceElementCopy);
 
 	function setStatus(newStatus) {
 		status = newStatus;
@@ -600,7 +787,7 @@ function createAttendance({ date, status, checkbox, onClose, content } = {}) {
 		attendanceDateElement.textContent = `${date.getDate()}. ${MonthsOfYear[date.getMonth()]} ${date.getFullYear()}`;
 	}
 
-	return {index, close: (callback) => {onClose = callback}, setDate};
+	return {index, submitAttendance, saveAttendance, close: (callback) => {onClose = callback}, setDate, element: attendanceElementCopy};
 }
 
 
@@ -620,13 +807,17 @@ function generateCalendarDates() {
 
 	let calendarDays = [];
 
-	if(currentDays[0].getDay() != 1) {
+	if(currentDays[0].getDay() == 0) {
+		while(calendarDays.length < 6) {
+			calendarDays.push(previousDays[previousDays.length - 1 - calendarDays.length]);
+		}
+	}else if(currentDays[0].getDay() != 1) {
 		while(calendarDays.length < currentDays[0].getDay() - 1) {
 			calendarDays.push(previousDays[previousDays.length - 1 - calendarDays.length]);
 		}
-
-		calendarDays.reverse();
 	}
+
+	calendarDays.reverse();
 
 	calendarDays = calendarDays.concat(currentDays);
 
@@ -646,6 +837,10 @@ function generateCalendarDates() {
 		calendarDateDayElement.classList.add("calendarDateDay");
 		calendarDateDayTextElement.classList.add("calendarDateDayText");
 		calendarDateDayDotElement.classList.add("calendarDateDayDot");
+
+		if(day.getDay() == 6 || day.getDay() == 0) {
+			calendarDateDayTextElement.classList.add("disallowedDateBox");
+		}
 
 		if(day.getMonth() !== calendarDate.getMonth()) {
 			calendarDateDayTextElement.classList.add("disabledDate");
@@ -684,32 +879,120 @@ function generateCalendarDates() {
 
 		const foundIndex = calendarState.findIndex(state => compareDates(state.day, day));
 		if(foundIndex > -1) {
+			if(calendarState[foundIndex].multiselect) {
+				if(calendarState[foundIndex].multiselect == 2) {
+					calendarDateElement.classList.add("rangeSelectStart");
+				}else if(calendarState[foundIndex].multiselect == 3) {
+					calendarDateElement.classList.add("rangeSelectEnd");
+				}else {
+					calendarDateElement.classList.add("rangeSelect");
+				}
+			}else {
+				calendarDateElement.classList.add("calendarDaySelected");
+			}
 			calendarState[foundIndex].element = calendarDateElement;
-			calendarDateElement.classList.add("calendarDaySelected");
+		}
+
+		const rangeIndex = rangeSelect.findIndex(state => compareDates(state.day, day));
+		if(rangeIndex > -1) {
+			rangeSelect[rangeIndex].element = calendarDateElement;
+			calendarDateElement.classList.add("multiSelect");
 		}
 
 		calendarDateElement.addEventListener("click", (event) => {
-			if(event.shiftKey) {
-				return;
-			}else {
-				const stateIndex = calendarState.findIndex(state => compareDates(state.day, day));
-				if(stateIndex > -1) {
-					calendarDateElement.classList.remove("calendarDaySelected");
-					calendarState.splice(stateIndex, 1);	
-					calendarEvent(day, false);
-				}else {
-					if(!event.ctrlKey) {
-						while(calendarState.length != 0) {
-							const element = calendarState[calendarState.length - 1].element;
-							element.classList.remove("calendarDaySelected");
-							calendarEvent(calendarState[calendarState.length - 1].day, false);
-							calendarState.pop(stateIndex, 1);
+			if(!calendarDateDayTextElement.classList.contains("disallowedDateBox")) {
+				if(event.shiftKey) {
+					const rangeIndex = rangeSelect.findIndex(state => compareDates(state.day, day));
+					let reset = false;
+					if(rangeIndex > -1) {
+						rangeSelect[rangeIndex].element.classList.remove("multiSelect")
+						rangeSelect.splice(rangeIndex, 1);
+						reset = true;
+					}else {
+						rangeSelect.push({element: calendarDateElement, day})
+						calendarDateElement.classList.add("multiSelect");
+
+						if(rangeSelect.length > 1) {
+							const big = rangeSelect[rangeSelect[0].day.getTime() > rangeSelect[1].day.getTime() ? 0 : 1];
+							const small = rangeSelect[rangeSelect[0].day.getTime() > rangeSelect[1].day.getTime() ? 1 : 0];
+							const endDay = new Date(big.day)
+							endDay.setDate(endDay.getDate() + 1);
+							small.element.classList.remove("multiSelect");
+							big.element.classList.remove("multiSelect");
+							let rangeDays = [];
+
+							let current = new Date(small.day);
+							while(!compareDates(current, endDay)) {
+								rangeDays.push(new Date(current))
+
+								if(calendarState.findIndex(item => compareDates(item.day, current)) > -1) {
+									while(calendarState.findIndex(item => item.multi == rangeCount) > -1) {
+										const index = calendarState.findIndex(item => item.multi == rangeCount);
+										calendarState.splice(index, 1);
+									}
+									reset = true;
+									rangeCount--;
+									break;
+								}
+
+								if(compareDates(current, big.day)) {
+									calendarState.push({day: new Date(current), multiselect: 3, multi: rangeCount})	
+								} else if(compareDates(current, small.day)) {
+									calendarState.push({day: new Date(current), multiselect: 2, multi: rangeCount})	
+								}else {
+									calendarState.push({day: new Date(current), multiselect: 1, multi: rangeCount})	
+								}
+								current.setDate(current.getDate() + 1);
+							}
+
+							rangeCount++;
+							while(rangeSelect.length > 0) rangeSelect.pop();
+							if(!reset) {
+								calendarDays = generateCalendarDates();
+								calendarEvent({multi: rangeCount-1, days: rangeDays}, true);
+							}
 						}
 					}
+					return;
+				}else {
+					const stateIndex = calendarState.findIndex(state => compareDates(state.day, day));
+					if(stateIndex > -1) {
+						if(calendarState[stateIndex].multiselect) {
+							const multi = calendarState[stateIndex].multi;
+							while(calendarState.findIndex(item => item.multi == multi) > -1) {
+								const index = calendarState.findIndex(item => item.multi == multi);
+								calendarState[index].element.classList.remove("rangeSelect");
+								calendarState[index].element.classList.remove("rangeSelectUser");
+								calendarState[index].element.classList.remove("rangeSelectStart");
+								calendarState[index].element.classList.remove("rangeSelectEnd");
+								calendarEvent(calendarState[index].day, false);
+								calendarState.splice(index, 1);
+							}
+						}else {
+							calendarDateElement.classList.remove("calendarDaySelected");
+							calendarEvent(day, false);
+							calendarState.splice(stateIndex, 1);	
+						}
+					}else {
+						if(!event.ctrlKey) {
+							rangeSelect.forEach(item => item.element.classList.remove("multiSelect"))
+							let stop = false;
+							while(calendarState.length != 0 && !stop) {
+								const element = calendarState[calendarState.length - 1].element;
+								element.classList.remove("calendarDaySelected");
+								element.classList.remove("rangeSelect");
+								element.classList.remove("rangeSelectUser");
+								element.classList.remove("rangeSelectStart");
+								element.classList.remove("rangeSelectEnd");
+								calendarEvent(calendarState[calendarState.length - 1].day, false);
+								calendarState.pop();
+							}
+						}
 
-					calendarDateElement.classList.add("calendarDaySelected");
-					calendarState.push({day, element: calendarDateElement})	
-					calendarEvent(day, true);
+						calendarDateElement.classList.add("calendarDaySelected");
+						calendarState.push({day, element: calendarDateElement})	
+						calendarEvent(day, true);
+					}
 				}
 			}
 		});
@@ -724,7 +1007,14 @@ function calendarSetDate(date, action) {
 		if(index > -1) calendarDatesElement.children[index].classList.add("calendarDaySelected");	
 		calendarState.push({day: date, element: calendarDatesElement.children[index]})	
 	}else {
-		if(index > -1) calendarDatesElement.children[index].classList.remove("calendarDaySelected");
+		if(index > -1) { 
+			calendarDatesElement.children[index].classList.remove("calendarDaySelected");
+			calendarDatesElement.children[index].classList.remove("rangeSelect");
+			calendarDatesElement.children[index].classList.remove("rangeSelectUser");
+			calendarDatesElement.children[index].classList.remove("rangeSelectStart");
+			calendarDatesElement.children[index].classList.remove("rangeSelectEnd");
+
+		};
 		const stateIndex = calendarState.findIndex(state => compareDates(state.day, date));
 		calendarState.splice(stateIndex, 1);	
 	}
