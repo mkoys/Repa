@@ -711,6 +711,9 @@ function renderUserList(userList) {
 			window.location = `/attendance.html?id=${user.id}&username=${user.username}&role=${user.role}`;
 		});
 
+
+		const capitalize = (str, lower = false) => (lower ? str.toLowerCase() : str).replace(/(?:^|\s|["'([{])+\S/g, match => match.toUpperCase());
+
 		if(user.avatar) userAvatar.style.backgroundImage = `url(${user.avatar})`;
 
 		if(user.surname || user.firstname) { 
@@ -742,4 +745,3 @@ function renderUserList(userList) {
 	});
 }
 
-const capitalize = (str, lower = false) => (lower ? str.toLowerCase() : str).replace(/(?:^|\s|["'([{])+\S/g, match => match.toUpperCase());
