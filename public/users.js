@@ -363,6 +363,7 @@ newUserAction.addEventListener("click", async _event => {
 
 pagingForward.addEventListener("click", async () => {
 	loadingElement.classList.add("load");
+	console.log(loadingElement)
 	const userList = await getUsers(pageVisible, pageNumber);
 	if(pageNumber < userList.pageLength -1) {
 		pageNumber++;
@@ -373,7 +374,6 @@ pagingForward.addEventListener("click", async () => {
 		pageLengthElement.textContent = userList.pageLength;
 
 		renderUserList(userList);
-		loadingElement.classList.remove("load");
 	}
 });
 
