@@ -374,6 +374,7 @@ pagingForward.addEventListener("click", async () => {
 		pageLengthElement.textContent = userList.pageLength;
 
 		renderUserList(userList);
+		loadingElement.classList.remove("load");
 	}
 });
 
