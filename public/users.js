@@ -97,7 +97,6 @@ sortBy.addEventListener("blur", async event => {
 	}
 	const userList = await getUsers(pageVisible, pageNumber);
 	renderUserList(userList);
-	console.log(userList)
 }); 
 
 sortBy.addEventListener("keyup", async event => {
@@ -136,7 +135,13 @@ filterBy.addEventListener("keyup", async event => {
 		if(value.length == 0) filter = {};
 		const splitParam = value.split(":");
 		filter[splitParam[0]] = splitParam[1];
-		const userList = await getUsers(pageVisible, pageNumber);
+		let userList = await getUsers(pageVisible, pageNumber);
+		if(pageNumber > userList.pageLength) {
+			pageNumber = userList.pageLength - 1;
+			userList = await getUsers(pageVisible, pageNumber);
+		}
+
+		pageNumberElement.textContent = pageNumber + 1;
 		pageLengthElement.textContent = userList.pageLength;
 		userCountElement.textContent = userList.userLength;
 		renderUserList(userList);
