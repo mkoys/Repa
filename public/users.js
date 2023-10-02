@@ -46,6 +46,7 @@ const newUserSurname = document.querySelector(".surnameUser");
 const newUserPassword = document.querySelector(".passwordUser");
 const newUserClass = document.querySelector(".classUser");
 const newUserRole = document.querySelector(".roleUser");
+const newUserAutoFilter = document.querySelector(".autoFilterUser");
 const newUserAction = document.querySelector(".addUserActionButton");
 const isAdminCheckbox = document.querySelector("#isAdminAdd");
 const isAdminCheck = isAdminCheckbox.querySelector(".checkAdd");
@@ -56,6 +57,7 @@ const editUserEmail = document.querySelector(".emailUserEdit");
 const editUserActionButton = document.querySelector(".editUserActionButton");
 const editUserClass = document.querySelector(".classUserEdit");
 const editUserRole = document.querySelector(".roleUserEdit");
+const editUserAutoFilter = document.querySelector(".autoFilterUserEdit");
 const isAdminCheckboxEdit = document.querySelector("#isAdminEdit");
 const isAdminCheckEdit = isAdminCheckboxEdit.querySelector(".checkEdit");
 const settingsAction = document.querySelector(".settingsDropdown");
@@ -179,9 +181,20 @@ editUserActionButton.addEventListener("click", async _event => {
 	const className = editUserClass.value;
 	const surname = editUserSurname.value;
 	const firstname = editUserFirstname.value;
+	const autoFilter = editUserAutoFilter.value;
 
 	if(username.length > 0) body.username = username;
 	if(firstname.length > 0) body.firstname = firstname;
+	if(autoFilter.length > 0) {
+		const filter = [];
+		const splitFilter = autoFilter.split(" ");
+			const newFilter = new Object();
+		splitFilter.forEach(filterItem => {
+			const splitItem = filterItem.split(":");
+			newFilter[splitItem[0]] = splitItem[1];
+		});
+		body.autoFilter = newFilter;
+	}
 	if(surname.length > 0) body.surname = surname;
 	if(email.length > 0) body.email = email;
 	if(className.length > 0) body.class = className;
@@ -311,14 +324,29 @@ newUserAction.addEventListener("click", async _event => {
 	const email = newUserEmail.value;
 	const firstname = newUserFirstname.value;
 	const surname = newUserSurname.value;
+	const autoFilter = newUserAutoFilter.value;
 	const password = newUserPassword.value;
 	const clas = newUserClass.value;
 	const isAdmin = isAdminCheck.display ? false : true;
+
+
+	let body = {firstname, surname, email, username, password, class: clas, role: isAdmin ? "admin" : null };
+	if(autoFilter.length > 0) {
+		const filter = [];
+		const splitFilter = autoFilter.split(" ");
+			const newFilter = new Object();
+		splitFilter.forEach(filterItem => {
+			const splitItem = filterItem.split(":");
+			newFilter[splitItem[0]] = splitItem[1];
+		});
+		body.autoFilter = newFilter;
+	}
+
 	
 	await fetch("/user", {
 		method: "POST",
 		headers: {"Content-type": "application/json", Authorization: `token ${token}`},
-		body: JSON.stringify({firstname, surname, email, username, password, class: clas, role: isAdmin ? "admin" : null })
+		body: JSON.stringify(body)
 	});
 
 	const userList = await getUsers(pageVisible, pageNumber);
@@ -674,6 +702,13 @@ function renderUserList(userList) {
 			editUserSurname.value = user.surname ? user.surname : "";
 			editUserFirstname.value = user.firstname ? user.firstname : "";
 			isAdminCheckEdit.style.display = user.role === "admin" ? "flex" : null;
+			if(user.autoFilter) {
+				let string = "";
+				Object.keys(user.autoFilter).forEach(key => {
+					string += `${key}:${user.autoFilter[key]} `
+				});
+				editUserAutoFilter.value = string;
+			}
 		});
 
 		deleteUserAction.addEventListener("click", async () => {

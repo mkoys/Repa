@@ -39,7 +39,7 @@ app.get("/user", async (req, res) => {
 	const session = await sessions.findOne({ token });
 	if(!session) return res.json(notAuthorized);
 
-	const user = await users.findOne({id: session.id});
+	const user = await users.findOne({id: session.id, deleted: {$exists: false}});
 	if(!user) return res.json({error: {id: 6, message: "User not found"}});
 
 	Object.keys(user).forEach(key => {
@@ -54,7 +54,7 @@ app.get("/users", async (req, res) => {
 	if(!token) return res.json({error: {id: 5, message: "User not authorized"}});
 	const session = await sessions.findOne({ token });
 	if(!session) return res.json({error: {id: 6, message: "User not authorized"}});
-	const userRequest = await users.findOne({ id: session.id });
+	const userRequest = await users.findOne({ id: session.id, deleted: {$exists: false} });
 	if(userRequest.role !== "admin")return res.json({error: {id: 7, message: "User not authorized"}});
 	const params = req.query;
 	const pageVisible = params.visible ? parseInt(params.visible) : 5;
@@ -62,6 +62,7 @@ app.get("/users", async (req, res) => {
 	const sort = params.sort;
 	const filterParam = new Object();
 	const sortParam = new Object();
+	if(userRequest.autoFilter) Object.keys(userRequest.autoFilter).forEach(key => filterParam[key] = userRequest.autoFilter[key]);
 	if(sort) sortParam[sort.toLowerCase()] = 1;
 	Object.keys(params).forEach(param => {
 		if(param === "visible") return;
@@ -69,6 +70,8 @@ app.get("/users", async (req, res) => {
 		if(param === "sort") return;
 		filterParam[param] = params[param];
 	});
+
+	filterParam.deleted = { $exists: false };
 
 	const userLength = await users.countDocuments(filterParam); 
 
@@ -85,11 +88,11 @@ app.delete("/user", async (req, res) => {
 	if(!token) return res.json({error: {id: 5, message: "User not authorized"}});
 	const session = await sessions.findOne({ token });
 	if(!session) return res.json({error: {id: 5, message: "User not authorized"}});
-	const userRequest = await users.findOne({ id: session.id });
+	const userRequest = await users.findOne({ id: session.id, deleted: {$exists: false} });
 	if(userRequest.role !== "admin")return res.json({error: {id: 5, message: "User not authorized"}});
 	if(typeof data !== "object" || data.id === undefined) return res.json({ error: { id: 0, message: "Invalid request" }});
 	await sessions.deleteMany({id: data.id});
-	await users.deleteOne({id: data.id});
+	await users.updateOne({id: data.id}, {$set: {deleted: { by: session.id, stamp: new Date() }}});
 	res.json({message: "ok"});
 });
 
@@ -99,13 +102,13 @@ app.post("/user", async (req, res) => {
 	if(!token) return res.json({error: {id: 5, message: "User not authorized"}});
 	const session = await sessions.findOne({ token });
 	if(!session) return res.json({error: {id: 5, message: "User not authorized"}});
-	const userRequest = await users.findOne({ id: session.id });
+	const userRequest = await users.findOne({ id: session.id, deleted: {$exists: false} });
 	if(userRequest.role !== "admin")return res.json({error: {id: 5, message: "User not authorized"}});
 	if(typeof data !== "object" || data.username === undefined || data.email === undefined || data.password === undefined) return res.json({ error: { id: 0, message: "Invalid request" }});
 	if(typeof data.username !== "string" || typeof data.email !== "string" || typeof data.password !== "string") return res.json({error: {id: 1, message: "Invalid type"}});
 	if(data.username.length == 0 || data.email.length == 0 || data.password.length == 0) return res.json({error: {id: 2, message: "Empty values"}});
 
-	const user = await users.findOne({ $or: [{ username: data.username }, {email: data.email}] });
+	const user = await users.findOne({ $or: [{ username: data.username, deleted: {$exists: false} }, {email: data.email, deleted: {$exists: false}}] });
 	if(user) return res.json({ error: { id: 3, message: "User already exists" }});
 
 	const passcode = bcrypt.hashSync(data.password, 10);
@@ -115,6 +118,7 @@ app.post("/user", async (req, res) => {
 	if(data.firstname) body.firstname = data.firstname;
 	if(data.surname) body.surname = data.surname;
 	if(data.role) body.role = data.role;
+	if(data.autoFilter) body.autoFilter = data.autoFilter;
 
 	users.insertOne(body); 
 	res.json({ message: "ok" });
@@ -126,7 +130,7 @@ app.put("/user", async (req, res) => {
 	if(!token) return res.json({error: {id: 5, message: "User not authorized"}});
 	const session = await sessions.findOne({ token });
 	if(!session) return res.json({error: {id: 5, message: "User not authorized"}});
-	const userRequest = await users.findOne({ id: session.id });
+	const userRequest = await users.findOne({ id: session.id, deleted: {$exists: false} });
 	if(userRequest.role !== "admin")return res.json({error: {id: 5, message: "User not authorized"}});
 	if(typeof data !== "object") return res.json({ error: { id: 0, message: "Invalid request" }});
 
@@ -137,12 +141,13 @@ app.put("/user", async (req, res) => {
 	if(!data.surname) unset.surname = "";
 	if(data.firstname) edit.firstname = data.firstname;
 	if(!data.firstname) unset.firstname = "";
+	if(data.autoFilter) edit.autoFilter = data.autoFilter;
+	if(!data.autoFilter) unset.autoFilter = "";
 	if(data.email) edit.email = data.email;
 	if(data.class) edit.class = data.class;
 	if(!data.class) unset.class = "";
 	if(data.role) edit.role = "admin";
 	if(!data.role) unset.role = "";
-	console.log(edit, unset)
 
 	users.updateOne({ id: data.id }, { $set: edit, $unset: unset });
 
@@ -156,7 +161,7 @@ app.post("/register", async (req, res) => {
 	if(typeof data.username !== "string" || typeof data.email !== "string" || typeof data.password !== "string") return res.json({error: {id: 1, message: "Invalid type"}});
 	if(data.username.length == 0 || data.email.length == 0 || data.password.length == 0) return res.json({error: {id: 2, message: "Empty values"}});
 
-	const user = await users.findOne({ $or: [{ username: { $regex: new RegExp("^" + data.username.toLowerCase() + "$", "i") } }, {email: data.email.toLowerCase()}] });
+	const user = await users.findOne({ $or: [{ username: { $regex: new RegExp("^" + data.username.toLowerCase() + "$", "i") }, deleted: {$exists: false} }, {email: data.email.toLowerCase(), deleted: {$exists: false}}] });
 	if(user) return res.json({ error: { id: 3, message: "User already exists" }});
 
 	const passcode = bcrypt.hashSync(data.password, 10);
@@ -173,6 +178,7 @@ app.post("/login", async (req, res) => {
 	const credentails = new Object();
 	if(data.email) credentails.email = data.email.toLowerCase();
 	if(data.username) credentails.username = {$regex: new RegExp("^" + data.username.toLowerCase() + "$","i")}
+	credentails.deleted = {$exists: false};
 
 	const user = await users.findOne(credentails);
 	if(!user) return res.json({error: { id: 4, message: "Invalid credentials" }});
@@ -266,6 +272,7 @@ app.post("/attendance", async (req, res) => {
 	}else {
 		attendances.insertOne({
 			id: nanoid(),
+			name: req.query.username ? req.query.username : user.username,
 			user: req.query.id ? req.query.id : user.id,
 			date: new Date(data.date),
 			content: data.content,
