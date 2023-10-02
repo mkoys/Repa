@@ -373,8 +373,8 @@ pagingForward.addEventListener("click", async () => {
 		pageLengthElement.textContent = userList.pageLength;
 
 		renderUserList(userList);
+		loadingElement.classList.remove("load");
 	}
-	loadingElement.classList.remove("load");
 });
 
 function daysInMonth(year, month) {
@@ -436,7 +436,7 @@ pagingBackward.addEventListener("click", async () => {
 		pageLengthElement.textContent = userList.pageLength;
 
 		renderUserList(userList);
-	loadingElement.classList.remove("load");
+		loadingElement.classList.remove("load");
 	}
 });
 
