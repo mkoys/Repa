@@ -127,6 +127,7 @@ html, body {
 }
 
 .loadingBox {
+	height: 10px;
 	width: 100%;
 	overflow: hidden;
 	position: relative;
@@ -966,7 +967,6 @@ input:disabled {
 }
 
 .userList {
-	overflow: hidden;
 	min-width: 260px;
 	border-radius: 5px;
 	padding: 15px;

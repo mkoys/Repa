@@ -380,6 +380,8 @@ pagingForward.addEventListener("click", async () => {
 
 		renderUserList(userList);
 		loadingElement.classList.remove("load");
+	}else {
+		loadingElement.classList.remove("load");
 	}
 });
 
@@ -442,6 +444,8 @@ pagingBackward.addEventListener("click", async () => {
 		pageLengthElement.textContent = userList.pageLength;
 
 		renderUserList(userList);
+		loadingElement.classList.remove("load");
+	}else {
 		loadingElement.classList.remove("load");
 	}
 });

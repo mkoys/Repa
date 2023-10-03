@@ -75,7 +75,7 @@ app.get("/users", async (req, res) => {
 
 	const userLength = await users.countDocuments(filterParam); 
 
-	const page = await users.find(filterParam).skip(pageNumber * pageVisible).limit(pageVisible).sort(sort ? sortParam : {id: 1}).toArray();
+	const page = await users.find({$or: [filterParam, {id: userRequest.id}]}).skip(pageNumber * pageVisible).limit(pageVisible).sort(sort ? sortParam : {id: 1}).toArray();
 
 	const pageLength = Math.floor(userLength / pageVisible) + (userLength % pageVisible != 0 ? 1 : 0);
 
