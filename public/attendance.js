@@ -276,9 +276,9 @@ function calendarEvent(date, action) {
 					multiMore.disabled = false;
 					multiSave.disabled = true;
 				}else {
-					multiSubmit.disabled = true;
+					multiSubmit.disabled = false;
 					multiMore.disabled = false;
-					multiSave.disabled = true;
+					multiSave.disabled = false;
 				}
 			}else if(status == 4) {
 				if(!userMode) {
@@ -453,7 +453,7 @@ function createAttendance({ date, status, checkbox, onClose, content, multi } = 
 				newInputTime.value = row.time;
 				newInputClass.value = row.class;
 
-				if(status < 2 && !userMode) {
+				if(status <= 3 && !userMode) {
 					newInputDescription.addEventListener("keyup", removeInputListener);
 					newInputTime.addEventListener("keyup", removeInputListener);
 					newInputClass.addEventListener("keyup", removeInputListener);
@@ -482,10 +482,9 @@ function createAttendance({ date, status, checkbox, onClose, content, multi } = 
 			lastInputDescription.disabled = true;
 			lastInputTime.disabled = true;
 			lastInputClass.disabled = true;
-			checkboxDisable = true;
 		}
 
-		if(status < 2 && !userMode) {
+		if(status <= 3 && !userMode) {
 			lastInput.addEventListener("dragover", event => event.preventDefault());
 			lastInput.addEventListener("dragstart", event => {
 				const source = event.srcElement;
@@ -722,14 +721,13 @@ function createAttendance({ date, status, checkbox, onClose, content, multi } = 
 				attendanceSaveElement.disabled = false;
 			}
 		}else if(status == 3) {
-			checkboxDisable = true;
 			attendanceStatusElement.textContent = "Declined";
 			attendanceStatusElement.style.color = "red";
 			attendanceStatusElement.style.opacity = 1;
 			if(!userMode) {
-				attendanceSubmitElement.disabled = true;
+				attendanceSubmitElement.disabled = false;
 				attendanceMoreElement.disabled = false;
-				attendanceSaveElement.disabled = true;
+				attendanceSaveElement.disabled = false;
 			}else {
 				attendanceSubmitElement.disabled = true;
 				attendanceMoreElement.disabled = false;
