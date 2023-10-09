@@ -453,7 +453,7 @@ function createAttendance({ date, status, checkbox, onClose, content, multi } = 
 				newInputTime.value = row.time;
 				newInputClass.value = row.class;
 
-				if(status == 3 && !userMode) {
+				if(status <= 3 && !userMode) {
 					newInputDescription.addEventListener("keyup", removeInputListener);
 					newInputTime.addEventListener("keyup", removeInputListener);
 					newInputClass.addEventListener("keyup", removeInputListener);
