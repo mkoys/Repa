@@ -509,18 +509,49 @@ function createAttendance({ date, status, checkbox, onClose, content, multi } = 
 	});
 
 	async function submitAttendance(event) {
-		if(!attendanceContentElement.parentNode.disabled) {
-			const response = await fetch(`/attendance${userIdentifier ? `?id=${userIdentifier}${userMode ? `&status=4` : ""}` : ""}`, {
-				method: "PUT",
-				headers: { "Content-type": "application/json", Authorization: `token ${token}` },
-				body: JSON.stringify({date})
+	if(!attendanceContentElement.parentNode.disabled) {
+			let content = [];
+
+			Array.from(attendanceContentElement.children).forEach(child => {
+				const inputDescription = child.querySelector(".attendanceInputDescription");
+				const inputTime = child.querySelector(".attendanceInputTime");
+				const inputClass = child.querySelector(".attendanceInputClass");
+
+				if(inputDescription.value.length > 0 || inputTime.value.length > 0 || inputClass.value.length > 0) {
+					content.push({
+						description: inputDescription.value,
+						time: inputTime.value,
+						class: inputClass.value
+					});
+				}
 			});
+
+			const body = {
+				place: getABox(),
+				date,
+				content,
+				status: userMode ? 4 : 2
+			}
+
+			const response = await fetch(`/attendance${userIdentifier ? `?id=${userIdentifier}` : ""}`, {
+				method: "POST",
+				headers: { "Content-type": "application/json", Authorization: `token ${token}` },
+				body: JSON.stringify(body)
+			});
+
 			const responseJson = await response.json();
-			const attendanceIndex = attendances.findIndex(attendance => compareDates(attendance.date, date));
-			attendances[attendanceIndex].status = userMode ? 4 : 2;
-			calendarDates = generateCalendarDates();
-			setStatus(userMode ? 4 : 2);
-			setContent(attendances[attendanceIndex].content);
+
+			if(!responseJson.error) {
+				const foundAttendanceIndex = attendances.findIndex(attendance => compareDates(attendance.date, date));
+				if(foundAttendanceIndex > -1) {
+					attendances.splice(foundAttendanceIndex, 1, body);
+				}else {
+					attendances.push(body)
+				}
+				calendarDates = generateCalendarDates();
+				setStatus(userMode ? 4 : 2);
+				setContent(content);
+			}
 		}
 	}
 
