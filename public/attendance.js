@@ -453,7 +453,7 @@ function createAttendance({ date, status, checkbox, onClose, content, multi } = 
 				newInputTime.value = row.time;
 				newInputClass.value = row.class;
 
-				if(status == 3 || status == 1 && !userMode) {
+				if(status == 3 && !userMode || status == 1 && !userMode || status == 2 && userMode) {
 					newInputDescription.addEventListener("keyup", removeInputListener);
 					newInputTime.addEventListener("keyup", removeInputListener);
 					newInputClass.addEventListener("keyup", removeInputListener);
@@ -484,7 +484,7 @@ function createAttendance({ date, status, checkbox, onClose, content, multi } = 
 			lastInputClass.disabled = true;
 		}
 
-		if(status < 2 || status == 3 && !userMode) {
+		if(status < 2 && !userMode || status == 3 && !userMode) {
 			lastInput.addEventListener("dragover", event => event.preventDefault());
 			lastInput.addEventListener("dragstart", event => {
 				const source = event.srcElement;
@@ -707,7 +707,7 @@ function createAttendance({ date, status, checkbox, onClose, content, multi } = 
 				attendanceSaveElement.disabled = true;
 			}
 		}else if(status == 2) {
-			checkboxDisable = true;
+			if(!userMode) checkboxDisable = true;
 			attendanceStatusElement.textContent = "Submited";
 			attendanceStatusElement.style.color = "yellow";
 			attendanceStatusElement.style.opacity = 1;
