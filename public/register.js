@@ -1,3 +1,5 @@
+import { setColor, setTheme } from "./setTheme.js";
+
 const registerButton = document.querySelector(".authButton");
 const loadingElement = document.querySelector(".loading");
 const usernameElement = document.querySelector(".username");
@@ -16,6 +18,9 @@ const rePasswordLabel = document.querySelector("#rePasswordLabel");
 // Check if user is logged in
 const token = localStorage.getItem("token");
 if(token) window.location = "/";
+
+setTheme(localStorage.getItem("theme"));
+setColor(localStorage.getItem("color"));
 
 // On register action
 registerButton.addEventListener("click", async () => {

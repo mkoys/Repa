@@ -1,3 +1,5 @@
+import { setColor, setTheme } from "./setTheme.js";
+
 let pageVisible = 5;
 let pageNumber = 0;
 let selectedUsers = [];
@@ -70,6 +72,9 @@ const calendarState = [];
 const rangeSelect = [];
 const calendarEvents = [];
 const contentState = [];
+
+setTheme(localStorage.getItem("theme"));
+setColor(localStorage.getItem("color"));
 
 const calendarDate = new Date();
 

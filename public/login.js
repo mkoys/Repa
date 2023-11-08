@@ -1,3 +1,5 @@
+import { setColor, setTheme } from "./setTheme.js";
+
 const loginButton = document.querySelector(".authButton");
 const loadingElement = document.querySelector(".loading");
 const usernameElement = document.querySelector(".username");
@@ -10,6 +12,9 @@ const passwordLabel = document.querySelector("#passwordLabel");
 // Check if user is logged in
 const token = localStorage.getItem("token");
 if(token) window.location = "/";
+
+setTheme(localStorage.getItem("theme"));
+setColor(localStorage.getItem("color"));
 
 // On login action
 loginButton.addEventListener("click", async () => {

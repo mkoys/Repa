@@ -1,3 +1,5 @@
+import { setColor, setTheme } from "./setTheme.js";
+
 const calendarDatesElement = document.querySelector(".calendarDates");
 const calendarDateTextElement = document.querySelector(".calendarDateText");
 const calendarDateNextElement = document.querySelector(".calendarDateNext");
@@ -23,6 +25,9 @@ const settingsAction = document.querySelector(".settingsDropdown");
 
 const token = localStorage.getItem("token");
 if(!token) window.location = "/login.html";
+
+setTheme(localStorage.getItem("theme"));
+setColor(localStorage.getItem("color"));
 
 settingsAction.addEventListener("click", _event => window.location = "/settings.html?back=attendance.html")
 
@@ -397,7 +402,99 @@ function createAttendance({ date, status, checkbox, onClose, content, multi } = 
 	const attendanceSaveIcon = attendanceElementCopy.querySelector(".attendanceSaveIcon");
 	const attendanceSubmitIcon = attendanceElementCopy.querySelector(".attendanceSubmitIcon");
 	const attendanceHeader = attendanceElementCopy.querySelector(".attendanceHeader");
+	const attendanceDropdownElement = attendanceElementCopy.querySelector(".attendanceBoxDropdown");
+	const attendanceDeleteAction = attendanceElementCopy.querySelector(".deleteAction");
+	const attendanceImportAction = attendanceElementCopy.querySelector(".importAction");
+	const attendanceFileUpload = attendanceElementCopy.querySelector("#attendanceFile");
+	const attendanceExportAction = attendanceElementCopy.querySelector(".exportAction");
 	const index = mainElement.children.length;
+	let attendanceDropdown = false;
+	let attendanceDropdownLock = false;
+	let attendanceDropdownTimeout = false;
+
+
+	attendanceImportAction.addEventListener("click", () => {
+		if(!status) {
+			attendanceFileUpload.click();
+		}
+	});
+
+	attendanceFileUpload.addEventListener("change", () => {
+		readFileContent(attendanceFileUpload.files[0]).then(res => {
+			const data = JSON.parse(res);
+			setContent(data.content);
+			checkABox(data.place);
+		});
+	})
+
+	function readFileContent(file) {
+		const reader = new FileReader()
+		return new Promise((resolve, reject) => {
+			reader.onload = event => resolve(event.target.result)
+			reader.onerror = error => reject(error)
+			reader.readAsText(file)
+		})
+	}
+
+	attendanceExportAction.addEventListener("click", () => {
+		const data = getAttendanceData();
+		download(`${date.toLocaleDateString("en-US")}.json`, JSON.stringify(data));
+	})
+
+	function download(filename, text) {
+		var element = document.createElement('a');
+		element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+		element.setAttribute('download', filename);
+
+		element.style.display = 'none';
+		document.body.appendChild(element);
+
+		element.click();
+
+		document.body.removeChild(element);
+	}
+
+	attendanceMoreElement.addEventListener("mouseenter", () => {
+		setDropdown(true);
+	});
+
+	attendanceMoreElement.addEventListener("mouseleave", () => {
+		attendanceDropdownTimeout = setTimeout(closeAttendanceDropdown, 180);
+	});
+
+	function closeAttendanceDropdown() {
+		if(!attendanceDropdownLock) {
+			setDropdown(false);
+		}
+	}
+
+	attendanceDropdownElement.addEventListener("mouseenter", () => {
+		attendanceDropdownLock = true;
+	});
+
+	attendanceDropdownElement.addEventListener("mouseleave", () => {
+		attendanceDropdownLock = false;
+		clearTimeout(attendanceDropdownTimeout);
+		closeAttendanceDropdown();
+	});
+
+	function setDropdown(setter) {
+		if(setter === undefined) {
+			attendanceDropdown = !attendanceDropdown;
+		}else {
+			attendanceDropdown = setter;
+		}
+
+		if(attendanceDropdown) {
+			attendanceMoreElement.style.opacity = 1;
+			attendanceDropdownElement.style.visibility = "visible";
+			attendanceDropdownElement.style.opacity = 1;
+		}else {
+			attendanceMoreElement.style.opacity = null;
+			attendanceDropdownElement.style.visibility = null;
+			attendanceDropdownElement.style.opacity = 0;
+		}
+	}
 
 	if(multi) {			
 		attendanceMoreElement.style.display = "none";
@@ -558,6 +655,36 @@ function createAttendance({ date, status, checkbox, onClose, content, multi } = 
 	attendanceSaveElement.addEventListener("click", async event => {
 		saveAttendance(event)
 	});
+
+	function getAttendanceData() {
+		let body = false;
+		if(!attendanceContentElement.parentNode.disabled) {
+			let content = [];
+
+			Array.from(attendanceContentElement.children).forEach(child => {
+				const inputDescription = child.querySelector(".attendanceInputDescription");
+				const inputTime = child.querySelector(".attendanceInputTime");
+				const inputClass = child.querySelector(".attendanceInputClass");
+
+				if(inputDescription.value.length > 0 || inputTime.value.length > 0 || inputClass.value.length > 0) {
+					content.push({
+						description: inputDescription.value,
+						time: inputTime.value,
+						class: inputClass.value
+					});
+				}
+			});
+
+			body = {
+				place: getABox(),
+				date,
+				content,
+				status: userMode ? 3 : 1
+			}
+		}
+
+		return body;
+	}
 
 	async function saveAttendance(event) {
 		if(!attendanceContentElement.parentNode.disabled) {
@@ -786,6 +913,9 @@ function createAttendance({ date, status, checkbox, onClose, content, multi } = 
 			checkCheckbox(attendanceCheckboxCompanyCheck, attendanceCheckboxSchoolCheck)
 		}else if(id == 0) {
 			checkCheckbox(attendanceCheckboxSchoolCheck, attendanceCheckboxCompanyCheck)
+		}else {
+			attendanceCheckboxSchoolCheck.style.display = "none";
+			attendanceCheckboxCompanyCheck.style.display = "none";
 		}
 	}
 
