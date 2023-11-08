@@ -16,7 +16,7 @@ const nightColorsElement = document.querySelector(".night");
 let activeColor = document.querySelector(".active");
 
 const currentTheme = localStorage.getItem("theme");
-const currentColor = localStorage.getItem("color");
+const currentColor = localStorage.getItem("color") ? localStorage.getItem("color") : "purple";
 
 const colorElements = document.querySelectorAll(".color");
 const colorElement = document.querySelector(`#${currentColor}`);
