@@ -190,6 +190,7 @@ calendarDatePreviousElement.addEventListener("click", () => {
 function calendarEvent(date, action) {
 	if(typeof date.multi === "number") {
 		const multiElement = document.querySelector("#attendanceMultiTemplate").content.cloneNode(true);
+		const attendanceDropdownElement = multiElement.querySelector(".attendanceBoxDropdown");
 		const multiAttendanceElement = multiElement.querySelector(".attendanceMulti");
 		const multiContentElement = multiElement.querySelector(".attendanceMultiContent");
 		const multiSubmit = multiElement.querySelector(".multiSubmit");
@@ -216,6 +217,52 @@ function calendarEvent(date, action) {
 			multiDeclineIcon.style.display = "none";
 		}
 
+		let attendanceDropdownTimeout = false;
+		let attendanceDropdownLock = false;
+		let attendanceDropdown = false;
+
+		multiMore.addEventListener("mouseenter", () => {
+		setDropdown(true);
+		});
+
+		multiMore.addEventListener("mouseleave", () => {
+			attendanceDropdownTimeout = setTimeout(closeAttendanceDropdown, 180);
+		});
+
+		function closeAttendanceDropdown() {
+			if(!attendanceDropdownLock) {
+				setDropdown(false);
+			}
+		}
+
+		attendanceDropdownElement.addEventListener("mouseenter", () => {
+			attendanceDropdownLock = true;
+		});
+
+		attendanceDropdownElement.addEventListener("mouseleave", () => {
+			attendanceDropdownLock = false;
+			clearTimeout(attendanceDropdownTimeout);
+			closeAttendanceDropdown();
+		});
+
+		function setDropdown(setter) {
+			if(setter === undefined) {
+				attendanceDropdown = !attendanceDropdown;
+			}else {
+				attendanceDropdown = setter;
+			}
+
+			if(attendanceDropdown) {
+				multiMore.style.opacity = 1;
+				attendanceDropdownElement.style.visibility = "visible";
+				attendanceDropdownElement.style.opacity = 1;
+			}else {
+				multiMore.style.opacity = null;
+				attendanceDropdownElement.style.visibility = null;
+				attendanceDropdownElement.style.opacity = 0;
+			}
+		}
+
 		let highestStatus = 0;
 
 		date.days.forEach(date => {
@@ -228,14 +275,12 @@ function calendarEvent(date, action) {
 		})
 
 		multiSave.addEventListener("click", () => {
-			console.log(attendancesRange)
 			attendancesRange.forEach(item => item.saveAttendance());
 			highestStatus = 1;
 			setStatus(highestStatus);
 		});
 
 		multiSubmit.addEventListener("click", () => {
-			console.log(attendancesRange)
 			attendancesRange.forEach(item => item.submitAttendance());
 			highestStatus = 2;
 			setStatus(highestStatus);
@@ -411,7 +456,6 @@ function createAttendance({ date, status, checkbox, onClose, content, multi } = 
 	let attendanceDropdown = false;
 	let attendanceDropdownLock = false;
 	let attendanceDropdownTimeout = false;
-
 
 	attendanceImportAction.addEventListener("click", () => {
 		if(!status) {
