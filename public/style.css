@@ -276,7 +276,7 @@ html, body {
 }
 
 .inputIcon > svg > path {
-	fill: white;
+	fill: var(--text-color);
 	filter: brightness(70%);
 	transition: 0.2s ease all;
 }
