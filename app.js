@@ -18,8 +18,17 @@ const accessLogStream = fs.createWriteStream(
 );
 
 app.use(cors());
-app.use(helmet());
-app.use(morgan("combined", { stream: accessLogStream }));
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: ["'self'", "'unsafe-eval'"], // Add 'unsafe-eval' to scriptSrc
+      },
+    },
+  }),
+);
+// app.use(morgan("combined", { stream: accessLogStream }));
 app.use(express.json());
 app.use(express.static("public"));
 

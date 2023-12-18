@@ -1,4 +1,9 @@
 import { setColor, setTheme } from "./setTheme.js";
+import { Calendar } from "./calendar.js";
+
+const barElement = document.querySelector(".bar");
+customElements.define("calendar-element", Calendar);
+barElement.appendChild(new Calendar());
 
 const calendarDatesElement = document.querySelector(".calendarDates");
 const calendarDateTextElement = document.querySelector(".calendarDateText");
